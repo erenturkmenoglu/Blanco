@@ -10,3 +10,4 @@ dist/
 .DS_Store
 frontend/public/data/
 web-data.tar.gz
+frontend/out/

@@ -1,0 +1,60 @@
+name: GitHub Pages (statik arayüz)
+
+# Arayüzün backend'siz statik sürümünü GitHub Pages'e yayımlar: https://erenturkmenoglu.github.io/Blanco/
+# Veri, 'data' dalındaki web-data.tar.gz snapshot'ından derleme anında alınır; her ingest koşusundan sonra otomatik yenilenir.
+on:
+  push:
+    branches: [main]
+    paths: ["frontend/**", ".github/workflows/pages.yml"]
+  workflow_run:
+    workflows: ["Zamanlanmış veri toplama (GitHub Actions runner)"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install
+        working-directory: frontend
+        run: npm ci --no-audit --no-fund
+      - name: Fetch data snapshot (data dalı → public/data)
+        working-directory: frontend
+        run: bash scripts/fetch-data.sh
+      - name: Build static export (basePath /Blanco)
+        working-directory: frontend
+        env:
+          STATIC_EXPORT: "1"
+          NEXT_PUBLIC_BASE_PATH: /Blanco
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: npm run build && ls out | head
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/out
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -46,12 +46,18 @@ arayüz snapshot'ı `web-data.tar.gz`. Kullanım: `git fetch origin data && git 
 `DATABASE_URL=sqlite:///./bilanco.db uvicorn app.main:app`. Ayrıştırma kodu değiştiğinde ağa çıkmadan yeniden işleme:
 `python scripts/replay_ingest.py --old-db <eski bilanco.db> --raw <data dalı raw/>` (ham dosyalar değişmez, gözlemler yeniden üretilir).
 
-## Vercel (bilanco.vercel.app) — backend'siz statik mod
+## Canlı adres — GitHub Pages: https://erenturkmenoglu.github.io/Blanco/
+
+`pages.yml` arayüzü statik dışa aktarımla (`STATIC_EXPORT=1`, `basePath=/Blanco`) GitHub Pages'e yayımlar; her `main` push'unda ve her ingest
+koşusundan sonra (`workflow_run`) yenilenir. Not: `bilanco.vercel.app` adı Vercel'de başka bir kullanıcıya ait (28.10.2026'da kontrol edildi);
+Vercel'de başka bir proje adı seçilmeli (ör. `bilanco-bankalar`).
+
+## Vercel — backend'siz statik mod
 
 Arayüz, `NEXT_PUBLIC_API_BASE_URL` tanımlı değilse `public/data/*.json` snapshot'ından çalışır (aynı API şekilleri; `backend/scripts/export_static.py` üretir).
 Vercel derlemesi `frontend/vercel.json` → `scripts/fetch-data.sh` ile snapshot'ı `data` dalından indirir (repo public; anahtar gerekmez) ve `next build` yapar.
 
-1. vercel.com → **Add New → Project** → GitHub `erenturkmenoglu/Blanco` → **Root Directory: `frontend`** → proje adı `bilanco` → Deploy. Ortam değişkeni gerekmez.
+1. vercel.com → **Add New → Project** → GitHub `erenturkmenoglu/Blanco` → **Root Directory: `frontend`** → boş bir proje adı (ör. `bilanco-bankalar`) → Deploy. Ortam değişkeni gerekmez.
 2. Her ingest sonrası otomatik yenileme için: Vercel → Project → Settings → Git → **Deploy Hooks** → hook oluştur (branch `main`) → URL'yi GitHub repo
    **Settings → Secrets → Actions → `VERCEL_DEPLOY_HOOK`** olarak ekle. Hook yoksa snapshot, bir sonraki `main` push'unda veya elle "Redeploy" ile yenilenir.
 3. Canlı API istenirse (Docker/VM'de FastAPI): Vercel ortam değişkeni `NEXT_PUBLIC_API_BASE_URL=https://api.<alan>` → arayüz API moduna geçer.

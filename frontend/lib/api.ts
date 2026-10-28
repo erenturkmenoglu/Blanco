@@ -6,12 +6,13 @@
  */
 export const API = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 export const STATIC_MODE = !API;
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";          // GitHub Pages alt yolu (/Blanco); Vercel'de boş
 
 type Params = Record<string, string | number | undefined>;
 const bankCache = new Map<string, Promise<any>>();
 
 async function fetchJson(path: string) {
-  const r = await fetch(path, { cache: "force-cache" });
+  const r = await fetch(BASE + path, { cache: "force-cache" });
   if (!r.ok) throw new Error(`${r.status} ${path}`);
   return r.json();
 }
