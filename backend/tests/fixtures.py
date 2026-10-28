@@ -81,16 +81,16 @@ def build_xlsx(sheets: dict[str, list[list]]) -> bytes:
 
 
 CATEGORY_HTML = """<html><body>
-<h3>Finansal Tablolar - Konsolide Olmayan (Solo Banka, Excel formatında ortak veri seti)</h3>
-<form action="/istatistiki-raporlar-liste/11241" method="get">
-<select name="rapor_donemi"><option value="11411">2026</option><option value="11345">2025</option><option value="11279">2024</option></select>
-<select name="ay"><option value="3">Mart</option><option value="6">Haziran</option><option value="9">Eylül</option><option value="12">Aralık</option></select>
-</form>
-<h3>Aktif Büyüklüklerine Göre Banka Sıralaması</h3>
-<form action="/istatistiki-raporlar-liste/11254" method="get">
-<select name="rapor_donemi"><option value="11411">2026</option><option value="11345">2025</option></select>
-<select name="ay"><option value="3">Mart</option><option value="6">Haziran</option></select>
-</form></body></html>"""
+<h2>Finansal Tablolar - Konsolide Olmayan (Solo Banka, Excel formatında ortak veri seti)</h2>
+<select class="lh-30 rapor-donemi-secimi" data-cat="11241"><option value="">Rapor Dönemi Seçiniz</option>
+<option value="/istatistiki-raporlar-liste/11241?rapor_donemi=11411">2026</option><option value="/istatistiki-raporlar-liste/11241?rapor_donemi=11405">2025</option>
+<option value="/istatistiki-raporlar-liste/11241?rapor_donemi=11279">2024</option></select>
+<select class="rapor-donemi-ay-yil ay-yil-11241"><option value="/istatistiki-raporlar/2026-mart-finansal-tablolar-konsolide-olmayan-solo-banka-excel-formatinda">Mart</option>
+<option value="/istatistiki-raporlar/2026-haziran-finansal-tablolar-konsolide-olmayan-solo-banka-excel-formatinda">Haziran</option></select>
+<h2>Aktif Büyüklüklerine Göre Banka Sıralaması</h2>
+<select class="rapor-donemi-secimi" data-cat="11254"><option value="/istatistiki-raporlar-liste/11254?rapor_donemi=11411">2026</option><option value="/istatistiki-raporlar-liste/11254?rapor_donemi=11405">2025</option></select>
+<select class="rapor-donemi-ay-yil ay-yil-11254"><option value="/istatistiki-raporlar/2026-mart-aktif-buyukluklerine-gore-banka-siralamasi">Mart</option><option value="/istatistiki-raporlar/2026-haziran-aktif-buyukluklerine-gore-banka-siralamasi">Haziran</option></select>
+</body></html>"""
 
 LIST_HTML = """<html><body><ul>
 <li><a href="/istatistiki-raporlar/2026-haziran-finansal-tablolar-konsolide-olmayan-solo-banka-excel-formatinda">2026 Haziran - Finansal Tablolar - Konsolide Olmayan (Solo Banka, Excel formatında ortak veri seti)</a></li>

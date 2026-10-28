@@ -55,7 +55,7 @@ def main():
     ap.add_argument("--month", type=int, default=6)
     ap.add_argument("--out", default="../probe_output")
     ap.add_argument("--banks", default="Akbank T.A.Ş.;Türkiye Cumhuriyeti Ziraat Bankası A.Ş.")
-    ap.add_argument("--max-files", type=int, default=8)
+    ap.add_argument("--max-files", type=int, default=12)
     a = ap.parse_args()
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
     (out / "pages").mkdir(exist_ok=True); (out / "files").mkdir(exist_ok=True)

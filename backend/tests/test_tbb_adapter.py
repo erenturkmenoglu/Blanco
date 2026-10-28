@@ -9,7 +9,7 @@ def test_parse_period_options_reads_year_ids_not_guesses():
     forms = TBBAdapter.parse_period_options(CATEGORY_HTML)
     fs = next(v for k, v in forms.items() if "Excel" in (k or ""))
     assert fs["years"]["2026"] == "11411" and fs["years"]["2024"] == "11279" and fs["list_id"] == 11241
-    assert fs["months"]["Haziran"] == "6"
+    assert fs["latest_year"] == "2026" and fs["latest_pages"]["Haziran"].endswith("2026-haziran-finansal-tablolar-konsolide-olmayan-solo-banka-excel-formatinda")
 
 
 def test_parse_report_links_and_attachments():

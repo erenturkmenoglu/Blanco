@@ -52,32 +52,32 @@ SECTIONS: dict[str, dict] = {
         "slug_match": r"finansal-tablolar-konsolide-olmayan-solo-banka-excel",
     },
     "tbb_fs_cons_excel": {
-        "category": CATEGORY_FS, "list_id": None,
+        "category": CATEGORY_FS, "list_id": 11243,
         "title_match": r"Finansal Tablolar\s*-\s*Konsolide\s*\(.*Excel",
-        "slug_match": r"finansal-tablolar-konsolide-?\(?.*excel",
+        "slug_match": r"finansal-tablolar-konsolide-konsolidasyona-tabi-finansal-0$",
     },
     "tbb_dt20_selected_solo": {
-        "category": CATEGORY_ANALYSIS, "list_id": None,
+        "category": CATEGORY_ANALYSIS, "list_id": 11244,
         "title_match": r"Banka Bilgileri\s*\(Seçilmiş Tablolar, Konsolide Olmayan",
         "slug_match": r"banka-bilgileri-secilmis-tablolar-konsolide-olmayan",
     },
     "tbb_dt21_selected_cons": {
-        "category": CATEGORY_ANALYSIS, "list_id": None,
+        "category": CATEGORY_ANALYSIS, "list_id": 11245,
         "title_match": r"Banka Bilgileri\s*\(Seçilmiş Tablolar, Konsolide\(",
         "slug_match": r"banka-bilgileri-secilmis-tablolar-konsolide(?!-olmayan)",
     },
     "tbb_bank_group_quarterly": {
-        "category": CATEGORY_ANALYSIS, "list_id": None,
+        "category": CATEGORY_ANALYSIS, "list_id": 11246,
         "title_match": r"Banka ve Grup Bilgileri\s*\(3 Aylık",
         "slug_match": r"banka-ve-grup-bilgileri-3-aylik",
     },
     "tbb_maturity_remaining": {
-        "category": CATEGORY_SELECTED, "list_id": None,
+        "category": CATEGORY_SELECTED, "list_id": 11276,
         "title_match": r"Aktif ve Pasiflerin Kalan Vadelerine Göre Gösterimi",
         "slug_match": r"aktif-ve-pasiflerin-kalan-vadelerine",
     },
     "tbb_dt13_bank_branch_employee": {
-        "category": CATEGORY_SELECTED, "list_id": None,
+        "category": CATEGORY_SELECTED, "list_id": 11256,
         "title_match": r"Banka, Çalışan ve Şube Bilgileri",
         "slug_match": r"banka-calisan-ve-sube",
     },
@@ -161,11 +161,44 @@ class TBBAdapter(SourceAdapter):
 
     # ---------------------------------------------------------------- HTML çözümleme (saf fonksiyonlar → test edilebilir)
     @staticmethod
-    def parse_period_options(html: str) -> dict[str, dict]:
-        """Kategori sayfasındaki <select name=rapor_donemi> → {yıl: id}, <select name=ay> → {ay adı: değer}.
-        Sayfada birden çok bölüm form'u olabilir; her form için bölüm başlığını da yakalar."""
+    def parse_period_options(html: str, base: str = BASE) -> dict[str, dict]:
+        """Kategori sayfası (GERÇEK markup, probe 28.10.2026):
+             <h2>Bölüm başlığı</h2> ... <select class="rapor-donemi-secimi" data-cat="<list_id>">
+                 <option value="/istatistiki-raporlar-liste/<list_id>?rapor_donemi=<period_id>">2026</option> ...
+             <select class="rapor-donemi-ay-yil ay-yil-<list_id>">
+                 <option value="/istatistiki-raporlar/2026-haziran-<slug>">Haziran</option> ...   (en güncel yılın rapor sayfaları)
+           → {başlık: {list_id, years: {yıl: period_id}, latest_pages: {ay adı: url}, latest_year}}.
+           Eski form tabanlı düzen için geri dönüş korunur."""
         soup = BeautifulSoup(html, "lxml")
         out: dict[str, dict] = {}
+        for sel in soup.find_all("select", class_="rapor-donemi-secimi"):
+            list_id = sel.get("data-cat")
+            years: dict[str, str] = {}
+            for opt in sel.find_all("option"):
+                val, txt = opt.get("value") or "", opt.get_text(strip=True)
+                m = re.search(r"rapor_donemi=(\d+)", val)
+                if m and re.fullmatch(r"(19|20)\d\d", txt):
+                    years[txt] = m.group(1)
+            if not list_id and years:
+                m = re.search(r"istatistiki-raporlar-liste/(\d+)", str(sel))
+                list_id = m.group(1) if m else None
+            h = sel.find_previous(["h2", "h3"])
+            title = h.get_text(" ", strip=True) if h else f"list_{list_id}"
+            latest: dict[str, str] = {}
+            ay = soup.find("select", class_=f"ay-yil-{list_id}") if list_id else None
+            if ay:
+                for opt in ay.find_all("option"):
+                    if opt.get("value"):
+                        latest[opt.get_text(strip=True)] = urljoin(base, opt["value"])
+            latest_year = None
+            for u in latest.values():
+                m = re.search(r"/istatistiki-raporlar/((?:19|20)\d\d)-", u)
+                if m:
+                    latest_year = m.group(1)
+            out[title] = {"list_id": int(list_id) if list_id else None, "years": years, "months": {}, "latest_pages": latest, "latest_year": latest_year}
+        if out:
+            return out
+        # --- geri dönüş: form tabanlı düzen
         for form in soup.find_all("form"):
             years, months = {}, {}
             for sel in form.find_all("select"):
@@ -174,21 +207,15 @@ class TBBAdapter(SourceAdapter):
                     val, txt = opt.get("value"), opt.get_text(strip=True)
                     if not val or not txt:
                         continue
-                    if "donem" in name or re.fullmatch(r"(19|20)\d\d", txt):
-                        if re.fullmatch(r"(19|20)\d\d", txt):
-                            years[txt] = val
-                    elif "ay" == name or txt in MONTH_TR_DISPLAY.values() or txt == "Yıllık":
+                    if re.fullmatch(r"(19|20)\d\d", txt):
+                        years[txt] = val
+                    elif name == "ay" or txt in MONTH_TR_DISPLAY.values() or txt == "Yıllık":
                         months[txt] = val
-            title = None
             h = form.find_previous(["h2", "h3", "h4", "strong"])
-            if h:
-                title = h.get_text(" ", strip=True)
-            list_id = None
+            title = h.get_text(" ", strip=True) if h else None
             m = re.search(r"istatistiki-raporlar-liste/(\d+)", str(form))
-            if m:
-                list_id = int(m.group(1))
             if years:
-                out[title or f"form_{len(out) + 1}"] = {"years": years, "months": months, "list_id": list_id}
+                out[title or f"form_{len(out) + 1}"] = {"list_id": int(m.group(1)) if m else None, "years": years, "months": months, "latest_pages": {}, "latest_year": None}
         return out
 
     @staticmethod
@@ -196,16 +223,18 @@ class TBBAdapter(SourceAdapter):
         """Rapor liste sayfasındaki rapor sayfası bağlantıları (+ varsa doğrudan ekler)."""
         soup = BeautifulSoup(html, "lxml")
         items, seen = [], set()
-        for a in soup.find_all("a", href=True):
-            href = urljoin(base, a["href"])
+        candidates = [(urljoin(base, a["href"]), a.get_text(" ", strip=True), a.get("title")) for a in soup.find_all("a", href=True)]
+        candidates += [(urljoin(base, o["value"]), o.get_text(" ", strip=True), None) for o in soup.find_all("option") if o.get("value")]
+        for href, text, title in candidates:
+            a = {"text": text, "title": title}
             if "/istatistiki-raporlar/" in href and re.search(r"/istatistiki-raporlar/(19|20)\d\d-", href):
                 if href not in seen:
                     seen.add(href)
-                    items.append({"type": "report_page", "url": href, "title": a.get_text(" ", strip=True)})
-            elif "/download/node/" in href or "/sites/default/files/" in href:
+                    items.append({"type": "report_page", "url": href, "title": a["text"]})
+            elif "/download/node/" in href or "/sites/default/files/raporlar/" in href:
                 if href not in seen:
                     seen.add(href)
-                    items.append({"type": "attachment", "url": href, "title": a.get("title") or a.get_text(" ", strip=True)})
+                    items.append({"type": "attachment", "url": href, "title": a["title"] or a["text"]})
         return items
 
     @staticmethod
@@ -279,25 +308,29 @@ class TBBAdapter(SourceAdapter):
             return None
         return res.data.decode("utf-8", errors="replace")
 
+    _category_cache: dict[str, dict] = {}
+
+    def resolve_section(self, dataset_code: str) -> dict | None:
+        """Kategori sayfasından bölümü (list_id, yıl→id, en güncel yılın rapor sayfaları) çözer; sayfa oturum içinde önbelleklenir."""
+        spec = SECTIONS[dataset_code]
+        if spec["category"] not in self._category_cache:
+            html = self._get_html(spec["category"])
+            self._category_cache[spec["category"]] = self.parse_period_options(html) if html else {}
+        sections = self._category_cache[spec["category"]]
+        for title, info in sections.items():
+            if re.search(spec["title_match"], title or "", re.I):
+                return info
+        for info in sections.values():
+            if spec.get("list_id") and info.get("list_id") == spec["list_id"]:
+                return info
+        return None
+
     def resolve_list_id_and_period(self, dataset_code: str, year: int) -> tuple[int | None, str | None, dict | None]:
         spec = SECTIONS[dataset_code]
-        html = self._get_html(spec["category"])
-        if html is None:
+        info = self.resolve_section(dataset_code)
+        if not info:
             return spec.get("list_id"), None, None
-        forms = self.parse_period_options(html)
-        chosen = None
-        for title, info in forms.items():
-            if re.search(spec["title_match"], title or "", re.I):
-                chosen = info
-                break
-        if chosen is None and spec.get("list_id"):
-            for info in forms.values():
-                if info.get("list_id") == spec["list_id"]:
-                    chosen = info
-                    break
-        if chosen is None:
-            return spec.get("list_id"), None, forms
-        return chosen.get("list_id") or spec.get("list_id"), chosen["years"].get(str(year)), forms
+        return info.get("list_id") or spec.get("list_id"), info["years"].get(str(year)), info
 
     def discover(self, dataset_code: str, year: int, month: int) -> list[DiscoveredFile]:
         found: list[DiscoveredFile] = []
@@ -306,25 +339,33 @@ class TBBAdapter(SourceAdapter):
         for k in KNOWN_FILES:
             if k["dataset"] == dataset_code and pe and k["period"] == pe.isoformat():
                 found.append(DiscoveredFile(dataset_code, pe, k["url"], k["title"], None, k["fmt"]))
-        # 2) kategori → liste → rapor sayfası → ekler
-        list_id, period_id, _ = self.resolve_list_id_and_period(dataset_code, year)
-        if list_id and period_id:
+        # 2) kategori → (en güncel yıl ise doğrudan rapor sayfası | liste sayfası) → rapor sayfası → ekler / banka seçicisi
+        list_id, period_id, info = self.resolve_list_id_and_period(dataset_code, year)
+        report_items: list[dict] = []
+        if info and info.get("latest_year") == str(year):
+            for mname, url in (info.get("latest_pages") or {}).items():
+                if mname == MONTH_TR_DISPLAY.get(month) or (mname == "Yıllık" and month == 12):
+                    report_items.append({"type": "report_page", "url": url, "title": mname, "trusted": True})
+        if not report_items and list_id and period_id:
             html = self._get_html(LIST_URL.format(list_id=list_id, period_id=period_id, month=month))
             if html:
-                for item in self.parse_report_links(html):
-                    if item["type"] == "attachment":
-                        found.append(DiscoveredFile(dataset_code, pe, item["url"], item["title"], None, None))
-                    else:
-                        slug_ok = re.search(SECTIONS[dataset_code]["slug_match"], item["url"], re.I)
-                        if not slug_ok or f"{year}-{MONTH_TR.get(month, '')}" not in item["url"]:
-                            continue
-                        page = self._get_html(item["url"])
-                        if page:
-                            atts = self.parse_attachments(page)
-                            for att in atts:
-                                found.append(DiscoveredFile(dataset_code, pe, att["url"], att["title"], None, att["format_hint"], item["url"], None, "attachment"))
-                            if not atts and dataset_code.endswith("_excel"):
-                                found.extend(self.resolve_bank_files(page, item["url"], dataset_code, pe))
+                report_items = self.parse_report_links(html)
+        if report_items:
+            for item in report_items:
+                if item["type"] == "attachment":
+                    found.append(DiscoveredFile(dataset_code, pe, item["url"], item["title"], None, None, None, None, "attachment"))
+                    continue
+                if not item.get("trusted"):
+                    slug_ok = re.search(SECTIONS[dataset_code]["slug_match"], item["url"], re.I)
+                    if not slug_ok or f"{year}-{MONTH_TR.get(month, '')}" not in item["url"]:
+                        continue
+                page = self._get_html(item["url"])
+                if page:
+                    atts = self.parse_attachments(page)
+                    for att in atts:
+                        found.append(DiscoveredFile(dataset_code, pe, att["url"], att["title"], None, att["format_hint"], item["url"], None, "attachment"))
+                    if not atts and dataset_code.endswith("_excel"):
+                        found.extend(self.resolve_bank_files(page, item["url"], dataset_code, pe))
         else:
             log.warning("%s %d-%02d: list_id/period_id çözülemedi (list_id=%s period_id=%s)", dataset_code, year, month, list_id, period_id)
         # tekilleştir
