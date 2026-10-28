@@ -20,6 +20,7 @@ URL_MAP = {
     f"{B}/download/node/54932/field_raporlar_ekler/310160": "dt20_5_nazim.xls", f"{B}/download/node/54932/field_raporlar_ekler/310161": "dt20_aciklamalar.xls",
     f"{B}/download/node/54933/field_raporlar_ekler/310162": "kalan_vade_sektor.xls", f"{B}/download/node/54929/field_raporlar_ekler/310010": "aktif_buyukluk_siralamasi.xls",
     f"{B}/download/node/54910/field_raporlar_ekler/309903": "dt13_banka_calisan_sube.pdf",
+    f"{B}/download/node/54910/field_raporlar_ekler/309905": "dt13_banka_calisan_sube.xlsx",
     f"{B}/sites/default/files/raporlar/54947/bankalar/Akbank%20T.A.%C5%9E..zip": "fs_solo_akbank.zip",
     f"{B}/sites/default/files/raporlar/54947/bankalar/T%C3%BCrkiye%20Cumhuriyeti%20Ziraat%20Bankas%C4%B1%20A.%C5%9E..zip": "fs_solo_ziraat.zip",
 }

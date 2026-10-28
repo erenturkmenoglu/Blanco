@@ -35,7 +35,9 @@ jobs:
           if git fetch --depth=1 origin data 2>/dev/null; then
             git --work-tree=/tmp/prev checkout FETCH_HEAD -- . 2>/dev/null || true
             git reset -q
-            [ -f /tmp/prev/bilanco.db ] && cp /tmp/prev/bilanco.db backend/bilanco.db && echo "DB geri yüklendi ($(du -h backend/bilanco.db | cut -f1))" || echo "önceki DB yok"
+            if [ -f /tmp/prev/bilanco.db.gz ]; then gunzip -c /tmp/prev/bilanco.db.gz > backend/bilanco.db; echo "DB geri yüklendi (gz → $(du -h backend/bilanco.db | cut -f1))";
+            elif [ -f /tmp/prev/bilanco.db ]; then cp /tmp/prev/bilanco.db backend/bilanco.db; echo "DB geri yüklendi ($(du -h backend/bilanco.db | cut -f1))";
+            else echo "önceki DB yok"; fi
             [ -d /tmp/prev/raw ] && mkdir -p backend/data && cp -r /tmp/prev/raw backend/data/raw && echo "ham dosyalar geri yüklendi" || true
           else
             echo "data dalı yok; sıfırdan"
@@ -72,7 +74,7 @@ jobs:
         run: |
           set -e
           rm -rf /tmp/pub && mkdir -p /tmp/pub
-          [ -f backend/bilanco.db ] && cp backend/bilanco.db /tmp/pub/ || true
+          [ -f backend/bilanco.db ] && sqlite3 backend/bilanco.db "VACUUM" 2>/dev/null; [ -f backend/bilanco.db ] && gzip -9 -c backend/bilanco.db > /tmp/pub/bilanco.db.gz || true   # SQLite gz ~6× küçülür; GitHub 100 MB sınırı
           [ -d backend/data/raw ] && cp -r backend/data/raw /tmp/pub/raw || true
           [ -f web-data.tar.gz ] && cp web-data.tar.gz /tmp/pub/ || true
           cd /tmp/pub && git init -q -b data && git config user.name "bilanco-bot" && git config user.email "bilanco-bot@users.noreply.github.com"

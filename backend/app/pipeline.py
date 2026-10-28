@@ -23,6 +23,7 @@ from app.normalization.bank_names import SEED_BANKS, BankRegistry
 from app.normalization.mapping import map_table
 from app.normalization.periods import quarter_period, ytd_period
 from app.normalization.special_tables import map_interest_table, map_maturity_table
+from app.normalization.tbb_dt13 import extract_dt13
 from app.normalization.tbb_bank_workbook import extract_workbook
 from app.normalization.tbb_dt20 import extract_dt20_tables
 from app.validation.checks import apply_checks, run_checks
@@ -231,6 +232,10 @@ def _candidates(parsed, reg, mi, dataset_code, scope, per, source_code, bank_hin
         out["unmapped"], out["unmatched"], out["orientation"] = ex.unmapped_columns, ex.unmatched_banks, "dt20_wide"
         out["scale"] = next((o.get("scale") for o in ex.observations if o.get("scale_detected") and o.get("unit") == "TRY"), None)
         out["notes"] = ex.notes
+        return out
+    if dataset_code == "tbb_dt13_bank_branch_employee":
+        ex = extract_dt13(parsed.tables, reg, scope, source_code)
+        out["obs"], out["unmatched"], out["orientation"], out["scale"], out["notes"] = ex.observations, ex.unmatched_banks, "dt13", 1.0, ex.notes
         return out
     if dataset_code in ("tbb_fs_solo_excel", "tbb_fs_cons_excel") and bank_hint:
         ex = extract_workbook(parsed.tables, bank_hint, reg, scope, source_code)

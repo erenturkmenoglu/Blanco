@@ -42,7 +42,7 @@ cd ../frontend && npm install && npm run dev                                   #
 
 **Hazır veri:** `data` dalı — Mart + Haziran 2026 için 57 solo + 27 konsolide banka kitabı, DT20/DT21 setleri, sıralama dosyaları; `bilanco.db`
 (SQLite; 53 bin finansal + 12 bin faiz + 62 bin vade gözlemi; 58 bankada toplam aktif, 57 bankada kredi kalan vadesi), ham dosyalar (`raw/`) ve
-arayüz snapshot'ı `web-data.tar.gz`. Kullanım: `git fetch origin data && git archive FETCH_HEAD bilanco.db | tar -x -C backend/` →
+arayüz snapshot'ı `web-data.tar.gz`. Kullanım: `git fetch origin data && git show FETCH_HEAD:bilanco.db.gz | gunzip > backend/bilanco.db` →
 `DATABASE_URL=sqlite:///./bilanco.db uvicorn app.main:app`. Ayrıştırma kodu değiştiğinde ağa çıkmadan yeniden işleme:
 `python scripts/replay_ingest.py --old-db <eski bilanco.db> --raw <data dalı raw/>` (ham dosyalar değişmez, gözlemler yeniden üretilir).
 

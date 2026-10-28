@@ -93,3 +93,20 @@ def test_second_run_skips_recently_verified_files_and_force_rechecks():
         assert job2.status.value == "success" and s2["documents"] == 1 and s2["new_observations"] == 0 and s2["confirmed_existing"] > 50, job2.log
         assert any(u.endswith("/310010") for u in dl2.calls)
         assert not any(l.get("step") == "revision" for l in job2.log)      # aynı sha256 → kaynak revizyonu açılmaz
+
+
+def test_dt13_real_xlsx_branch_employee_counts():
+    """DT13 xlsx 'şube ve çalışan': 59 banka × (şube, çalışan) × 3 dönem; genel eşleyicinin kaydırdığı satırlar (Bank Mellat 3.856 şube) artık olmaz."""
+    job = _ingest("tbb_dt13_bank_branch_employee")
+    summary = next(l for l in job.log if l.get("step") == "summary")
+    assert summary["new_observations"] + summary["confirmed_existing"] >= 300, job.log
+    with get_session() as db:
+        def val(code, metric, pe):
+            inst = db.scalar(select(m.Institution).where(m.Institution.code == code))
+            o = db.scalar(select(m.FinancialObservation).where(m.FinancialObservation.institution_id == inst.id, m.FinancialObservation.metric_code == metric,
+                                                                m.FinancialObservation.period_end == pe).order_by(m.FinancialObservation.revision_no.desc()))
+            return (o.value, o.unit, o.verification_status.value) if o else None
+        assert val("bankmellat", "branch_count", date(2026, 6, 30)) == (3, "count", "VERIFIED")
+        assert val("akbank", "employee_count", date(2026, 6, 30)) == (12223, "count", "VERIFIED")
+        assert val("ziraat", "branch_count", date(2025, 12, 31)) == (1769, "count", "VERIFIED")
+        assert val("habib", "branch_count", date(2026, 6, 30)) == (None, "count", "UNAVAILABLE")      # '-' → 0 yazılmaz
