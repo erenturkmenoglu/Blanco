@@ -94,6 +94,30 @@ FINDINGS: list[dict] = [
     dict(field="Katılım bankaları", source="TBB", dataset="—", file="—", period="—", per_bank="—", cells="—", status="UNAVAILABLE", note="TBB üyesi değil (TKBB); DT20/Excel setinde yer almaz → ayrı kaynak gerekir."),
     dict(field="usd_try, eur_try, policy_rate, cpi, deposit_rate_tl, loan_rate_tl … (makro)", source="TCMB EVDS", dataset="evds_macro", file="https://evds3.tcmb.gov.tr/service/evds/…", period="günlük/haftalık/aylık",
          per_bank="HAYIR", cells="— (seri kodu doğrulanmadı)", status="UNVERIFIED", note="API anahtarı sağlanmadı; seri kodları serieList uç noktasından doğrulanıp kaydedilecek."),
+    # ---- Tüm dosyalar işlendikten sonra bulunan veri kalitesi farkları (DQ01 vb.) — 28.10.2026, tam yeniden işleme
+    dict(field="ÖLÇEK (DQ01): banka kitapları Bin TL / Milyon TL", source="TBB", dataset="tbb_fs_solo_excel, tbb_fs_cons_excel",
+         file="/sites/default/files/raporlar/54947/… (Haziran 2026) ve /raporlar/54871/… (Mart 2026) <Banka>.zip", period="2026-03 vs 2026-06",
+         per_bank="EVET", cells="'varlıklar' satır 3: Haziran 2026 'MİLYON TÜRK LİRASI'; Mart 2026 'BİN TÜRK LİRASI' (Akbank: Varlıklar Toplamı ham 3.727.680 vs 3.419.802.978)",
+         status="VERIFIED", note="Aynı veri setinde ölçek dönemden döneme DEĞİŞİYOR. Ölçek artık her kitabın başlığından okunur; bulunamazsa gözlem UNVERIFIED (DQ01_scale_not_found). "
+                                "Mart 2026 ve 31/12/2025 değerleri ilk çalıştırmada 1000× büyük yazılmıştı; DB ham dosyalardan yeniden üretildi ve DT20 ile birebir doğrulandı (Akbank 3.419.802.978 Bin TL = 3.419.802,978 Mn TL)."),
+    dict(field="DT20/DT21 'Diğer' sütunları ≠ bilanço 'Diğer' satırları", source="TBB", dataset="tbb_dt20_selected_solo, tbb_dt21_selected_cons", file=DT20, period="2026-03, 2026-06", per_bank="EVET",
+         cells="2.Aktifler 'Diğer Aktifler' (Akbank 101.251) vs kitap 'X. DİĞER AKTİFLER (Net)' 100.606; 3.Pasifler 'Diğer Pasifler / Toplam' 365.531 vs kitap 'XV. DİĞER YÜKÜMLÜLÜKLER' 153.923; "
+               "4.Gelir-Gider 'Diğer Faiz Gelirleri' 34.443 (= Toplam − krediler − bankalar − menkul) vs kitap '1.7 Diğer Faiz Gelirleri' 1.004; 'Diğer Faiz Gider.' 34.835 vs '2.6' 82",
+         status="VERIFIED", note="Farklı tanımlar ayrı kodlarda tutulur: other_assets_dt20, other_liabilities_group_dt20, other_interest_income_residual_dt20, other_interest_expense_residual_dt20. Birleştirilmez."),
+    dict(field="Konsolide özkaynak: DT21 'Özkaynaklar / Toplam' azınlık paylarını içermez", source="TBB", dataset="tbb_dt21_selected_cons", file="DT21 3.Pasifler.xls 'Yükümlülükler' vs konsolide kitap 'Kyüküm.'",
+         period="2026-06", per_bank="EVET", cells="İş Bankası: DT21 454.045; kitap XVI. ÖZKAYNAKLAR 540.585 = 453.… + 16.7 Azınlık Payları 86.540",
+         status="VERIFIED", note="DT21 değeri total_equity_parent (ana ortaklığa ait), kitap XVI satırı total_equity, 16.7 satırı minority_interests olarak ayrı saklanır."),
+    dict(field="Mevduat vade kümeleri (basis)", source="TBB", dataset="tbb_dt20_selected_solo + tbb_fs_solo_excel", file="DT20 3.Pasifler 'Mevd.Vade' vs kitap 'pasif1' 2.a.1.i", period="2026-06", per_bank="EVET",
+         cells="DT20: Vadesiz+7 Gün | 1 Aya Kadar | 1-3 Ay | 3 Ay+ | Toplam (basis=contractual_coarse); kitap: Vadesiz | 7 Gün İhbarlı | 1 Aya Kadar | 1-3 Ay | 3-6 Ay | 6 Ay-1 Yıl | 1 Yıl ve Üstü | Birikimli | Toplam (basis=contractual). "
+               "DT20 'Döviz Tevdiat Hesabı / Toplam' (Akbank 408.323) tür toplamıdır, alt grup (yurtdışı yerleşik) değil",
+         status="VERIFIED", note="İki kova kümesi aynı kalem için AYRI temel olarak saklanır ve UI'da seçilerek gösterilir; birleştirilmez, 3 ay+ bölünmez. Yurtiçi 379.183 + yurtdışı 29.140 = 408.323 doğrulandı."),
+    dict(field="Kaynaklar arası fark (source_conflict bayrağı)", source="TBB", dataset="DT20/DT21 ↔ banka kitapları", file="—", period="2026-03, 2026-06", per_bank="EVET",
+         cells="Aynı tanım/dönem için farklı değer: 'Likidite Riski' Toplam Yükümlülükler vade kovaları (14 banka, ör. Aktif Yatırım vadesiz 29.516 vs kitap dipnotu 47.852); "
+               "gelir tablosu bazı kalemler (mevduata verilen faiz 15 banka, temettü 15, diğer karşılık 22, BZK gideri 13)",
+         status="VERIFIED", note="İki değer de saklanır; bankanın kendi tablosu (birincil) en son işlendiği için öne çıkar, önceki değer revizyon geçmişinde kalır; UI'da ⚑ ile işaretlenir. %0,01 içindeki farklar (Bin/Milyon yuvarlaması) fark sayılmaz."),
+    dict(field="Şifreli Excel (Excel varsayılan parolası)", source="TBB", dataset="tbb_fs_cons_excel", file="/raporlar/54883/bankalar/Fibabanka A.Ş..zip (Mart 2026 konsolide)", period="2026-03", per_bank="EVET",
+         cells="Fibabanka A.Ş..xls: BIFF FILEPASS kaydı; Excel'in varsayılan parolası ('VelvetSweatshop') ile saydam açılır (Excel de parola sormaz)",
+         status="VERIFIED", note="Yalnızca varsayılan parola denenir; başka parola denemesi yapılmaz. Dosya başına hata işi düşürmez: ayrıştırılamayan dosya ERROR olarak kaydedilir, diğerleri devam eder."),
 ]
 
 QUESTIONS: list[tuple[str, str]] = [
@@ -109,6 +133,9 @@ QUESTIONS: list[tuple[str, str]] = [
      "'Parasal Finansal Araçlara Uygulanan Ortalama Faiz Oranları' (faiz oranı riski dipnotu): dönem sonu STOK ortalama uygulanan oran; mevduat bankalararası hariç. Yeni açılış faizi ve muhasebesel getiri/maliyet değildir; makas yalnızca bu tanım içinde."),
     ("8. Tarihsel veri hangi dönemlere kadar uzanıyor?", "DT20/DT21 (Seçilmiş Tablolar): 2005→; Finansal Tablolar Excel veri seti: 2002→ (Mart/Haziran/Eylül/Aralık); Kalan vade: 2002→; sıralama: 1995→ (kategori sayfası yıl listeleri)."),
     ("9. Dosyalar kullanıcı müdahalesi olmadan indirilebiliyor mu?", "EVET — düz HTTP GET; oturum/CAPTCHA yok; robots.txt Drupal varsayılanı bu yolları yasaklamıyor. GitHub Actions runner'da iki koşuda doğrulandı."),
+    ("11. Dönemler arası ölçek tutarlı mı (DQ01)?",
+     "HAYIR — aynı TBB Excel veri setinde Mart 2026 kitapları Bin TL, Haziran 2026 kitapları Milyon TL. Ölçek her kitabın başlık satırından okunur; DT20 sayfaları 'Milyon TL' yazar. "
+     "Dönemler arası karşılaştırma yalnızca normalize (TL) değerlerle yapılır; ham değerler kaynaktaki ölçekle birlikte saklanır (value_raw + source_scale)."),
     ("10. Aynı işlem sonraki dönemlerde otomatik tekrarlanabiliyor mu?",
      "EVET — kategori sayfası select'lerinden (rapor_donemi id + ay-yil rapor URL'si) → rapor sayfası → ekler / banka zip'leri; TBBAdapter.discover() bunu uygular, ingest.yml her gün vadesi gelen çeyrekleri kontrol eder."),
 ]

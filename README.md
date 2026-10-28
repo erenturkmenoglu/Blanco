@@ -17,8 +17,9 @@ yalnızca `banks` modülü etkindir.
 | PostgreSQL şeması (16 tablo) + SQLAlchemy modelleri | **Yazıldı**; SQLite ile çalıştırıldı, PostgreSQL docker-compose ile |
 | Hesaplama motoru (ROA/ROE/NIM/CIR, NPL, büyüme, YTD→çeyrek, yıllıklandırma, vade payları, faiz makası tanım kontrolü) | **Yazıldı ve test edildi** |
 | Analytics API (FastAPI, 14 uç nokta) | **Çalıştırıldı** (uvicorn smoke test + TestClient) |
-| Bankalar arayüzü (Next.js: Genel Bakış, Bankalar, Karşılaştırmalar, Veri Kaynakları, Veri Güncelleme Durumu) | **Derlendi** (`next build` başarılı); canlı veriyle görsel test yapılmadı |
-| Zamanlayıcı | GitHub Actions `ingest.yml`: her gün 06:30 (İstanbul) vadesi gelen çeyrekleri indirir, SQLite DB + ham dosyaları `data` dalına yayımlar (ilk koşu: bu oturumda tetiklendi) |
+| Bankalar arayüzü (Next.js: Genel Bakış, Bankalar, Karşılaştırmalar, Veri Kaynakları, Veri Güncelleme Durumu) | **Derlendi ve gerçek veriyle tarayıcıda test edildi** (Playwright: 5 sayfa, 0 konsol hatası). Statik modda (Vercel) backend gerekmez: `frontend/public/data` snapshot'ı |
+| Zamanlayıcı | GitHub Actions `ingest.yml`: her gün 06:30 (İstanbul) vadesi gelen çeyrekleri kontrol eder; önceki DB'yi `data` dalından geri yükler (revizyon geçmişi), 7 günde bir yeniden doğrular, SQLite DB + ham dosyalar + `web-data.tar.gz` snapshot'ını `data` dalına yayımlar, `VERCEL_DEPLOY_HOOK` tanımlıysa Vercel'i yeniden derletir |
+| Veri kalitesi — tam yeniden işleme (28.10.2026 akşam) | **DQ01 ölçek hatası bulundu ve düzeltildi**: Mart 2026 banka kitapları *Bin TL*, Haziran 2026 *Milyon TL* — ölçek artık her kitabın başlığından okunur. DT20 "Diğer" sütunları, DT21 konsolide özkaynak (azınlık payı hariç) ve mevduat vade kümeleri ayrı kodlarda. Ayrıntı: `docs/verification_table.md` son 6 satır |
 | EVDS makro katmanı | Adaptör yazıldı; **API anahtarı yok → seri kodları doğrulanmadı** |
 
 Gerçekleştirilmeyen hiçbir şey yapılmış gibi gösterilmemiştir: indirilemeyen dosya `ERROR`, açılmayan dosyanın alanları `UNVERIFIED`,
@@ -35,13 +36,25 @@ uvicorn app.main:app --reload             # http://localhost:8000/docs
 python -m app.cli discover --dataset tbb_fs_solo_excel --year 2026 --month 6   # gerçek bağlantıları bul
 python -m app.cli ingest   --dataset tbb_fs_solo_excel --year 2026 --month 6   # indir → ayrıştır → doğrula → kaydet
 python -m app.cli verification-table --out ../docs/verification_table.md
-pytest -q                                 # 21 test
+pytest -q                                 # 30 test (gerçek Haziran + Mart 2026 dosyalarıyla)
 cd ../frontend && npm install && npm run dev                                   # http://localhost:3000
 ```
 
-**Hazır veri:** GitHub Actions `ingest.yml` koşusu (28.10.2026) Mart + Haziran 2026 için 57 bankanın solo kitaplarını, 27 konsolide kitabı, DT20/DT21 setlerini ve sıralama dosyalarını indirip
-`bilanco.db` (SQLite, ~52 MB; 62 bin finansal + 12 bin faiz + 64 bin vade gözlemi) ve ham dosyaları `data` dalına yayımladı:
-`git fetch origin data && git archive origin/data bilanco.db | tar -x -C backend/` → `DATABASE_URL=sqlite:///./bilanco.db uvicorn app.main:app`.
+**Hazır veri:** `data` dalı — Mart + Haziran 2026 için 57 solo + 27 konsolide banka kitabı, DT20/DT21 setleri, sıralama dosyaları; `bilanco.db`
+(SQLite; 53 bin finansal + 12 bin faiz + 62 bin vade gözlemi; 58 bankada toplam aktif, 57 bankada kredi kalan vadesi), ham dosyalar (`raw/`) ve
+arayüz snapshot'ı `web-data.tar.gz`. Kullanım: `git fetch origin data && git archive FETCH_HEAD bilanco.db | tar -x -C backend/` →
+`DATABASE_URL=sqlite:///./bilanco.db uvicorn app.main:app`. Ayrıştırma kodu değiştiğinde ağa çıkmadan yeniden işleme:
+`python scripts/replay_ingest.py --old-db <eski bilanco.db> --raw <data dalı raw/>` (ham dosyalar değişmez, gözlemler yeniden üretilir).
+
+## Vercel (bilanco.vercel.app) — backend'siz statik mod
+
+Arayüz, `NEXT_PUBLIC_API_BASE_URL` tanımlı değilse `public/data/*.json` snapshot'ından çalışır (aynı API şekilleri; `backend/scripts/export_static.py` üretir).
+Vercel derlemesi `frontend/vercel.json` → `scripts/fetch-data.sh` ile snapshot'ı `data` dalından indirir (repo public; anahtar gerekmez) ve `next build` yapar.
+
+1. vercel.com → **Add New → Project** → GitHub `erenturkmenoglu/Blanco` → **Root Directory: `frontend`** → proje adı `bilanco` → Deploy. Ortam değişkeni gerekmez.
+2. Her ingest sonrası otomatik yenileme için: Vercel → Project → Settings → Git → **Deploy Hooks** → hook oluştur (branch `main`) → URL'yi GitHub repo
+   **Settings → Secrets → Actions → `VERCEL_DEPLOY_HOOK`** olarak ekle. Hook yoksa snapshot, bir sonraki `main` push'unda veya elle "Redeploy" ile yenilenir.
+3. Canlı API istenirse (Docker/VM'de FastAPI): Vercel ortam değişkeni `NEXT_PUBLIC_API_BASE_URL=https://api.<alan>` → arayüz API moduna geçer.
 
 İlk gerçek çalıştırmada (ağı olan bir makinede) sırasıyla: `tbb_dt13_bank_branch_employee`, `tbb_asset_ranking`, `tbb_fs_solo_excel`,
 `tbb_dt20_selected_solo`, `tbb_maturity_remaining` için `ingest` çalıştırın; `Veri Güncelleme Durumu` ekranı her denemenin yöntem/adres/neden

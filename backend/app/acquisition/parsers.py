@@ -53,15 +53,70 @@ def parse_bytes(data: bytes, file_name: str | None = None, fmt: str | None = Non
         return _parse_json(data)
     if fmt == "xml":
         return _parse_xml(data)
+    if fmt == "docx":
+        return _parse_docx(data)
     doc = ParsedDocument(format=fmt)
     doc.notes.append(f"desteklenmeyen/anlaşılamayan biçim: {fmt} (pdf için yapılandırılmış kaynak yoksa pdf-tablo çıkarımı ayrı aşamadır)")
     return doc
 
 
+def _parse_docx(data: bytes) -> ParsedDocument:
+    """Word belgesindeki tabloları (w:tbl) okur — TBB 'Banka, Çalışan ve Şube Bilgileri' bazı dönemlerde docx olarak yayımlanır."""
+    import io
+    import zipfile
+    from xml.etree import ElementTree as ET
+    doc = ParsedDocument(format="docx")
+    ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
+    try:
+        xml = zipfile.ZipFile(io.BytesIO(data)).read("word/document.xml")
+    except Exception as exc:
+        doc.notes.append(f"docx okunamadı: {exc}")
+        return doc
+    root = ET.fromstring(xml)
+    for i, tbl in enumerate(root.iter(f"{{{ns['w']}}}tbl")):
+        rows = []
+        for tr in tbl.iter(f"{{{ns['w']}}}tr"):
+            cells = []
+            for tc in tr.findall("w:tc", ns):
+                cells.append(" ".join(t.text or "" for t in tc.iter(f"{{{ns['w']}}}t")).strip())
+            rows.append(cells)
+        if rows:
+            width = max(len(r) for r in rows)
+            doc.add(f"table{i + 1}", pd.DataFrame([r + [""] * (width - len(r)) for r in rows]))
+    if not doc.tables:
+        doc.notes.append("docx: tablo bulunamadı")
+    return doc
+
+
+def _excel_default_decrypt(data: bytes) -> bytes | None:
+    """Bazı TBB kitapları (ör. Fibabanka Mart 2026 konsolide) Excel'in VARSAYILAN parolasıyla ('VelvetSweatshop') şifrelidir; Excel bunları
+    parola sormadan açar. Yalnızca bu varsayılan denenir — başka parola denemesi yapılmaz (erişim kısıtı aşılmaz)."""
+    try:
+        import msoffcrypto
+        f = msoffcrypto.OfficeFile(io.BytesIO(data))
+        if not f.is_encrypted():
+            return None
+        out = io.BytesIO()
+        f.load_key(password="VelvetSweatshop")
+        f.decrypt(out)
+        return out.getvalue()
+    except Exception:
+        return None
+
+
 def _parse_xls(data: bytes) -> ParsedDocument:
     import xlrd
     doc = ParsedDocument(format="xls")
-    book = xlrd.open_workbook(file_contents=data, on_demand=True, formatting_info=False)
+    try:
+        book = xlrd.open_workbook(file_contents=data, on_demand=True, formatting_info=False)
+    except xlrd.biffh.XLRDError as exc:
+        if "encrypted" not in str(exc).lower():
+            raise
+        dec = _excel_default_decrypt(data)
+        if dec is None:
+            raise ValueError("xls şifreli (Excel varsayılan parolası değil) — kaynaktan şifresiz sürüm beklenir") from exc
+        doc.notes.append("xls Excel varsayılan parolasıyla şifreliydi; Excel'in yaptığı gibi saydam açıldı")
+        book = xlrd.open_workbook(file_contents=dec, on_demand=True, formatting_info=False)
     for sh in book.sheets():
         rows = [[sh.cell_value(r, c) for c in range(sh.ncols)] for r in range(sh.nrows)]
         doc.add(sh.name, pd.DataFrame(rows))
@@ -105,7 +160,11 @@ def _parse_zip(data: bytes) -> ParsedDocument:
             if info.is_dir():
                 continue
             member = z.read(info)
-            inner = parse_bytes(member, info.filename)
+            try:
+                inner = parse_bytes(member, info.filename)
+            except Exception as exc:             # şifreli/bozuk üye diğer üyeleri engellemez; not düşülür
+                doc.notes.append(f"{info.filename}: HATA {type(exc).__name__}: {exc}")
+                continue
             for name, df in inner.tables.items():
                 doc.add(f"{info.filename}::{name}", df)
             doc.notes.extend(f"{info.filename}: {n}" for n in inner.notes)

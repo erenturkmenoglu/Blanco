@@ -6,7 +6,7 @@ aynı sha256 tekrar indirildiğinde yeni revizyon AÇILMAZ, farklı sha256 → y
 from __future__ import annotations
 
 import logging
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -116,7 +116,8 @@ def _period_id(db: Session, pe: date, freq: str, label: str, ps: date) -> int:
 
 # ---------------------------------------------------------------------------- hat
 def ingest(db: Session, source_code: str, dataset_code: str, year: int, month: int, trigger: str = "manual",
-           downloader=None) -> m.DataIngestionJob:
+           downloader=None, force: bool = False) -> m.DataIngestionJob:
+    """Bir veri seti + dönem için tam döngü: keşif → indirme → ayrıştırma → eşleme → doğrulama → yazım. force=True yakın zamanda kontrol edilmiş dosyaları da yeniden indirir."""
     ds = db.scalar(select(m.Dataset).where(m.Dataset.code == dataset_code))
     job = m.DataIngestionJob(dataset_id=ds.id if ds else None, period_label=f"{year}-{month:02d}", trigger=trigger, log=[])
     db.add(job)
@@ -126,19 +127,24 @@ def ingest(db: Session, source_code: str, dataset_code: str, year: int, month: i
     reg = _registry(db)
     mi = metric_index()
     logs: list[dict] = []
-    n_docs = n_obs = 0
+    n_docs = n_obs = n_parse_errors = n_confirmed = n_skipped = 0
     try:
         files = adapter.discover(dataset_code, year, month)
         logs.append({"step": "discover", "found": len(files), "urls": [f.url for f in files]})
         if not files:
             logs.append({"step": "discover", "result": "bağlantı bulunamadı", "reason": "liste/kategori sayfası alınamadı veya dönem yayımlanmamış"})
         for f in files:
-            res = adapter.fetch(f)
-            logs.append({"step": "download", "url": f.url, "ok": res.ok, "format": res.format_detected, "attempts": res.as_log(), "error": res.error})
             doc = db.scalar(select(m.SourceDocument).where(m.SourceDocument.url == f.url))
             pe = f.period_end or date(year, month, 28)
             per = quarter_period(year, month) if month in (3, 6, 9, 12) else None
             pid = _period_id(db, per.end, "quarterly", per.label, per.start) if per else None
+            if (doc and doc.status == "parsed" and doc.sha256 and doc.last_checked_at and not force
+                    and (now() - doc.last_checked_at.replace(tzinfo=doc.last_checked_at.tzinfo or timezone.utc)) < timedelta(days=settings.recheck_days)):
+                n_skipped += 1          # yakın zamanda doğrulanmış dosya: yeniden indirilmez (revizyon kontrolü recheck_days'de bir)
+                logs.append({"step": "skip", "url": f.url, "reason": f"{settings.recheck_days} gün içinde kontrol edildi; sha {doc.sha256[:12]}"})
+                continue
+            res = adapter.fetch(f)
+            logs.append({"step": "download", "url": f.url, "ok": res.ok, "format": res.format_detected, "attempts": res.as_log(), "error": res.error})
             if not doc:
                 doc = m.SourceDocument(dataset_id=ds.id, period_id=pid, url=f.url, file_name=f.file_name or f.title)
                 db.add(doc)
@@ -160,9 +166,22 @@ def ingest(db: Session, source_code: str, dataset_code: str, year: int, month: i
             doc.file_name = res.file_name or doc.file_name
             doc.status = "downloaded"
             n_docs += 1
-            parsed = parse_bytes(res.data, res.file_name, res.format_detected)
+            try:
+                parsed = parse_bytes(res.data, res.file_name, res.format_detected)
+            except Exception as exc:          # tek dosya (şifreli xls, bozuk zip, desteklenmeyen docx…) işi düşürmez: ERROR olarak kaydedilir, devam edilir
+                doc.status, doc.error = "failed", f"{type(exc).__name__}: {exc}"
+                n_parse_errors += 1
+                logs.append({"step": "parse", "url": f.url, "result": "ERROR", "error": doc.error})
+                db.add(m.DataQualityCheck(job_id=job.id, check_code="DQ14_file_integrity", severity="error", passed=False,
+                                          institution_id=_institution_id(db, reg.match(f.bank_raw)[0]) if f.bank_raw and reg.match(f.bank_raw)[1] >= 0.92 else None,
+                                          message=f"ayrıştırılamadı ({f.file_name or f.url}): {doc.error}", period_end=pe))
+                continue
             doc.sheets = parsed.inventory
             logs.append({"step": "parse", "url": f.url, "format": parsed.format, "tables": list(parsed.inventory), "notes": parsed.notes})
+            if parsed.format in ("docx", "unsupported") or not parsed.tables:
+                logs.append({"step": "parse", "url": f.url, "result": f"{parsed.format}: tablo çıkarılamadı (yapılandırılmış sürüm aranmalı)", "notes": parsed.notes})
+                doc.status = "parsed"
+                continue
             if parsed.format == "pdf":
                 logs.append({"step": "parse", "url": f.url, "result": "PDF: yapılandırılmış sürüm (xls) aranmalı; PDF tablo çıkarımı ayrı aşama"})
                 doc.status = "parsed"
@@ -182,15 +201,22 @@ def ingest(db: Session, source_code: str, dataset_code: str, year: int, month: i
             if not kept:
                 doc.status = "parsed"
                 continue
+            c0 = db.info.get("confirmed", 0)
             n_obs += _write(db, kept, src.id, doc.id, pid)
+            n_confirmed += db.info.get("confirmed", 0) - c0
             doc.status = "parsed"
-        job.status = m.JobStatus.success if n_docs and n_obs else (m.JobStatus.partial if n_docs else m.JobStatus.failed)
+        if n_docs:
+            job.status = m.JobStatus.success if (n_obs or n_confirmed) and not n_parse_errors else m.JobStatus.partial
+        else:
+            job.status = m.JobStatus.success if n_skipped else m.JobStatus.failed     # tüm dosyalar yakın zamanda doğrulanmış → değişiklik yok, başarılı
     except Exception as exc:   # hat kırılmaz; hata kaydedilir
         log.exception("ingest hatası")
         job.status = m.JobStatus.failed
         logs.append({"step": "exception", "error": f"{type(exc).__name__}: {exc}"})
     job.documents_count, job.observations_count, job.log, job.finished_at = n_docs, n_obs, logs, now()
-    job.message = f"{n_docs} dosya, {n_obs} gözlem"
+    job.message = f"{n_docs} dosya, {n_obs} gözlem" + (f" (+{n_confirmed} mevcut gözlemle aynı değer; teyit)" if n_confirmed else "") + \
+        (f", {n_parse_errors} dosya ayrıştırılamadı" if n_parse_errors else "") + (f", {n_skipped} dosya yakın zamanda doğrulanmış (atlandı)" if n_skipped else "")
+    logs.append({"step": "summary", "documents": n_docs, "new_observations": n_obs, "confirmed_existing": n_confirmed, "parse_errors": n_parse_errors, "skipped_recent": n_skipped})
     db.commit()
     return job
 
@@ -202,12 +228,14 @@ def _candidates(parsed, reg, mi, dataset_code, scope, per, source_code, bank_hin
         ex = extract_dt20_tables(parsed.tables, reg, per.end, scope, source_code)
         out["obs"] = ex.observations
         out["unmapped"], out["unmatched"], out["orientation"] = ex.unmapped_columns, ex.unmatched_banks, "dt20_wide"
-        out["scale"] = 1e6
+        out["scale"] = next((o.get("scale") for o in ex.observations if o.get("scale_detected") and o.get("unit") == "TRY"), None)
+        out["notes"] = ex.notes
         return out
     if dataset_code in ("tbb_fs_solo_excel", "tbb_fs_cons_excel") and bank_hint:
         ex = extract_workbook(parsed.tables, bank_hint, reg, scope, source_code)
         out["obs"] = ex.observations
-        out["unmapped"], out["orientation"], out["scale"] = ex.unmapped_labels, "bank_workbook", 1e6
+        out["unmapped"], out["orientation"], out["scale"] = ex.unmapped_labels, "bank_workbook", ex.scale
+        out["notes"] = ex.notes
         out["unmatched"] = [n for n in ex.notes if n.startswith("banka eşlenemedi")]
         return out
     for name, df in parsed.tables.items():
@@ -247,7 +275,8 @@ def _candidates(parsed, reg, mi, dataset_code, scope, per, source_code, bank_hin
             cum = bool(meta.get("cumulative_ytd")) if meta.get("kind") == "flow" else None
             if getattr(o, "period", None):            # tek banka düzeni: sütundan gelen dönem
                 pe, ps = o.period.end, o.period.start
-            p_start = ytd_period(pe.year, pe.month).start if (cum and pe) else ps
+            # akış: kümülatifse yıl başı, değilse çeyrek başı; STOK (bilanço) kalemi nokta-zaman → period_start = period_end
+            p_start = ytd_period(pe.year, pe.month).start if (cum and pe) else (ps if meta.get("kind") == "flow" else pe)
             val = None
             if o.value_raw is not None:
                 val = o.value_raw * (o.scale or 1.0) if unit == "TRY" else o.value_raw
@@ -260,7 +289,9 @@ def _candidates(parsed, reg, mi, dataset_code, scope, per, source_code, bank_hin
 
 
 def _write(db: Session, obs: list[dict], source_id: int, doc_id: int, pid: int | None) -> int:
+    """Yazılan YENİ satır sayısını döner; aynı değerle teyit edilen (atlanan) satırlar db.info['confirmed'] sayacına eklenir."""
     n = 0
+    before = db.info.get("confirmed", 0)
     for o in obs:
         if not o.get("bank_code"):
             continue
@@ -268,11 +299,15 @@ def _write(db: Session, obs: list[dict], source_id: int, doc_id: int, pid: int |
         if not iid:
             continue
         status = m.VerificationStatus.VERIFIED if o.get("value") is not None else m.VerificationStatus.UNAVAILABLE
+        flags: list[str] = []
+        if o.get("value") is not None and o.get("unit") == "TRY" and o.get("scale_detected") is False:
+            status = m.VerificationStatus.UNVERIFIED              # DQ01: ölçek başlıktan okunamadı → doğrulanmış sayılmaz
+            flags.append("DQ01_scale_not_found")
         common = dict(institution_id=iid, period_start=o.get("period_start"), period_end=o["period_end"], value_raw=o.get("value_raw", o.get("value")),
                       source_scale=o.get("scale") or 1.0, value=o.get("value"), unit=o["unit"], currency=o.get("currency"),
                       frequency=m.Frequency(o["frequency"]), reporting_scope=m.ReportingScope(o["reporting_scope"]), source_field=o.get("label_raw") or o.get("metric_code"),
                       source_sheet=o.get("sheet"), source_row=o.get("row"), source_col=o.get("col"), retrieved_at=now(), verification_status=status,
-                      source_id=source_id, source_document_id=doc_id)
+                      source_id=source_id, source_document_id=doc_id, quality_flags=flags or None)
         if o["kind"] == "rate":
             key = dict(institution_id=iid, metric_code=o["metric_code"], period_end=o["period_end"], reporting_scope=common["reporting_scope"],
                        rate_definition=o["rate_definition"], source_id=source_id)
@@ -286,19 +321,66 @@ def _write(db: Session, obs: list[dict], source_id: int, doc_id: int, pid: int |
                        reporting_scope=common["reporting_scope"], currency=o.get("currency"), source_id=source_id)
             n += _upsert(db, m.FinancialObservation, key, dict(**common, metric_code=o["metric_code"], period_id=pid, cumulative_ytd=bool(o.get("cumulative_ytd"))))
     db.flush()
+    db.info.get("pending_obs", {}).clear()
     return n
 
 
+REVISION_REL_TOL = 1e-4      # %0,01: Bin TL ↔ Milyon TL yuvarlama farkı revizyon sayılmaz
+
+
+def _same_value(a, b) -> bool:
+    if a is None or b is None:
+        return a is b
+    return abs(a - b) <= max(1e-9, REVISION_REL_TOL * max(abs(a), abs(b)))
+
+
+def _doc_meta(db: Session, doc_id: int | None) -> tuple[date | None, str | None]:
+    """(veri seti dönemi, veri seti kodu). Dönem yayın sırası içindir: Haziran 2026 kitabındaki 31/12/2025 sütunu Mart 2026 kitabındakinden yeni yayındır.
+    Önbellek oturuma bağlıdır (db.info): belge kimlikleri geri alınan işlemlerden sonra yeniden kullanılabilir."""
+    if doc_id is None:
+        return None, None
+    cache: dict = db.info.setdefault("doc_meta", {})
+    if doc_id not in cache:
+        d = db.get(m.SourceDocument, doc_id)
+        per = db.get(m.FinancialPeriod, d.period_id) if d and d.period_id else None
+        ds = db.get(m.Dataset, d.dataset_id) if d else None
+        cache[doc_id] = (per.period_end if per else None, ds.code if ds else None)
+    return cache[doc_id]
+
+
+def _doc_period_end(db: Session, doc_id: int | None):
+    return _doc_meta(db, doc_id)[0]
+
+
 def _upsert(db: Session, Model, key: dict, values: dict) -> int:
-    """Aynı doğal anahtar + aynı değer → atla; değer farklı → yeni revizyon satırı (eski satır KORUNUR)."""
-    stmt = select(Model)
-    for k, v in key.items():
-        stmt = stmt.where(getattr(Model, k) == v)
-    rows = list(db.scalars(stmt.order_by(Model.revision_no.desc())))
-    if rows:
-        latest = rows[0]
-        if latest.value == values.get("value"):
+    """Aynı doğal anahtar:
+    - aynı değer (tolerans içinde) → atla;
+    - daha ESKİ bir yayından gelen farklı değer → atla (yeni yayındaki yeniden ifade edilmiş değer geçerli kalır);
+    - daha yeni/aynı yayından farklı değer → yeni revizyon satırı (eski satır KORUNUR; ~1000× fark DQ01 kuşkusu olarak işaretlenir)."""
+    pending: dict = db.info.setdefault("pending_obs", {})       # oturum autoflush=False: aynı toplu yazımda eklenen satırlar da görülsün
+    pkey = (Model.__tablename__, tuple(sorted((k, str(v)) for k, v in key.items())))
+    latest = pending.get(pkey)
+    if latest is None:
+        stmt = select(Model)
+        for k, v in key.items():
+            stmt = stmt.where(getattr(Model, k) == v)
+        latest = db.scalars(stmt.order_by(Model.revision_no.desc()).limit(1)).first()
+    if latest is not None:
+        if _same_value(latest.value, values.get("value")):
+            db.info["confirmed"] = db.info.get("confirmed", 0) + 1      # başka kaynak/dosya aynı değeri teyit etti; satır yinelenmez
             return 0
-        values = {**values, "revision_no": latest.revision_no + 1, "quality_flags": ["revised"]}
-    db.add(Model(**values))
+        (old_pub, old_ds), (new_pub, new_ds) = _doc_meta(db, latest.source_document_id), _doc_meta(db, values.get("source_document_id"))
+        if old_pub and new_pub and new_pub < old_pub:
+            return 0
+        flags = list(values.get("quality_flags") or [])
+        # Aynı tanım, aynı dönem, FARKLI veri seti (ör. DT20 'Likidite Riski' ↔ banka kitabı dipnotu) → revizyon değil kaynak çelişkisi;
+        # iki satır da korunur, sonuncu (birincil kaynak en son işlenir) öne çıkar, bayrak UI'da gösterilir
+        flags.append(f"source_conflict:{old_ds}->{new_ds}" if (old_ds and new_ds and old_ds != new_ds) else "revised")
+        a, b = latest.value, values.get("value")
+        if a and b and (900 <= abs(b / a) <= 1100 or 900 <= abs(a / b) <= 1100):
+            flags.append("DQ01_scale_conflict_x1000")
+        values = {**values, "revision_no": latest.revision_no + 1, "quality_flags": flags}
+    obj = Model(**{"revision_no": 1, **values})
+    db.add(obj)
+    pending[pkey] = obj
     return 1

@@ -7,6 +7,10 @@ on:
   schedule:
     - cron: "30 3 * * *"
   workflow_dispatch:
+    inputs:
+      fresh:
+        description: "true = önceki DB'yi geri yükleme, sıfırdan işle (ayrıştırma kodu değiştiğinde)"
+        default: "false"
 
 permissions:
   contents: write
@@ -23,6 +27,19 @@ jobs:
           cache: pip
           cache-dependency-path: backend/requirements.txt
       - run: pip install -r backend/requirements.txt
+      - name: Restore previous SQLite DB + raw store from 'data' branch (revizyon geçmişi korunur; fresh=true ile atlanır)
+        if: ${{ github.event.inputs.fresh != 'true' }}
+        run: |
+          set -e
+          mkdir -p /tmp/prev
+          if git fetch --depth=1 origin data 2>/dev/null; then
+            git --work-tree=/tmp/prev checkout FETCH_HEAD -- . 2>/dev/null || true
+            git reset -q
+            [ -f /tmp/prev/bilanco.db ] && cp /tmp/prev/bilanco.db backend/bilanco.db && echo "DB geri yüklendi ($(du -h backend/bilanco.db | cut -f1))" || echo "önceki DB yok"
+            [ -d /tmp/prev/raw ] && mkdir -p backend/data && cp -r /tmp/prev/raw backend/data/raw && echo "ham dosyalar geri yüklendi" || true
+          else
+            echo "data dalı yok; sıfırdan"
+          fi
       - name: Run due quarterly checks
         working-directory: backend
         env:
@@ -33,6 +50,12 @@ jobs:
           SCHEDULER_ENABLED: "false"
           MIN_SECONDS_BETWEEN_REQUESTS: "2"
         run: python -m app.scheduler.jobs
+      - name: Export static web snapshot (frontend için JSON + tar.gz)
+        if: always()
+        working-directory: backend
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL != '' && secrets.DATABASE_URL || 'sqlite:///./bilanco.db' }}
+        run: python scripts/export_static.py --out ../web_data/data --tar ../web-data.tar.gz
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -51,7 +74,14 @@ jobs:
           rm -rf /tmp/pub && mkdir -p /tmp/pub
           [ -f backend/bilanco.db ] && cp backend/bilanco.db /tmp/pub/ || true
           [ -d backend/data/raw ] && cp -r backend/data/raw /tmp/pub/raw || true
+          [ -f web-data.tar.gz ] && cp web-data.tar.gz /tmp/pub/ || true
           cd /tmp/pub && git init -q -b data && git config user.name "bilanco-bot" && git config user.email "bilanco-bot@users.noreply.github.com"
           git add -A && git commit -q -m "ingest run ${{ github.run_id }} $(date -u +%FT%TZ)" || { echo "yayınlanacak dosya yok"; exit 0; }
           git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" data:data
           echo "published branch data"
+      - name: Trigger Vercel redeploy (opsiyonel; VERCEL_DEPLOY_HOOK secret'ı tanımlıysa)
+        if: always()
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -n "$HOOK" ]; then curl -fsS -X POST "$HOOK" && echo "vercel deploy hook tetiklendi"; else echo "VERCEL_DEPLOY_HOOK tanımlı değil; atlandı"; fi

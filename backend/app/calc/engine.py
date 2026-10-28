@@ -107,8 +107,12 @@ def spread(loan_rate: dict | None, deposit_rate: dict | None) -> Derived:
 def maturity_shares(buckets: dict[str, float | None], total: float | None = None, bucket_labels: dict[str, str] | None = None) -> Derived:
     present = {k: v for k, v in buckets.items() if v is not None and k != "total"}
     tot = total if total is not None else (sum(present.values()) if present else None)
-    if not present or not tot:
-        return Derived("maturity_shares", None, "ratio", "bucket/total", {}, "vade verisi yok")
+    if not present or not tot or sum(present.values()) == 0:
+        return Derived("maturity_shares", None, "ratio", "bucket/total", {"shares": {}, "labels": bucket_labels or {}}, "vade verisi yok veya tümü sıfır")
+    if tot < 0 or any(v < 0 for v in present.values()):
+        # likidite açığı / net nazım gibi işaretli kalemlerde pay ve ortalama vade anlamsızdır
+        return Derived("maturity_shares", None, "ratio", "bucket/total", {"shares": {}, "labels": bucket_labels or {}},
+                       "işaretli (negatif) kalem: pay ve ortalama vade hesaplanmaz")
     shares = {k: v / tot for k, v in present.items()}
     lim = None
     if "3_12m" in present:

@@ -37,10 +37,16 @@ def sniff_format(data: bytes, declared_name: str | None = None) -> str:
                     names = _zf.ZipFile(_io.BytesIO(data)).namelist()
                     if "[Content_Types].xml" in names and any(n.startswith("xl/") for n in names):
                         return "xlsx"
+                    if "[Content_Types].xml" in names and any(n.startswith("word/") for n in names):
+                        return "docx"
+                    if "[Content_Types].xml" in names and any(n.startswith("ppt/") for n in names):
+                        return "pptx"
                 except Exception:
                     pass
                 if declared_name and declared_name.lower().endswith(".xlsx"):
                     return "xlsx"
+                if declared_name and declared_name.lower().endswith(".docx"):
+                    return "docx"
             return fmt
     text = data[:4096].lstrip().lower()
     if text.startswith(b"<?xml"):

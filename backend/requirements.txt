@@ -13,3 +13,4 @@ lxml>=5.2
 apscheduler>=3.10
 pyyaml>=6.0
 pytest>=8.0
+msoffcrypto-tool>=5.4

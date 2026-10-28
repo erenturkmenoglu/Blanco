@@ -63,7 +63,9 @@ def test_bank_workbook_real_files_maturity_detail():
 
 def test_ranking_real_file_generic_mapper_and_api():
     job = _ingest("tbb_asset_ranking")
-    assert job.status.value == "success" and job.observations_count > 50, job.log
+    summary = next(l for l in job.log if l.get("step") == "summary")
+    # DT20 ve banka kitapları önce işlendiği için sıralama dosyasındaki Toplam Aktifler çoğunlukla MEVCUT değerle aynıdır → teyit, yeni satır değil
+    assert job.status.value == "success" and summary["new_observations"] + summary["confirmed_existing"] > 50, job.log
     c = TestClient(app)
     cmp_ = c.get("/api/compare", params={"banks": "ziraat,vakifbank,isbank,akbank", "metric": "total_assets", "period_end": "2026-06-30"}).json()
     rows = {r["bank"]: r for r in cmp_["rows"]}

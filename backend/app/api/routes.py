@@ -43,8 +43,16 @@ def sectors(db: Session = Depends(get_db)):
 def banks(db: Session = Depends(get_db)):
     rows = db.scalars(select(m.Institution).where(m.Institution.active == True).order_by(m.Institution.name)).all()  # noqa: E712
     counts = dict(db.execute(select(m.FinancialObservation.institution_id, func.count()).group_by(m.FinancialObservation.institution_id)).all())
+    # en güncel solo toplam aktif (Toplam sütunu, son revizyon) — sıralama/varsayılan seçim için; eksikse None (0 yazılmaz)
+    ta = {}
+    q = (select(m.FinancialObservation).where(m.FinancialObservation.metric_code == "total_assets", m.FinancialObservation.reporting_scope == m.ReportingScope.solo,
+                                              m.FinancialObservation.currency == "ALL", m.FinancialObservation.value.is_not(None))
+         .order_by(m.FinancialObservation.period_end.desc(), m.FinancialObservation.revision_no.desc()))
+    for o in db.scalars(q):
+        ta.setdefault(o.institution_id, (o.period_end.isoformat(), o.value))
     return [{"code": b.code, "name": b.name, "short_name": b.short_name, "type": b.institution_type, "ownership": b.ownership_type,
-             "observations": counts.get(b.id, 0)} for b in rows]
+             "observations": counts.get(b.id, 0), "latest_total_assets": ta.get(b.id, (None, None))[1], "latest_total_assets_period": ta.get(b.id, (None, None))[0]}
+            for b in rows]
 
 
 @router.get("/dictionary")
@@ -66,7 +74,8 @@ def _obs_payload(o, inst_code: str, doc_url: str | None, src_code: str) -> dict:
             "period_start": o.period_start.isoformat() if o.period_start else None, "value": o.value, "unit": o.unit, "currency": o.currency,
             "scope": o.reporting_scope.value, "frequency": o.frequency.value, "status": o.verification_status.value, "revision": o.revision_no,
             "source": src_code, "source_url": doc_url, "source_field": o.source_field, "source_sheet": o.source_sheet,
-            "retrieved_at": o.retrieved_at.isoformat() if o.retrieved_at else None, "flags": o.quality_flags}
+            "retrieved_at": o.retrieved_at.isoformat() if o.retrieved_at else None, "flags": o.quality_flags,
+            "cumulative_ytd": getattr(o, "cumulative_ytd", None)}
 
 
 @router.get("/observations")
@@ -79,12 +88,13 @@ def observations(bank: str = Query(...), metric: str = Query(...), scope: str = 
          .outerjoin(m.SourceDocument, m.SourceDocument.id == m.FinancialObservation.source_document_id)
          .where(m.FinancialObservation.institution_id == inst.id, m.FinancialObservation.metric_code == metric,
                 m.FinancialObservation.reporting_scope == _scope(scope))
-         .order_by(m.FinancialObservation.period_end, m.FinancialObservation.revision_no.desc()))
+         .order_by(m.FinancialObservation.period_end, m.FinancialObservation.period_start, m.FinancialObservation.currency, m.FinancialObservation.revision_no.desc()))
     seen, out = set(), []
     for o, url, src in db.execute(q):
-        if o.period_end in seen:
-            continue   # en güncel revizyon
-        seen.add(o.period_end)
+        k = (o.period_end, o.period_start, o.currency)      # aynı dönem: TP/YP/Toplam ve YTD/çeyrek ayrı seriler; her biri için en güncel revizyon
+        if k in seen:
+            continue
+        seen.add(k)
         out.append(_obs_payload(o, inst.code, url, src))
     meta = metric_index().get(metric, {})
     return {"bank": inst.code, "metric": metric, "metric_name": meta.get("name_tr"), "kind": meta.get("kind"), "scope": scope, "series": out}
@@ -101,9 +111,11 @@ def compare(banks: str = Query(..., description="virgülle ayrılmış banka kod
         if not inst:
             out.append({"bank": c, "value": None, "status": "UNAVAILABLE", "note": "banka kaydı yok"})
             continue
+        # Toplam sütunu (currency ALL); akış kalemlerinde yıl başından kümülatif satır (en erken period_start); en güncel revizyon
         o = db.scalar(select(m.FinancialObservation).where(m.FinancialObservation.institution_id == inst.id, m.FinancialObservation.metric_code == metric,
-                                                            m.FinancialObservation.period_end == period_end, m.FinancialObservation.reporting_scope == _scope(scope))
-                      .order_by(m.FinancialObservation.revision_no.desc()))
+                                                            m.FinancialObservation.period_end == period_end, m.FinancialObservation.reporting_scope == _scope(scope),
+                                                            (m.FinancialObservation.currency == "ALL") | (m.FinancialObservation.currency.is_(None)))
+                      .order_by(m.FinancialObservation.period_start, m.FinancialObservation.revision_no.desc()))
         out.append({"bank": c, "name": inst.name, "value": o.value if o else None, "unit": o.unit if o else None,
                     "status": o.verification_status.value if o else "UNAVAILABLE", "revision": o.revision_no if o else None})
     ranked = sorted([r for r in out if r["value"] is not None], key=lambda r: r["value"], reverse=True)
@@ -159,22 +171,63 @@ def rates(bank: str, scope: str = "solo", db: Session = Depends(get_db)):
             "definition_note": "Oranlar kaynaktaki tanımıyla saklanır; farklı tanımlar (stok ort. / yeni açılış / muhasebesel) birbirinin yerine kullanılmaz."}
 
 
+BASIS_LABELS = {"remaining": "kalan vade (Likidite Riski / malibünye1)", "contractual": "sözleşme vadesi — dipnot 2.a.1.i (9 kova)",
+                "contractual_coarse": "sözleşme vadesi — DT20 Mevd.Vade (4 kova: Vadesiz+7g | ≤1 ay | 1-3 ay | 3 ay+)"}
+BASIS_PREFERENCE = ["remaining", "contractual", "contractual_coarse"]
+
+
+def _maturity_block(db: Session, rows: list) -> dict:
+    buckets, labels, src = {}, {}, None
+    for r in rows:                       # revizyon sırası azalan → ilk görülen en güncel
+        if r.bucket in buckets:
+            continue
+        buckets[r.bucket] = r.value
+        labels[r.bucket] = r.bucket_label_raw
+        src = src or r
+    sh = maturity_shares(buckets, buckets.get("total"), labels)
+    doc = db.get(m.SourceDocument, src.source_document_id) if src and src.source_document_id else None
+    statuses = {r.verification_status.value for r in rows}
+    status = "VERIFIED" if statuses == {"VERIFIED"} else ("UNAVAILABLE" if not rows else "UNVERIFIED" if "UNVERIFIED" in statuses else sorted(statuses)[0])
+    return {"basis": rows[0].basis if rows else None, "basis_label": BASIS_LABELS.get(rows[0].basis, rows[0].basis) if rows else None, "buckets": buckets,
+            "bucket_labels": labels, "shares": sh.inputs.get("shares"), "illustrative_midpoint_wam_months": sh.inputs.get("illustrative_midpoint_wam_months"),
+            "limitations": sh.limitations, "status": status, "source_url": doc.url if doc else None, "source_sheet": src.source_sheet if src else None,
+            "retrieved_at": src.retrieved_at.isoformat() if src and src.retrieved_at else None, "revision": max(r.revision_no for r in rows) if rows else None}
+
+
 @router.get("/maturity")
-def maturity(bank: str, period_end: date, item: str = "total_assets", scope: str = "solo", db: Session = Depends(get_db)):
+def maturity(bank: str, period_end: date, item: str = "total_assets", scope: str = "solo", basis: str | None = None, db: Session = Depends(get_db)):
+    """Bir kalemin vade dağılımı. Aynı kalem için farklı KOVA KÜMELERİ (kalan vade / dipnot sözleşme vadesi / DT20 kaba sözleşme vadesi)
+    ayrı 'bases' altında döner; birleştirilmez. Üst düzey alanlar tercih edilen (veya istenen) temelin kopyasıdır."""
     inst = db.scalar(select(m.Institution).where(m.Institution.code == bank))
     if not inst:
         raise HTTPException(404, "banka bulunamadı")
     rows = db.scalars(select(m.MaturityObservation).where(m.MaturityObservation.institution_id == inst.id, m.MaturityObservation.period_end == period_end,
                                                           m.MaturityObservation.item == item, m.MaturityObservation.reporting_scope == _scope(scope))
                       .order_by(m.MaturityObservation.revision_no.desc())).all()
-    buckets, labels = {}, {}
+    by_basis: dict[str, list] = {}
     for r in rows:
-        buckets.setdefault(r.bucket, r.value)
-        labels.setdefault(r.bucket, r.bucket_label_raw)
-    sh = maturity_shares(buckets, buckets.get("total"), labels)
-    return {"bank": inst.code, "period_end": period_end.isoformat(), "item": item, "basis": rows[0].basis if rows else None, "buckets": buckets,
-            "bucket_labels": labels, "shares": sh.inputs.get("shares"), "illustrative_midpoint_wam_months": sh.inputs.get("illustrative_midpoint_wam_months"),
-            "limitations": sh.limitations, "note": "Kaynağın kendi vade kovaları korunur; 3-12 ay yapay bölünmez. Toplam aktif/pasif dağılımı kredi/mevduat dağılımı DEĞİLDİR."}
+        by_basis.setdefault(r.basis, []).append(r)
+    bases = {b: _maturity_block(db, rs) for b, rs in by_basis.items()}
+    pref = basis if basis in bases else next((b for b in BASIS_PREFERENCE if b in bases), None)
+    top = bases.get(pref) or {"basis": None, "basis_label": None, "buckets": {}, "bucket_labels": {}, "shares": None, "illustrative_midpoint_wam_months": None,
+                              "limitations": None, "status": "UNAVAILABLE", "source_url": None, "source_sheet": None, "retrieved_at": None, "revision": None}
+    return {"bank": inst.code, "period_end": period_end.isoformat(), "item": item, **top, "bases": bases,
+            "note": "Kaynağın kendi vade kovaları korunur; 3-12 ay yapay bölünmez; farklı kova kümeleri birleştirilmez. Toplam aktif/pasif dağılımı kredi/mevduat dağılımı DEĞİLDİR."}
+
+
+@router.get("/maturity/items")
+def maturity_items(bank: str, period_end: date, scope: str = "solo", db: Session = Depends(get_db)):
+    """Bu banka/dönem için vade gözlemi olan kalemler ve temelleri (UI seçici için)."""
+    inst = db.scalar(select(m.Institution).where(m.Institution.code == bank))
+    if not inst:
+        raise HTTPException(404, "banka bulunamadı")
+    rows = db.execute(select(m.MaturityObservation.item, m.MaturityObservation.basis, func.count()).where(
+        m.MaturityObservation.institution_id == inst.id, m.MaturityObservation.period_end == period_end, m.MaturityObservation.reporting_scope == _scope(scope),
+        m.MaturityObservation.value.is_not(None)).group_by(m.MaturityObservation.item, m.MaturityObservation.basis)).all()
+    out: dict[str, list] = {}
+    for item, basis, n in rows:
+        out.setdefault(item, []).append({"basis": basis, "basis_label": BASIS_LABELS.get(basis, basis), "observations": n})
+    return {"bank": inst.code, "period_end": period_end.isoformat(), "items": out}
 
 
 # ------------------------------------------------------------------ kaynaklar / durum

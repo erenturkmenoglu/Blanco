@@ -10,14 +10,23 @@ hâliyle tanınır; tanınmayan kolonlar `unmapped` listesinde raporlanır, tahm
 from __future__ import annotations
 
 import re
+from datetime import date
+from contextvars import ContextVar
 from dataclasses import dataclass, field
 
 import pandas as pd
 
 from app.acquisition.parsers import to_number
+from .scale import detect_scale
 from .bank_names import BankRegistry, normalize_name
 
-SCALE_MTL = 1e6
+SCALE_MTL = 1e6                                   # DT20 sayfalarının başlığı 'Milyon TL' der; yine de her sayfada okunur (DQ01)
+_SCALE: ContextVar[tuple[float | None, str | None]] = ContextVar("dt20_scale", default=(None, None))
+
+
+def _scale() -> float:
+    sc, _ = _SCALE.get()
+    return sc if sc is not None else SCALE_MTL
 
 # ---------------------------------------------------------------- yardımcılar
 def header_segments(df: pd.DataFrame, header_rows: int) -> dict[int, list[str]]:
@@ -140,7 +149,7 @@ VARLIKLAR_MAP = {
     "Maddi Duran Varlıklar": "fixed_assets",
     "Maddi Olmayan Duran Varlıklar (net)": "intangible_assets",
     "Yatırım Amaçlı Gayri- menkuller (net)": "investment_property",
-    "Diğer Aktifler": "other_assets",
+    "Diğer Aktifler": "other_assets_dt20",          # bilanço 'X. Diğer Aktifler (Net)' ile aynı tanım DEĞİL → ayrı kod
     "Toplam Aktifler": "total_assets",
 }
 # 'Toplam' sütunları konuma göre (aynı etiket birden çok kez geçer): sırayla Likit Aktifler Toplam, Finansal Varlıklar Toplam, İtfa Diğer FV Toplam,
@@ -166,16 +175,18 @@ YUKUMLULUKLER_MAP = {
     "Dönem Net Karı (Zararı)": "net_profit_bs",
     "Toplam Yükümlülükler": "total_liabilities",
 }
-YUKUMLULUKLER_TOPLAM_SEQ = ["non_deposit_funding", "other_liabilities", "profit_loss_total", "total_equity"]
+YUKUMLULUKLER_TOPLAM_SEQ = ["non_deposit_funding", "other_liabilities_group_dt20", "profit_loss_total", "total_equity"]
+# Konsolide (DT21) 'Özkaynaklar / Toplam' azınlık paylarını İÇERMEZ (İş Bankası Haz-2026: 454.045 vs XVI. Özkaynaklar 540.585) → total_equity_parent
+YUKUMLULUKLER_TOPLAM_SEQ_CONS = ["non_deposit_funding", "other_liabilities_group_dt20", "profit_loss_total", "total_equity_parent"]
 
 GELIR_GIDER_MAP = {
     "Faaliyet Gelir-Giderleri / Faiz Gelirleri / Kredilerden Alınan Faiz": "interest_on_loans",
     "Bankalardan Alınan Faiz": "interest_from_banks",
     "Menkul Değerlerden Alınan Faiz": "interest_on_securities",
-    "Diğer Faiz Gelirleri": "other_interest_income",
+    "Diğer Faiz Gelirleri": "other_interest_income_residual_dt20",     # DT20: Toplam − (krediler + bankalar + menkul) KALANI; bilanço 1.7 satırı DEĞİL
     "Faiz Giderleri / Mevduata Verilen Faiz": "interest_on_deposits",
     "Kullanılan Kredilere Verilen Faiz": "interest_on_funds_borrowed",
-    "Diğer Faiz Gider.": "other_interest_expense",
+    "Diğer Faiz Gider.": "other_interest_expense_residual_dt20",      # DT20: Toplam − (mevduat + kullanılan krediler) KALANI; bilanço 2.6 satırı DEĞİL
     "Net Faiz Geliri / Gideri": "net_interest_income",
     "Net Ücret ve Komisyon Gel. / Gid. / Alınan Ücret ve Komisyon": "fee_commission_income",
     "Verilen Ücret ve Komisyon": "fee_commission_expense",
@@ -216,21 +227,24 @@ MATURITY_BUCKETS = [("vadesiz", "demand"), ("1 ay", "0_1m"), ("1 3 ay", "1_3m"),
 DEPOSIT_TYPES = [("tasarruf mevduatı", "deposits_savings", "TRY"), ("döviz tevdiat hesabı / yurtiçinde yerleşik kişiler", "deposits_fx_resident", "FX"),
                  ("yurtdışında yerleşik kişiler", "deposits_fx_nonresident", "FX"), ("resmi kuruluşlar mevduatı", "deposits_official", "TRY"),
                  ("ticari kuruluşlar mevduatı", "deposits_commercial", "TRY"), ("diğer kuruluşlar mevduatı", "deposits_other_institutions", "TRY"),
-                 ("kıymetli maden depo hesabı", "deposits_precious_metal", "FX"), ("bankalar mevduatı / tc merkez bankası", "deposits_banks_cbrt", "ALL"),
+                 ("kıymetli maden depo hesabı", "deposits_precious_metal", "FX"), ("döviz tevdiat hesabı", "deposits_fx", "FX"),
+                 ("bankalar mevduatı", "deposits_banks", "ALL"), ("bankalar mevduatı / tc merkez bankası", "deposits_banks_cbrt", "ALL"),
                  ("yurtiçi bankalar", "deposits_banks_domestic", "ALL"), ("yurtdışı bankalar", "deposits_banks_foreign", "ALL"),
                  ("katılım bankaları", "deposits_banks_participation", "ALL"), ("diğer", "deposits_banks_other", "ALL"), ("toplam", "deposits_total", "ALL")]
 DEPOSIT_BUCKETS = [("vadesiz 7 gün ihbarlı mevduat", "demand_7d"), ("1 aya kadar", "0_1m"), ("1 3 ay", "1_3m"), ("3 ay ve üstü", "over_3m"), ("3 ay", "over_3m"), ("toplam", "total")]
 
 
 def _base(bank_raw, code, pe, scope, source_code, sheet, r, c, label):
-    return dict(bank_raw=bank_raw, bank_code=code, bank_match="alias" if code else "none", period_end=pe, period_start=pe, reporting_scope=scope,
+    sc, lab = _SCALE.get()
+    return dict(scale_label=lab, scale_detected=sc is not None, bank_raw=bank_raw, bank_code=code, bank_match="alias" if code else "none", period_end=pe, period_start=pe, reporting_scope=scope,
                 frequency="quarterly", source_code=source_code, sheet=sheet, row=r, col=c, label_raw=label)
 
 
 # ---------------------------------------------------------------- sayfa çıkarıcıları
 def extract_wide_sheet(df: pd.DataFrame, sheet: str, colmap: dict[str, str], toplam_seq: list[str], registry: BankRegistry, pe, scope: str,
-                       source_code: str, unit: str = "TRY", scale: float = SCALE_MTL, cumulative: bool = False) -> Extracted:
+                       source_code: str, unit: str = "TRY", scale: float | None = None, cumulative: bool = False) -> Extracted:
     """Satır=banka, sütun=kalem düzeni. 'Toplam' başlıklı sütunlar konuma göre `toplam_seq` ile adlandırılır."""
+    scale = scale if scale is not None else _scale()
     ex = Extracted()
     hr = find_header_rows(df)
     paths = header_paths(df, hr)
@@ -258,7 +272,8 @@ def extract_wide_sheet(df: pd.DataFrame, sheet: str, colmap: dict[str, str], top
             v = to_number(df.iat[r, c])
             o = _base(raw, code, pe, scope, source_code, sheet, r, c, paths[c])
             o.update(metric_code=metric, unit=unit, scale=scale if unit == "TRY" else 1.0, currency="ALL", value_raw=v,
-                     value=(v * scale) if (v is not None and unit == "TRY") else v, cumulative_ytd=cumulative, kind="financial")
+                     value=(v * scale) if (v is not None and unit == "TRY") else v, cumulative_ytd=cumulative, kind="financial",
+                     period_start=date(pe.year, 1, 1) if cumulative else pe)      # Gelir-Gider yıl başından kümülatif → period_start = 1 Ocak
             ex.observations.append(o)
     return ex
 
@@ -279,8 +294,8 @@ def extract_ratio_sheet(df, sheet, colmap: dict[str, tuple[str, str]], registry,
                 continue
             v = to_number(df.iat[r, c])
             o = _base(raw, code, pe, scope, source_code, sheet, r, c, paths[c])
-            o.update(metric_code=metric, unit=unit, scale=SCALE_MTL if unit == "TRY" else 1.0, currency="ALL", value_raw=v,
-                     value=(v * SCALE_MTL) if (v is not None and unit == "TRY") else v, cumulative_ytd=False, kind="financial")
+            o.update(metric_code=metric, unit=unit, scale=_scale() if unit == "TRY" else 1.0, currency="ALL", value_raw=v,
+                     value=(v * _scale()) if (v is not None and unit == "TRY") else v, cumulative_ytd=False, kind="financial")
             ex.observations.append(o)
     return ex
 
@@ -356,17 +371,25 @@ def extract_liquidity_maturity(df, sheet, registry, pe, scope, source_code) -> E
         for c, (item, bucket, lab) in cols.items():
             v = to_number(df.iat[r, c])
             o = _base(raw, code, pe, scope, source_code, sheet, r, c, lab)
-            o.update(metric_code=f"maturity:{item}", unit="TRY", scale=SCALE_MTL, currency="ALL", value_raw=v,
-                     value=(v * SCALE_MTL) if v is not None else None, item=item, basis="remaining", bucket=bucket, bucket_label_raw=lab, kind="maturity")
+            o.update(metric_code=f"maturity:{item}", unit="TRY", scale=_scale(), currency="ALL", value_raw=v,
+                     value=(v * _scale()) if v is not None else None, item=item, basis="remaining", bucket=bucket, bucket_label_raw=lab, kind="maturity")
             ex.observations.append(o)
     return ex
 
 
 def extract_deposit_maturity(df, sheet, registry, pe, scope, source_code) -> Extracted:
-    """'Mevd.Vade': mevduat türü × (Vadesiz+7 Gün | 1 Aya Kadar | 1-3 Ay | 3 Ay ve Üstü | Toplam). Kovalar kaynağın kendisidir (3 ay+ bölünmez)."""
+    """'Mevd.Vade': mevduat türü × (Vadesiz+7 Gün | 1 Aya Kadar | 1-3 Ay | 3 Ay ve Üstü | Toplam). Kovalar kaynağın kendisidir (3 ay+ bölünmez).
+    basis='contractual_coarse' (4 kova) — banka çalışma kitabı dipnotu 2.a.1.i ise 'contractual' (9 kova); iki küme BİRLEŞTİRİLMEZ."""
     ex = Extracted()
     hr = find_header_rows(df)
     paths = header_paths(df, hr)
+    # Gerçek düzen: satır A = mevduat türü (birleştirilmiş hücre), satır B = alt grup (yalnızca DTH: Yurtiçi/Yurtdışı; Bankalar Mevduatı:
+    # TCMB/Yurtiçi/Yurtdışı/Katılım/Diğer), satır C = kova. Türün 'Toplam' sütunu alt grup satırında BOŞTUR → alt grup etiketi oraya taşınmaz.
+    segs_by_col = header_segments(df, hr)
+    leaf_row = {}
+    for c in range(df.shape[1]):
+        rws = [r for r in range(min(hr, df.shape[0])) if isinstance(df.iat[r, c], str) and df.iat[r, c].strip()]
+        leaf_row[c] = max(rws) if rws else None
     cols = {}
     current = None
     for c in range(1, df.shape[1]):
@@ -374,6 +397,12 @@ def extract_deposit_maturity(df, sheet, registry, pe, scope, source_code) -> Ext
         if not segs:
             continue
         head, last = " / ".join(segs[:-1]), segs[-1]
+        if last.startswith("toplam") and len(segs) >= 3 and leaf_row[c] is not None:
+            # 'Toplam' yaprağı: alt grup satırı bu sütunda boşsa yol = tür / Toplam (alt grup düşer)
+            sub_row = leaf_row[c] - 1
+            sub_cell = df.iat[sub_row, c] if sub_row >= 0 else None
+            if not (isinstance(sub_cell, str) and sub_cell.strip()):
+                head = segs[0]
         if head:
             for lab, item, cur in DEPOSIT_TYPES:
                 if head.endswith(lab):
@@ -394,8 +423,8 @@ def extract_deposit_maturity(df, sheet, registry, pe, scope, source_code) -> Ext
         for c, (item, cur, bucket, lab) in cols.items():
             v = to_number(df.iat[r, c])
             o = _base(raw, code, pe, scope, source_code, sheet, r, c, lab)
-            o.update(metric_code=f"maturity:{item}", unit="TRY", scale=SCALE_MTL, currency=cur, value_raw=v,
-                     value=(v * SCALE_MTL) if v is not None else None, item=item, basis="contractual", bucket=bucket, bucket_label_raw=lab, kind="maturity")
+            o.update(metric_code=f"maturity:{item}", unit="TRY", scale=_scale(), currency=cur, value_raw=v,
+                     value=(v * _scale()) if v is not None else None, item=item, basis="contractual_coarse", bucket=bucket, bucket_label_raw=lab, kind="maturity")
             ex.observations.append(o)
     return ex
 
@@ -417,7 +446,7 @@ def extract_npl(df, sheet, registry, pe, scope, source_code) -> Extracted:
         for c, metric in cols.items():
             v = to_number(df.iat[r, c])
             o = _base(raw, code, pe, scope, source_code, sheet, r, c, paths.get(c, ""))
-            o.update(metric_code=metric, unit="TRY", scale=SCALE_MTL, currency="ALL", value_raw=v, value=(v * SCALE_MTL) if v is not None else None,
+            o.update(metric_code=metric, unit="TRY", scale=_scale(), currency="ALL", value_raw=v, value=(v * _scale()) if v is not None else None,
                      cumulative_ytd=False, kind="financial")
             ex.observations.append(o)
     return ex
@@ -440,7 +469,7 @@ def extract_stage_loans(df, sheet, registry, pe, scope, source_code) -> Extracte
         for c, metric in cols.items():
             v = to_number(df.iat[r, c])
             o = _base(raw, code, pe, scope, source_code, sheet, r, c, paths.get(c, ""))
-            o.update(metric_code=metric, unit="TRY", scale=SCALE_MTL, currency="ALL", value_raw=v, value=(v * SCALE_MTL) if v is not None else None,
+            o.update(metric_code=metric, unit="TRY", scale=_scale(), currency="ALL", value_raw=v, value=(v * _scale()) if v is not None else None,
                      cumulative_ytd=False, kind="financial")
             ex.observations.append(o)
     return ex
@@ -451,11 +480,16 @@ def extract_dt20_tables(tables: dict[str, pd.DataFrame], registry: BankRegistry,
     total = Extracted()
     for name, df in tables.items():
         sheet = name.split("::")[-1].strip()
+        hit = detect_scale(df, rows=8)
+        token = _SCALE.set(hit if hit else (None, None))
+        if not hit:
+            total.notes.append(f"DQ01: {sheet}: ölçek (Milyon/Bin TL) başlıkta bulunamadı — tutar gözlemleri UNVERIFIED")
         try:
             if sheet == "Varlıklar":
                 ex = extract_wide_sheet(df, sheet, VARLIKLAR_MAP, VARLIKLAR_TOPLAM_SEQ, registry, pe, scope, source_code)
             elif sheet == "Yükümlülükler":
-                ex = extract_wide_sheet(df, sheet, YUKUMLULUKLER_MAP, YUKUMLULUKLER_TOPLAM_SEQ, registry, pe, scope, source_code)
+                ex = extract_wide_sheet(df, sheet, YUKUMLULUKLER_MAP, YUKUMLULUKLER_TOPLAM_SEQ_CONS if scope == "consolidated" else YUKUMLULUKLER_TOPLAM_SEQ,
+                                        registry, pe, scope, source_code)
             elif sheet == "Gelir-Gider":
                 ex = extract_wide_sheet(df, sheet, GELIR_GIDER_MAP, GELIR_TOPLAM_SEQ, registry, pe, scope, source_code, cumulative=True)
             elif sheet == "Sermaye Std. Oranı":
@@ -480,6 +514,8 @@ def extract_dt20_tables(tables: dict[str, pd.DataFrame], registry: BankRegistry,
         except Exception as exc:   # bir sayfa bozuksa diğerleri etkilenmez
             total.notes.append(f"{sheet}: HATA {type(exc).__name__}: {exc}")
             continue
+        finally:
+            _SCALE.reset(token)
         total.observations.extend(ex.observations)
         total.unmapped_columns.extend(ex.unmapped_columns)
         total.unmatched_banks.extend(ex.unmatched_banks)

@@ -25,6 +25,8 @@ class Settings:
     # resmî istatistik dosyaları için düşük hızda devam et (tarama yapılmaz). Karar kullanıcıya aittir (docs/sources.md).
     robots_policy: str = field(default_factory=lambda: _env("ROBOTS_POLICY", "strict").lower())
     scheduler_timezone: str = field(default_factory=lambda: _env("SCHEDULER_TIMEZONE", "Europe/Istanbul"))
+    # Zaten işlenmiş (parsed) bir dosya bu kadar gün içinde yeniden kontrol edildiyse tekrar indirilmez (kaynağa nazik; revizyon kontrolü haftalık)
+    recheck_days: int = field(default_factory=lambda: int(_env("RECHECK_DAYS", "7")))
 
     @property
     def evds_api_key(self) -> str | None:

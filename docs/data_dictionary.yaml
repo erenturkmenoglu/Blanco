@@ -33,6 +33,7 @@ metrics:
   - {code: financial_assets, section: balance_sheet_assets, name_tr: Finansal varlıklar, kind: stock, unit: TRY}
   - {code: fixed_assets, section: balance_sheet_assets, name_tr: Maddi duran varlıklar, kind: stock, unit: TRY}
   - {code: other_assets, section: balance_sheet_assets, name_tr: Diğer aktifler, kind: stock, unit: TRY}
+  - {code: other_assets_dt20, section: balance_sheet_assets, name_tr: "Diğer aktifler (TBB DT20/DT21 'Seçilmiş Tablolar' sütunu)", kind: stock, unit: TRY, note: "Bilanço 'X. Diğer Aktifler (Net)' satırıyla birebir DEĞİLDİR (DT20 gruplaması farklı); ayrı kod tutulur, birleştirilmez"}
   # 7.3 Pasifler
   - {code: total_liabilities, section: balance_sheet_liabilities, name_tr: Toplam yükümlülükler, kind: stock, unit: TRY}
   - {code: total_deposits, section: balance_sheet_liabilities, name_tr: Toplam mevduat, kind: stock, unit: TRY}
@@ -43,7 +44,10 @@ metrics:
   - {code: funds_borrowed, section: balance_sheet_liabilities, name_tr: Alınan krediler, kind: stock, unit: TRY}
   - {code: securities_issued, section: balance_sheet_liabilities, name_tr: İhraç edilen menkul kıymetler, kind: stock, unit: TRY}
   - {code: other_liabilities, section: balance_sheet_liabilities, name_tr: Diğer yükümlülükler, kind: stock, unit: TRY}
+  - {code: other_liabilities_group_dt20, section: balance_sheet_liabilities, name_tr: "Diğer pasifler grubu toplamı (TBB DT20/DT21)", kind: stock, unit: TRY, note: "DT20 'Diğer Pasifler / Toplam': GUD farkı K/Z FY + türev FY + karşılıklar + vergi borcu + satış amaçlı + sermaye benzeri + sınıflandırılmayan. Bilanço 'XV. Diğer Yükümlülükler' DEĞİLDİR"}
   - {code: total_equity, section: balance_sheet_liabilities, name_tr: Toplam özkaynaklar, kind: stock, unit: TRY}
+  - {code: total_equity_parent, section: balance_sheet_liabilities, name_tr: "Ana ortaklığa ait özkaynaklar (azınlık payları hariç)", kind: stock, unit: TRY, note: "Konsolide DT21 'Özkaynaklar / Toplam' bu tanımdır: İş Bankası Haz-2026 540.585 (XVI. Özkaynaklar, 16.7 Azınlık payları 86.540 dahil) ≠ 454.045 (DT21). Solo için total_equity ile aynıdır"}
+  - {code: minority_interests, section: balance_sheet_liabilities, name_tr: Azınlık payları, kind: stock, unit: TRY, note: "Konsolide bilanço 16.7 satırı"}
   - {code: paid_in_capital, section: balance_sheet_liabilities, name_tr: Ödenmiş sermaye, kind: stock, unit: TRY}
   - {code: retained_earnings, section: balance_sheet_liabilities, name_tr: Geçmiş yıl kârları, kind: stock, unit: TRY}
   # 7.4 Gelir tablosu (TBB/BDDK formatında yıl başından itibaren KÜMÜLATİF yayımlanır)
@@ -125,11 +129,13 @@ metrics:
   - {code: interest_from_money_market, section: income_statement, name_tr: Para piyasası işlemlerinden alınan faizler, kind: flow, unit: TRY, cumulative_ytd: true}
   - {code: interest_on_securities, section: income_statement, name_tr: Menkul değerlerden alınan faizler, kind: flow, unit: TRY, cumulative_ytd: true}
   - {code: other_interest_income, section: income_statement, name_tr: Diğer faiz gelirleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: other_interest_income_residual_dt20, section: income_statement, name_tr: "Diğer faiz gelirleri — DT20 kalanı (zorunlu karşılık + para piyasası + diğer)", kind: flow, unit: TRY, cumulative_ytd: true, note: "TBB DT20 'Diğer Faiz Gelirleri' = Toplam − krediler − bankalar − menkul; Akbank Haz-2026: 34.443 vs bilanço 1.7 satırı 1.004. Ayrı kod, birleştirilmez"}
   - {code: interest_on_deposits, section: income_statement, name_tr: Mevduata verilen faizler, kind: flow, unit: TRY, cumulative_ytd: true}
   - {code: interest_on_funds_borrowed, section: income_statement, name_tr: Kullanılan kredilere verilen faizler, kind: flow, unit: TRY, cumulative_ytd: true}
   - {code: interest_on_money_market, section: income_statement, name_tr: Para piyasası işlemlerine verilen faizler, kind: flow, unit: TRY, cumulative_ytd: true}
   - {code: interest_on_securities_issued, section: income_statement, name_tr: İhraç edilen menkul kıymetlere verilen faizler, kind: flow, unit: TRY, cumulative_ytd: true}
   - {code: other_interest_expense, section: income_statement, name_tr: Diğer faiz giderleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: other_interest_expense_residual_dt20, section: income_statement, name_tr: "Diğer faiz giderleri — DT20 kalanı (para piyasası + ihraç + diğer)", kind: flow, unit: TRY, cumulative_ytd: true, note: "TBB DT20 'Diğer Faiz Gider.' = Toplam − mevduat − kullanılan krediler; Akbank Haz-2026: 34.835 vs bilanço 2.6 satırı 82. Ayrı kod, birleştirilmez"}
   - {code: dividend_income, section: income_statement, name_tr: Temettü gelirleri, kind: flow, unit: TRY, cumulative_ytd: true}
   - {code: gross_operating_profit, section: income_statement, name_tr: Faaliyet brüt kârı, kind: flow, unit: TRY, cumulative_ytd: true}
   - {code: expected_credit_loss_expense, section: income_statement, name_tr: Beklenen zarar karşılıkları giderleri, kind: flow, unit: TRY, cumulative_ytd: true}

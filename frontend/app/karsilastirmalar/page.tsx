@@ -14,7 +14,8 @@ export default function Karsilastirmalar() {
   const [period, setPeriod] = useState("");
   const [scope, setScope] = useState("solo");
   const [rows, setRows] = useState<any[]>([]);
-  useEffect(() => { api<Bank[]>("/api/banks").then(b => { setBanks(b); setSel(b.filter(x => x.observations > 0).slice(0, 6).map(x => x.code)); }); }, []);
+  // varsayılan seçim: en güncel solo toplam aktife göre en büyük 8 banka (değeri olmayanlar seçilmez, 0 sayılmaz)
+  useEffect(() => { api<Bank[]>("/api/banks").then(b => { setBanks(b); setSel([...b].filter(x => x.latest_total_assets != null).sort((x, y) => (y.latest_total_assets ?? 0) - (x.latest_total_assets ?? 0)).slice(0, 8).map(x => x.code)); }); }, []);
   useEffect(() => { api<any[]>("/api/periods").then(p => { const ps = Array.from(new Set(p.filter(x => x.scope === scope).map(x => x.period_end as string))); setPeriods(ps); setPeriod(ps[0] ?? ""); }); }, [scope]);
   useEffect(() => { if (!sel.length || !period) { setRows([]); return; } api<any>("/api/compare", { banks: sel.join(","), metric, period_end: period, scope }).then(r => setRows(r.rows)); }, [sel, metric, period, scope]);
   const unit = ["employee_count", "branch_count"].includes(metric) ? "count" : "TRY";

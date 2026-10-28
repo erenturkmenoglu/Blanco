@@ -1,7 +1,8 @@
 """TBB "Finansal Tablolar – Konsolide Olmayan (Solo Banka, Excel ortak veri seti)" — banka bazında zip içindeki <Banka>.xls çalışma kitabı.
 GERÇEK düzen (Akbank / Ziraat Haziran 2026 dosyaları açılarak doğrulandı; 17 Sayılı Tebliğ "Ortak Veri Gönderim Seti"):
 
-- 'varlıklar' / 'yüküm.' : Roma rakamlı kalemler; sütunlar Dipnot | TP | YP | Toplam (Cari dönem, ör. 30/06/2026) | TP | YP | Toplam (Önceki dönem, 31/12/2025); Milyon TL
+- 'varlıklar' / 'yüküm.' : Roma rakamlı kalemler; sütunlar Dipnot | TP | YP | Toplam (Cari dönem, ör. 30/06/2026) | TP | YP | Toplam (Önceki dönem, 31/12/2025)
+- ÖLÇEK: satır 3 'MİLYON TÜRK LİRASI' (Haziran 2026) veya 'BİN TÜRK LİRASI' (Mart 2026) — dönemden döneme değişir, başlıktan okunur (DQ01)
 - 'gelir'                : kalemler; sütunlar Dipnot | Cari YTD (01/01–30/06) | Önceki yıl YTD | Cari ÇEYREK (01/04–30/06) | Önceki yıl çeyrek
 - 'pasif1'  blok "2.a.1.i) Mevduatın vade yapısına ilişkin bilgiler": mevduat türü × (Vadesiz | 7 Gün İhbarlı | 1 Aya Kadar | 1-3 Ay | 3-6 Ay | 6 Ay-1 Yıl | 1 Yıl ve Üstü | Birikimli | Toplam) — Cari ve Önceki dönem
 - 'malibünye1' blok "Parasal Finansal Araçlara Uygulanan Ortalama Faiz Oranları: % (3 Aylık)": EURO | USD | Yen | TL × kalemler (Verilen Krediler, Diğer Mevduat, ...) — cari ve önceki dönem sonu
@@ -16,10 +17,26 @@ from datetime import date
 
 import pandas as pd
 
+from contextvars import ContextVar
+
 from app.acquisition.parsers import to_number
 from .bank_names import BankRegistry, normalize_name
+from .scale import detect_scale
 
-SCALE_MTL = 1e6
+SCALE_MTL = 1e6                                   # yalnızca geriye dönük sabit; gerçek ölçek başlıktan okunur (DQ01)
+_SCALE: ContextVar[tuple[float | None, str | None]] = ContextVar("workbook_scale", default=(None, None))
+
+
+def detect_workbook_scale(tables: dict[str, pd.DataFrame]) -> tuple[float | None, str | None]:
+    """Çalışma kitabının para ölçeği: 'varlıklar' (yoksa 'yüküm.' / 'gelir') sayfasının başlık satırlarından okunur.
+    Haziran 2026 kitapları 'MİLYON TÜRK LİRASI', Mart 2026 kitapları 'BİN TÜRK LİRASI' — aynı veri setinde dönemden döneme değişir."""
+    for suffix in ("varlıklar", "yüküm.", "gelir"):
+        _, df = _find_sheet(tables, suffix)
+        if df is not None:
+            hit = detect_scale(df, rows=8)
+            if hit:
+                return hit
+    return None, None
 
 
 def _lab(s) -> str:
@@ -49,13 +66,18 @@ class Extracted:
     observations: list[dict] = field(default_factory=list)
     unmapped_labels: list[str] = field(default_factory=list)
     notes: list[str] = field(default_factory=list)
+    scale: float | None = None
+    scale_label: str | None = None
 
 
 def _o(bank_raw, code, pe, ps, scope, source_code, sheet, r, c, label, metric, value, unit="TRY", currency="ALL", cum=False, kind="financial", **extra):
+    scale, scale_label = _SCALE.get()
+    detected = scale is not None
+    eff = scale if detected else SCALE_MTL      # tespit edilemediyse değer yine de yazılır ama UNVERIFIED (DQ01) işaretlenir
     o = dict(bank_raw=bank_raw, bank_code=code, bank_match="alias" if code else "none", period_end=pe, period_start=ps, reporting_scope=scope,
              frequency="quarterly", source_code=source_code, sheet=sheet, row=r, col=c, label_raw=label, metric_code=metric, unit=unit,
-             scale=SCALE_MTL if unit == "TRY" else 1.0, currency=currency, value_raw=value,
-             value=(value * SCALE_MTL) if (value is not None and unit == "TRY") else value, cumulative_ytd=cum, kind=kind)
+             scale=eff if unit == "TRY" else 1.0, scale_label=scale_label, scale_detected=detected if unit == "TRY" else True, currency=currency, value_raw=value,
+             value=(value * eff) if (value is not None and unit == "TRY") else value, cumulative_ytd=cum, kind=kind)
     o.update(extra)
     return o
 
@@ -80,6 +102,7 @@ LIAB_MAP = {
     "ödenmiş sermaye": "paid_in_capital", "sermaye yedekleri": "capital_reserves", "kâr yedekleri": "profit_reserves", "kar yedekleri": "profit_reserves",
     "geçmiş yıllar kâr veya zararı": "retained_earnings", "geçmiş yıllar kar veya zararı": "retained_earnings",
     "dönem net kâr veya zararı": "net_profit_bs", "dönem net kar veya zararı": "net_profit_bs", "yükümlülükler toplamı": "total_liabilities",
+    "azınlık payları": "minority_interests",
 }
 INCOME_MAP = {
     "faiz gelirleri": "interest_income", "kredilerden alınan faizler": "interest_on_loans", "zorunlu karşılıklardan alınan faizler": "interest_on_reserves",
@@ -385,11 +408,19 @@ def extract_workbook(tables: dict[str, pd.DataFrame], bank_raw: str, registry: B
     if cur is None:
         total.notes.append("varlıklar sayfasında dönem tarihi yok — çalışma kitabı atlandı")
         return total
-    for ex in (extract_balance_sheet(tables, bank_raw, code, scope, source_code), extract_income(tables, bank_raw, code, scope, source_code, cur),
-               extract_deposit_maturity(tables, bank_raw, code, scope, source_code, cur, prev), extract_malibunye1(tables, bank_raw, code, scope, source_code, cur, prev)):
-        total.observations.extend(ex.observations)
-        total.unmapped_labels.extend(ex.unmapped_labels)
-        total.notes.extend(ex.notes)
+    scale, scale_label = detect_workbook_scale(tables)
+    total.scale, total.scale_label = scale, scale_label
+    if scale is None:
+        total.notes.append("DQ01: ölçek (Bin/Milyon TL) başlıkta bulunamadı — tutar gözlemleri UNVERIFIED")
+    token = _SCALE.set((scale, scale_label))
+    try:
+        for ex in (extract_balance_sheet(tables, bank_raw, code, scope, source_code), extract_income(tables, bank_raw, code, scope, source_code, cur),
+                   extract_deposit_maturity(tables, bank_raw, code, scope, source_code, cur, prev), extract_malibunye1(tables, bank_raw, code, scope, source_code, cur, prev)):
+            total.observations.extend(ex.observations)
+            total.unmapped_labels.extend(ex.unmapped_labels)
+            total.notes.extend(ex.notes)
+    finally:
+        _SCALE.reset(token)
     if not code:
         total.notes.append(f"banka eşlenemedi: {bank_raw}")
     return total

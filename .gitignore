@@ -8,3 +8,5 @@ node_modules/
 .next/
 dist/
 .DS_Store
+frontend/public/data/
+web-data.tar.gz
