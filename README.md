@@ -46,10 +46,9 @@ arayüz snapshot'ı `web-data.tar.gz`. Kullanım: `git fetch origin data && git 
 `DATABASE_URL=sqlite:///./bilanco.db uvicorn app.main:app`. Ayrıştırma kodu değiştiğinde ağa çıkmadan yeniden işleme:
 `python scripts/replay_ingest.py --old-db <eski bilanco.db> --raw <data dalı raw/>` (ham dosyalar değişmez, gözlemler yeniden üretilir).
 
-## Canlı adres — GitHub Pages: https://erenturkmenoglu.github.io/Blanco/
+## Canlı adres — Vercel (seçilen hedef)
 
-`pages.yml` arayüzü statik dışa aktarımla (`STATIC_EXPORT=1`, `basePath=/Blanco`) GitHub Pages'e yayımlar; her `main` push'unda ve her ingest
-koşusundan sonra (`workflow_run`) yenilenir. Not: `bilanco.vercel.app` adı Vercel'de başka bir kullanıcıya ait (28.10.2026'da kontrol edildi);
+GitHub Pages alternatifi `pages.yml` ile hazırdır (statik dışa aktarım, `basePath=/Blanco`; repo ayarında Pages → Source: GitHub Actions açılırsa elle tetiklenir). Not: `bilanco.vercel.app` adı Vercel'de başka bir kullanıcıya ait (28.10.2026'da kontrol edildi);
 Vercel'de başka bir proje adı seçilmeli (ör. `bilanco-bankalar`).
 
 ## Vercel — backend'siz statik mod
@@ -58,8 +57,8 @@ Arayüz, `NEXT_PUBLIC_API_BASE_URL` tanımlı değilse `public/data/*.json` snap
 Vercel derlemesi `frontend/vercel.json` → `scripts/fetch-data.sh` ile snapshot'ı `data` dalından indirir (repo public; anahtar gerekmez) ve `next build` yapar.
 
 1. vercel.com → **Add New → Project** → GitHub `erenturkmenoglu/Blanco` → **Root Directory: `frontend`** → boş bir proje adı (ör. `bilanco-bankalar`) → Deploy. Ortam değişkeni gerekmez.
-2. Her ingest sonrası otomatik yenileme için: Vercel → Project → Settings → Git → **Deploy Hooks** → hook oluştur (branch `main`) → URL'yi GitHub repo
-   **Settings → Secrets → Actions → `VERCEL_DEPLOY_HOOK`** olarak ekle. Hook yoksa snapshot, bir sonraki `main` push'unda veya elle "Redeploy" ile yenilenir.
+2. Otomatik yenileme: ingest koşusu snapshot içeriği değiştiğinde `frontend/public/data-version.json` dosyasını `main`'e commit'ler → Vercel Git
+   entegrasyonu push'u görüp yeniden derler (secret gerekmez). İstenirse ek olarak `VERCEL_DEPLOY_HOOK` secret'ı da desteklenir.
 3. Canlı API istenirse (Docker/VM'de FastAPI): Vercel ortam değişkeni `NEXT_PUBLIC_API_BASE_URL=https://api.<alan>` → arayüz API moduna geçer.
 
 İlk gerçek çalıştırmada (ağı olan bir makinede) sırasıyla: `tbb_dt13_bank_branch_employee`, `tbb_asset_ranking`, `tbb_fs_solo_excel`,

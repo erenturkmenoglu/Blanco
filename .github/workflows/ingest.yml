@@ -81,6 +81,24 @@ jobs:
           git add -A && git commit -q -m "ingest run ${{ github.run_id }} $(date -u +%FT%TZ)" || { echo "yayınlanacak dosya yok"; exit 0; }
           git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" data:data
           echo "published branch data"
+      - name: Vercel otomatik yeniden derleme — snapshot içeriği değiştiyse main'e sürüm damgası commit'i (Vercel Git entegrasyonu push'ta derler; secret gerekmez)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          [ -f web_data/data/meta.json ] || { echo "snapshot yok; atlandı"; exit 0; }
+          python3 - <<'PY'
+          import json, pathlib
+          meta = json.load(open("web_data/data/meta.json"))
+          ver = {k: v for k, v in meta.items() if k != "exported_at"}          # yalnızca içerik (banka/dosya/dönem gözlem sayıları) değişince yeni sürüm
+          pathlib.Path("frontend/public/data-version.json").write_text(json.dumps(ver, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+          PY
+          git config user.name "bilanco-bot" && git config user.email "bilanco-bot@users.noreply.github.com"
+          git add frontend/public/data-version.json
+          if git diff --cached --quiet; then echo "snapshot içeriği değişmedi; yeniden derleme gerekmez"; exit 0; fi
+          git commit -q -m "veri snapshot'ı güncellendi ($(date -u +%FT%TZ)) — Vercel yeniden derleme tetikleyici"
+          git push -q "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" HEAD:main && echo "main'e sürüm damgası gönderildi"
       - name: Trigger Vercel redeploy (opsiyonel; VERCEL_DEPLOY_HOOK secret'ı tanımlıysa)
         if: always()
         env:

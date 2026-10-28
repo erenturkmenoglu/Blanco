@@ -3,13 +3,7 @@ name: GitHub Pages (statik arayüz)
 # Arayüzün backend'siz statik sürümünü GitHub Pages'e yayımlar: https://erenturkmenoglu.github.io/Blanco/
 # Veri, 'data' dalındaki web-data.tar.gz snapshot'ından derleme anında alınır; her ingest koşusundan sonra otomatik yenilenir.
 on:
-  push:
-    branches: [main]
-    paths: ["frontend/**", ".github/workflows/pages.yml"]
-  workflow_run:
-    workflows: ["Zamanlanmış veri toplama (GitHub Actions runner)"]
-    types: [completed]
-  workflow_dispatch:
+  workflow_dispatch:     # Yayın hedefi Vercel seçildi; Pages yalnızca elle (repo Settings → Pages → Source: GitHub Actions açıksa)
 
 permissions:
   contents: read
