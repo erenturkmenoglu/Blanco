@@ -1,0 +1,44 @@
+name: Zamanlanmış veri toplama (GitHub Actions runner)
+
+# Kullanıcı müdahalesi olmadan: her gün 03:30 UTC (06:30 İstanbul) yayın takvimine göre vadesi gelen çeyrekleri kontrol eder,
+# yeni dosyaları indirir, ayrıştırır, doğrular ve veritabanına yazar. DATABASE_URL (PostgreSQL) secret olarak verilmelidir;
+# verilmemişse SQLite ile çalışır ve DB dosyasını artifact olarak bırakır (ilk sürüm için yeterli).
+on:
+  schedule:
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+      - run: pip install -r backend/requirements.txt
+      - name: Run due quarterly checks
+        working-directory: backend
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL != '' && secrets.DATABASE_URL || 'sqlite:///./bilanco.db' }}
+          EVDS_API_KEY: ${{ secrets.EVDS_API_KEY }}
+          ROBOTS_POLICY: ${{ vars.ROBOTS_POLICY || 'lenient' }}
+          RAW_STORE_DIR: ./data/raw
+          SCHEDULER_ENABLED: "false"
+          MIN_SECONDS_BETWEEN_REQUESTS: "2"
+        run: python -m app.scheduler.jobs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ingest-${{ github.run_id }}
+          path: |
+            backend/data/raw
+            backend/bilanco.db
+          if-no-files-found: ignore
+          retention-days: 30

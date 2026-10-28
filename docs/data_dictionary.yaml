@@ -1,0 +1,142 @@
+# Bilanço — BANKALAR veri sözlüğü (tek kaynak; backend bunu yükler)
+# kind:  stock = dönem sonu bakiye | flow = dönem içi akım (gelir tablosu, kümülatif olabilir)
+#        rate = faiz oranı (%) | ratio = oran | count = adet
+# unit:  TRY (ham kaynak genelde Bin TL veya Milyon TL — ölçek source_scale alanında ayrı tutulur) | pct | count | ratio
+# status buradaki değer sözlük düzeyi bilgidir; gözlem düzeyinde verification_status ayrıca tutulur.
+#   VERIFIED / DERIVED / UNVERIFIED / UNAVAILABLE / ERROR  (birbirinin yerine kullanılmaz)
+
+sector: banks
+version: "1.0"
+statuses: [VERIFIED, DERIVED, UNVERIFIED, UNAVAILABLE, ERROR]
+
+identity:
+  - {code: bank_id, name_tr: Benzersiz banka kimliği}
+  - {code: bank_name, name_tr: Banka adı}
+  - {code: bank_code, name_tr: Resmî banka kodu (mevcutsa)}
+  - {code: bank_type, name_tr: Mevduat / Katılım / Kalkınma-Yatırım}
+  - {code: ownership_type, name_tr: Kamu / Özel / Yabancı}
+  - {code: reporting_scope, name_tr: Solo / Konsolide}
+  - {code: reporting_date, name_tr: Finansal tablo dönemi}
+  - {code: currency, name_tr: Raporlama para birimi}
+  - {code: source, name_tr: Veri kaynağı}
+
+metrics:
+  # 7.2 Aktifler
+  - {code: total_assets, section: balance_sheet_assets, name_tr: Toplam aktifler, kind: stock, unit: TRY}
+  - {code: cash_and_cash_equivalents, section: balance_sheet_assets, name_tr: Nakit ve nakit benzerleri, kind: stock, unit: TRY}
+  - {code: balances_with_central_bank, section: balance_sheet_assets, name_tr: Merkez bankasından alacaklar, kind: stock, unit: TRY}
+  - {code: loans_gross, section: balance_sheet_assets, name_tr: Brüt krediler, kind: stock, unit: TRY}
+  - {code: loans_net, section: balance_sheet_assets, name_tr: Net krediler, kind: stock, unit: TRY}
+  - {code: loans_tl, section: balance_sheet_assets, name_tr: TL krediler, kind: stock, unit: TRY, currency: TRY}
+  - {code: loans_fx, section: balance_sheet_assets, name_tr: Yabancı para krediler, kind: stock, unit: TRY, currency: FX}
+  - {code: securities_portfolio, section: balance_sheet_assets, name_tr: Menkul kıymet portföyü, kind: stock, unit: TRY}
+  - {code: financial_assets, section: balance_sheet_assets, name_tr: Finansal varlıklar, kind: stock, unit: TRY}
+  - {code: fixed_assets, section: balance_sheet_assets, name_tr: Maddi duran varlıklar, kind: stock, unit: TRY}
+  - {code: other_assets, section: balance_sheet_assets, name_tr: Diğer aktifler, kind: stock, unit: TRY}
+  # 7.3 Pasifler
+  - {code: total_liabilities, section: balance_sheet_liabilities, name_tr: Toplam yükümlülükler, kind: stock, unit: TRY}
+  - {code: total_deposits, section: balance_sheet_liabilities, name_tr: Toplam mevduat, kind: stock, unit: TRY}
+  - {code: deposits_tl, section: balance_sheet_liabilities, name_tr: TL mevduat, kind: stock, unit: TRY, currency: TRY}
+  - {code: deposits_fx, section: balance_sheet_liabilities, name_tr: Yabancı para mevduat, kind: stock, unit: TRY, currency: FX}
+  - {code: demand_deposits, section: balance_sheet_liabilities, name_tr: Vadesiz mevduat, kind: stock, unit: TRY}
+  - {code: time_deposits, section: balance_sheet_liabilities, name_tr: Vadeli mevduat, kind: stock, unit: TRY}
+  - {code: funds_borrowed, section: balance_sheet_liabilities, name_tr: Alınan krediler, kind: stock, unit: TRY}
+  - {code: securities_issued, section: balance_sheet_liabilities, name_tr: İhraç edilen menkul kıymetler, kind: stock, unit: TRY}
+  - {code: other_liabilities, section: balance_sheet_liabilities, name_tr: Diğer yükümlülükler, kind: stock, unit: TRY}
+  - {code: total_equity, section: balance_sheet_liabilities, name_tr: Toplam özkaynaklar, kind: stock, unit: TRY}
+  - {code: paid_in_capital, section: balance_sheet_liabilities, name_tr: Ödenmiş sermaye, kind: stock, unit: TRY}
+  - {code: retained_earnings, section: balance_sheet_liabilities, name_tr: Geçmiş yıl kârları, kind: stock, unit: TRY}
+  # 7.4 Gelir tablosu (TBB/BDDK formatında yıl başından itibaren KÜMÜLATİF yayımlanır)
+  - {code: interest_income, section: income_statement, name_tr: Faiz gelirleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: interest_expense, section: income_statement, name_tr: Faiz giderleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: net_interest_income, section: income_statement, name_tr: Net faiz geliri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: fee_commission_income, section: income_statement, name_tr: Ücret ve komisyon gelirleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: fee_commission_expense, section: income_statement, name_tr: Ücret ve komisyon giderleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: net_fee_commission_income, section: income_statement, name_tr: Net ücret ve komisyon geliri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: trading_income, section: income_statement, name_tr: Ticari işlemlerden net gelir, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: other_operating_income, section: income_statement, name_tr: Diğer faaliyet gelirleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: operating_expenses, section: income_statement, name_tr: Faaliyet giderleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: personnel_expenses, section: income_statement, name_tr: Personel giderleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: provision_expenses, section: income_statement, name_tr: Karşılık giderleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: profit_before_tax, section: income_statement, name_tr: Vergi öncesi kâr, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: net_profit, section: income_statement, name_tr: Net dönem kârı, kind: flow, unit: TRY, cumulative_ytd: true}
+  # 7.6 Kredi kalitesi
+  - {code: npl_amount, section: credit_quality, name_tr: Takipteki krediler, kind: stock, unit: TRY}
+  - {code: loan_loss_provisions, section: credit_quality, name_tr: Kredi zarar karşılıkları, kind: stock, unit: TRY}
+  - {code: restructured_loans, section: credit_quality, name_tr: Yeniden yapılandırılan krediler, kind: stock, unit: TRY}
+  - {code: stage_2_loans, section: credit_quality, name_tr: İkinci aşama krediler, kind: stock, unit: TRY}
+  - {code: stage_3_loans, section: credit_quality, name_tr: Üçüncü aşama krediler, kind: stock, unit: TRY}
+  # 7.7 Sermaye
+  - {code: capital_adequacy_ratio, section: capital, name_tr: Sermaye yeterliliği oranı, kind: ratio, unit: pct}
+  - {code: tier_1_ratio, section: capital, name_tr: Ana sermaye yeterlilik oranı, kind: ratio, unit: pct}
+  - {code: cet1_ratio, section: capital, name_tr: Çekirdek sermaye yeterlilik oranı, kind: ratio, unit: pct}
+  - {code: risk_weighted_assets, section: capital, name_tr: Risk ağırlıklı varlıklar, kind: stock, unit: TRY}
+  # 7.8 Likidite (kaynaktan geliyorsa)
+  - {code: liquidity_coverage_ratio, section: liquidity, name_tr: Likidite karşılama oranı, kind: ratio, unit: pct}
+  # 7.9 Operasyonel
+  - {code: employee_count, section: operations, name_tr: Personel sayısı, kind: count, unit: count}
+  - {code: branch_count, section: operations, name_tr: Şube sayısı, kind: count, unit: count}
+  # 7.11 Faiz (TBB DT20/DT21: "Verilen Kredilere ve Diğer Mevduata Uygulanan Ortalama Faiz Oranları" — kaynak tanımı: faiz oranı riski
+  # amaçlı hazırlanan parasal finansal araçlara uygulanan ortalama faiz oranları; mevduat bankalararası hariç. STOK ortalaması, yeni açılış değildir.)
+  - {code: loan_interest_tl, section: interest, name_tr: TL kredi ortalama faiz oranı, kind: rate, unit: pct, currency: TRY, rate_definition: stock_avg_applied_rate}
+  - {code: deposit_interest_tl, section: interest, name_tr: TL mevduat ortalama faiz oranı, kind: rate, unit: pct, currency: TRY, rate_definition: stock_avg_applied_rate}
+  - {code: loan_interest_usd, section: interest, name_tr: USD kredi ortalama faiz oranı, kind: rate, unit: pct, currency: USD, rate_definition: stock_avg_applied_rate}
+  - {code: deposit_interest_usd, section: interest, name_tr: USD mevduat ortalama faiz oranı, kind: rate, unit: pct, currency: USD, rate_definition: stock_avg_applied_rate}
+  - {code: loan_interest_eur, section: interest, name_tr: EUR kredi ortalama faiz oranı, kind: rate, unit: pct, currency: EUR, rate_definition: stock_avg_applied_rate}
+  - {code: deposit_interest_eur, section: interest, name_tr: EUR mevduat ortalama faiz oranı, kind: rate, unit: pct, currency: EUR, rate_definition: stock_avg_applied_rate}
+
+# 7.10 Vade — kaynağın gerçek kovaları korunur; 3-12 ay yapay bölünmez.
+maturity:
+  buckets_target: [demand, 0_1m, 1_3m, 3_6m, 6_12m]
+  # TBB DT20/DT21 "Aktif ve Pasif Kalemlerin Kalan Vadelerine Göre Gösterimi" gerçek kovaları (Haziran 2023 dosyasından doğrulandı):
+  buckets_tbb_remaining_maturity: [demand, 0_1m, 1_3m, 3_12m, 1_5y, over_5y, unallocated]
+  # Finansal tablo dipnotu "Mevduatın vade yapısı" standart kovaları (17 Sayılı Tebliğ formatı; dosya üzerinden HENÜZ doğrulanmadı):
+  buckets_deposit_footnote: [demand, notice_7d, 0_1m, 1_3m, 3_6m, 6m_1y, over_1y, accumulating]
+  items:
+    - {code: total_assets, name_tr: Toplam aktifler (kalan vade), basis: remaining}
+    - {code: total_liabilities, name_tr: Toplam pasifler (kalan vade), basis: remaining}
+    - {code: liquidity_gap, name_tr: Likidite açığı, basis: remaining}
+    - {code: loans, name_tr: Krediler, basis: remaining}
+    - {code: deposits, name_tr: Mevduat, basis: remaining}
+    - {code: loans_original, name_tr: Krediler (orijinal vade — kısa / orta-uzun), basis: original}
+
+derived:
+  - {code: roa, name_tr: Aktif kârlılığı, formula: "net_profit_annualized / avg(total_assets)", unit: pct}
+  - {code: roe, name_tr: Özkaynak kârlılığı, formula: "net_profit_annualized / avg(total_equity)", unit: pct}
+  - {code: nim, name_tr: Net faiz marjı, formula: "net_interest_income_annualized / avg(interest_earning_assets)", unit: pct, note: "faiz getirili aktif proxysi açıkça belirtilir"}
+  - {code: cost_to_income, name_tr: Gider/Gelir, formula: "operating_expenses / (net_interest_income + net_fee_commission_income + trading_income + other_operating_income)", unit: pct}
+  - {code: npl_ratio, name_tr: Takip oranı, formula: "npl_amount / loans_gross", unit: pct}
+  - {code: npl_coverage_ratio, name_tr: Karşılık oranı, formula: "loan_loss_provisions / npl_amount", unit: pct}
+  - {code: cost_of_risk, name_tr: Kredi risk maliyeti, formula: "provision_expenses_annualized / avg(loans_gross)", unit: pct}
+  - {code: equity_to_assets, name_tr: Özkaynak/Aktif, formula: "total_equity / total_assets", unit: pct}
+  - {code: loan_to_deposit_ratio, name_tr: Kredi/Mevduat, formula: "loans_gross / total_deposits", unit: pct}
+  - {code: liquid_assets_ratio, name_tr: Likit aktif/Aktif, formula: "(cash_and_cash_equivalents + balances_with_central_bank) / total_assets", unit: pct}
+  - {code: cash_to_assets, name_tr: Nakit/Aktif, formula: "cash_and_cash_equivalents / total_assets", unit: pct}
+  - {code: assets_per_employee, formula: "total_assets / employee_count", unit: TRY}
+  - {code: profit_per_employee, formula: "net_profit / employee_count", unit: TRY}
+  - {code: deposits_per_branch, formula: "total_deposits / branch_count", unit: TRY}
+  - {code: loans_per_branch, formula: "loans_gross / branch_count", unit: TRY}
+  - {code: loan_deposit_spread_tl, formula: "loan_interest_tl - deposit_interest_tl", unit: pct, requires_same_definition: true}
+  - {code: loan_deposit_spread_usd, formula: "loan_interest_usd - deposit_interest_usd", unit: pct, requires_same_definition: true}
+  - {code: loan_deposit_spread_eur, formula: "loan_interest_eur - deposit_interest_eur", unit: pct, requires_same_definition: true}
+  - {code: assets_growth_qoq, formula: "total_assets[t] / total_assets[t-1q] - 1", unit: pct, method: stock}
+  - {code: assets_growth_yoy, formula: "total_assets[t] / total_assets[t-4q] - 1", unit: pct, method: stock}
+  - {code: loans_growth_qoq, formula: "loans_gross[t] / loans_gross[t-1q] - 1", unit: pct, method: stock}
+  - {code: loans_growth_yoy, formula: "loans_gross[t] / loans_gross[t-4q] - 1", unit: pct, method: stock}
+  - {code: deposits_growth_qoq, formula: "total_deposits[t] / total_deposits[t-1q] - 1", unit: pct, method: stock}
+  - {code: deposits_growth_yoy, formula: "total_deposits[t] / total_deposits[t-4q] - 1", unit: pct, method: stock}
+  - {code: equity_growth_yoy, formula: "total_equity[t] / total_equity[t-4q] - 1", unit: pct, method: stock}
+  - {code: profit_growth_yoy, formula: "net_profit_ytd[t] / net_profit_ytd[t-4q] - 1", unit: pct, method: flow_same_ytd_window}
+
+macro:
+  # EVDS seri kodları TAHMİN EDİLMEZ: evds adapter 'series_catalog' çağrısıyla kodu doğrulayıp evds_series_code alanına yazar.
+  - {code: usd_try, name_tr: USD/TRY, frequency: daily, evds_series_code: null}
+  - {code: eur_try, name_tr: EUR/TRY, frequency: daily, evds_series_code: null}
+  - {code: policy_rate, name_tr: TCMB politika faizi, frequency: daily, evds_series_code: null}
+  - {code: cpi, name_tr: TÜFE endeksi, frequency: monthly, evds_series_code: null}
+  - {code: inflation_yoy, name_tr: Yıllık enflasyon, frequency: monthly, evds_series_code: null}
+  - {code: inflation_mom, name_tr: Aylık enflasyon, frequency: monthly, evds_series_code: null}
+  - {code: deposit_rate_tl, name_tr: Sektör TL mevduat faizi (yeni açılış, ağırlıklı ort.), frequency: weekly, evds_series_code: null, rate_definition: new_business_flow_rate}
+  - {code: loan_rate_tl, name_tr: Sektör TL kredi faizi (yeni açılış, ağırlıklı ort.), frequency: weekly, evds_series_code: null, rate_definition: new_business_flow_rate}
+  - {code: government_bond_yield, name_tr: DİBS getirisi, frequency: daily, evds_series_code: null}
+  - {code: money_market_rate, name_tr: Para piyasası faizi, frequency: daily, evds_series_code: null}

@@ -1,0 +1,51 @@
+name: TBB probe (keşif + indirme + envanter)
+
+on:
+  workflow_dispatch:
+    inputs:
+      year:
+        description: "Yıl"
+        default: "2026"
+      month:
+        description: "Ay (3/6/9/12)"
+        default: "6"
+      robots_policy:
+        description: "robots.txt politikası: strict | lenient"
+        default: "lenient"
+      banks:
+        description: "Banka bazlı Excel için indirilecek bankalar (; ile)"
+        default: "Akbank T.A.Ş.;Türkiye Cumhuriyeti Ziraat Bankası A.Ş."
+  push:
+    branches: ["probe/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+      - run: pip install -r backend/requirements.txt
+      - name: Probe
+        working-directory: backend
+        env:
+          ROBOTS_POLICY: ${{ github.event.inputs.robots_policy || 'lenient' }}
+          MIN_SECONDS_BETWEEN_REQUESTS: "2"
+          HTTP_MAX_RETRIES: "2"
+          HTTP_USER_AGENT: "BilancoBot/0.1 (+https://bilanco.vercel.app; resmi istatistik dosyalarinin otomatik alimi)"
+        run: |
+          python scripts/tbb_probe.py --year "${{ github.event.inputs.year || '2026' }}" --month "${{ github.event.inputs.month || '6' }}" \
+            --out ../probe_output --banks "${{ github.event.inputs.banks || 'Akbank T.A.Ş.;Türkiye Cumhuriyeti Ziraat Bankası A.Ş.' }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tbb-probe-${{ github.event.inputs.year || '2026' }}-${{ github.event.inputs.month || '6' }}
+          path: probe_output
+          retention-days: 14
