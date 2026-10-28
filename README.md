@@ -39,6 +39,10 @@ pytest -q                                 # 21 test
 cd ../frontend && npm install && npm run dev                                   # http://localhost:3000
 ```
 
+**Hazır veri:** GitHub Actions `ingest.yml` koşusu (28.10.2026) Mart + Haziran 2026 için 57 bankanın solo kitaplarını, 27 konsolide kitabı, DT20/DT21 setlerini ve sıralama dosyalarını indirip
+`bilanco.db` (SQLite, ~52 MB; 62 bin finansal + 12 bin faiz + 64 bin vade gözlemi) ve ham dosyaları `data` dalına yayımladı:
+`git fetch origin data && git archive origin/data bilanco.db | tar -x -C backend/` → `DATABASE_URL=sqlite:///./bilanco.db uvicorn app.main:app`.
+
 İlk gerçek çalıştırmada (ağı olan bir makinede) sırasıyla: `tbb_dt13_bank_branch_employee`, `tbb_asset_ranking`, `tbb_fs_solo_excel`,
 `tbb_dt20_selected_solo`, `tbb_maturity_remaining` için `ingest` çalıştırın; `Veri Güncelleme Durumu` ekranı her denemenin yöntem/adres/neden
 kaydını gösterir. Gerçek Excel düzeni sentetik replikadan farklıysa eşleyici `unmapped_labels` listesini loglar — eşleme yalnızca tek metrikle
