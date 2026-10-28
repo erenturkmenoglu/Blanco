@@ -19,7 +19,7 @@ log = logging.getLogger("bilanco.scheduler")
 QUARTERLY_DATASETS = [   # (source, dataset, yayın gecikmesi gün)
     ("TBB", "tbb_fs_solo_excel", 45), ("TBB", "tbb_dt20_selected_solo", 45), ("TBB", "tbb_maturity_remaining", 45),
     ("TBB", "tbb_asset_ranking", 45), ("TBB", "tbb_dt13_bank_branch_employee", 15),
-    ("TBB", "tbb_fs_cons_excel", 75), ("TBB", "tbb_dt21_selected_cons", 75), ("TBB", "tbb_bank_group_quarterly", 75),
+    ("TBB", "tbb_fs_cons_excel", 75), ("TBB", "tbb_dt21_selected_cons", 75),   # tbb_bank_group_quarterly: özel çıkarıcı yazılana kadar otomatik çekilmez
     ("BDDK", "bddk_tbs_temel_gostergeler", 60),
 ]
 

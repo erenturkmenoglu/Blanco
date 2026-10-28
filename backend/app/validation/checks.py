@@ -80,7 +80,7 @@ def run_checks(observations: list[dict], *, raw_bytes: bytes | None = None, expe
         if sc not in ("solo", "consolidated", "sector", "na"):
             res.append(CheckResult("DQ05_scope", False, "error", f"raporlama kapsamı belirsiz: {sc}", bank, metric, pe))
         # DQ07 yinelenen
-        key = (bank, metric, o.get("period_start"), pe, sc, cur, o.get("source_code"), o.get("rate_definition"), o.get("bucket"), o.get("item"))
+        key = (bank, metric, o.get("period_start"), pe, sc, cur, o.get("source_code"), o.get("rate_definition"), o.get("bucket"), o.get("item"), o.get("basis"))
         if key in seen:
             res.append(CheckResult("DQ07_duplicate", False, "error", "aynı dosyada yinelenen gözlem", bank, metric, pe))
         seen.add(key)
@@ -156,7 +156,7 @@ def apply_checks(observations: list[dict], results: list[CheckResult]) -> tuple[
         if (o["bank_code"], o.get("metric_code"), o.get("period_end")) in bad_triplet:
             continue
         key = (o["bank_code"], o.get("metric_code"), o.get("period_start"), o.get("period_end"), o.get("reporting_scope"), o.get("currency"),
-               o.get("source_code"), o.get("rate_definition"), o.get("bucket"), o.get("item"))
+               o.get("source_code"), o.get("rate_definition"), o.get("bucket"), o.get("item"), o.get("basis"))
         if key in seen:
             continue
         seen.add(key)

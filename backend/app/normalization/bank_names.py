@@ -82,9 +82,9 @@ SEED_BANKS: dict[str, tuple[str, str, str, list[str]]] = {
     "tskb": ("Türkiye Sınai Kalkınma Bankası A.Ş.", "development_investment", "private", ["TSKB", "Türkiye Sınai Kalkınma Bankası"]),
     "goldenglobal": ("Golden Global Yatırım Bankası A.Ş.", "development_investment", "private", ["Golden Global Yatırım Bankası"]),
     "dyatirim": ("D Yatırım Bankası A.Ş.", "development_investment", "private", ["D Yatırım Bankası"]),
-    "terayatirim": ("Tera Yatırım Bankası A.Ş.", "development_investment", "private", ["Tera Yatırım Bankası"]),
+    "terayatirim": ("Tera Yatırım Bankası A.Ş.", "development_investment", "private", ["Tera Yatırım Bankası", "Tera Yatirim Bankası A.Ş."]),
     "destekyatirim": ("Destek Yatırım Bankası A.Ş.", "development_investment", "private", ["Destek Yatırım Bankası"]),
-    "qyatirim": ("Q Yatırım Bankası A.Ş.", "development_investment", "private", ["Q Yatırım Bankası"]),
+    "qyatirim": ("Q Yatırım Bankası A.Ş.", "development_investment", "private", ["Q Yatırım Bankası", "Q Yatirim Bankası A.Ş."]),
     # TBB 2025 Eylül Excel veri seti 'Banka Seçiniz' listesinden (28.10.2026) eklenenler:
     "colendi": ("Colendi Bank A.Ş.", "deposit", "private", ["Colendi Bank A.Ş. (dijital banka)", "Colendi Bank", "Colendi"]),
     "enpara": ("Enpara Bank A.Ş.", "deposit", "private", ["Enpara Bank", "Enpara"]),
@@ -116,7 +116,7 @@ TBB_SELECTOR_BANKS_2025_09 = [
 # Sektör / grup satırları — banka DEĞİL; gözlem olarak banka tablosuna yazılmaz (reporting_scope=sector katmanı)
 AGGREGATE_ROW_PATTERNS = [
     r"^sektör", r"^toplam", r"^mevduat bankaları", r"^kamusal sermayeli", r"^kamu sermayeli", r"^özel sermayeli",
-    r"^yabancı sermayeli", r"^yabancı bankalar", r"^tmsf", r"^tasarruf mevduatı sigorta", r"^kalkınma ve yatırım",
+    r"^yabancı sermayeli", r"^yabancı bankalar", r"^tmsf", r"^tasarruf mevduatı sigorta", r"^tasarruf mevduatı sig", r"^tas mevd", r"^kalkınma ve yatırım",
     r"^türkiye'de kurulmuş", r"^türkiye de kurulmuş", r"^türkiye'de şube açan", r"^türkiye de şube açan",
 ]
 

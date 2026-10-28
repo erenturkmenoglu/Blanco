@@ -108,8 +108,10 @@ ASSET_MAP, LIAB_MAP, INCOME_MAP = _normkeys(ASSET_MAP), _normkeys(LIAB_MAP), _no
 
 
 def _find_sheet(tables: dict[str, pd.DataFrame], suffix: str):
+    """Solo kitapta 'varlıklar', konsolide kitapta 'Kvarlıklar' (K öneki)."""
     for k, df in tables.items():
-        if k.split("::")[-1].strip().lower() == suffix:
+        name = k.split("::")[-1].strip().lower()
+        if name == suffix or name == "k" + suffix:
             return k, df
     return None, None
 
@@ -166,7 +168,7 @@ def extract_balance_sheet(tables, bank_raw, code, scope, source_code) -> Extract
     return ex
 
 
-def extract_income(tables, bank_raw, code, scope, source_code) -> Extracted:
+def extract_income(tables, bank_raw, code, scope, source_code, cur: date | None = None) -> Extracted:
     ex = Extracted()
     name, df = _find_sheet(tables, "gelir")
     if df is None:
@@ -181,6 +183,12 @@ def extract_income(tables, bank_raw, code, scope, source_code) -> Extracted:
                 m = re.search(r"(\d{2})/(\d{2})/(\d{4})\s*-\s*(\d{2})/(\d{2})/(\d{4})", v)
                 if m:
                     spans.append((c, date(int(m.group(3)), int(m.group(2)), int(m.group(1))), date(int(m.group(6)), int(m.group(5)), int(m.group(4)))))
+    if cur:   # başlık tarihleri bilanço dönemiyle tutarlı olmalı (cari yıl veya önceki yıl karşılaştırması); bazı bankalar şablon tarihini güncellemiyor
+        ok = [sp for sp in spans if sp[2] == cur or (sp[2].month == cur.month and sp[2].year == cur.year - 1)]
+        if len(ok) < len(spans):
+            ex.notes.append(f"gelir: {len(spans) - len(ok)} sütunun dönem başlığı bilanço tarihiyle ({cur}) tutarsız → atlandı: " +
+                            ", ".join(f"{a}-{b}" for _, a, b in spans if (_, a, b) not in ok))
+        spans = ok
     if not spans:
         ex.notes.append("gelir: dönem aralıkları bulunamadı")
         return ex
@@ -350,6 +358,8 @@ def extract_malibunye1(tables, bank_raw, code, scope, source_code, cur: date, pr
             continue
         if lab in ("varlıklar", "yükümlülükler") or first.strip().startswith("*"):
             continue
+        if "madde" in lab or re.search(r"\((3 aylık|yıllık)\)\s*$", first.strip().lower()) or ":" in first:
+            break                              # sonraki dipnot tablosu başladı
         if period is None:
             continue
         item = next((v for k, v in MAT_ITEMS.items() if lab.startswith(k)), None)
@@ -375,7 +385,7 @@ def extract_workbook(tables: dict[str, pd.DataFrame], bank_raw: str, registry: B
     if cur is None:
         total.notes.append("varlıklar sayfasında dönem tarihi yok — çalışma kitabı atlandı")
         return total
-    for ex in (extract_balance_sheet(tables, bank_raw, code, scope, source_code), extract_income(tables, bank_raw, code, scope, source_code),
+    for ex in (extract_balance_sheet(tables, bank_raw, code, scope, source_code), extract_income(tables, bank_raw, code, scope, source_code, cur),
                extract_deposit_maturity(tables, bank_raw, code, scope, source_code, cur, prev), extract_malibunye1(tables, bank_raw, code, scope, source_code, cur, prev)):
         total.observations.extend(ex.observations)
         total.unmapped_labels.extend(ex.unmapped_labels)
