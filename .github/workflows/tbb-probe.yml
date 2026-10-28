@@ -19,7 +19,7 @@ on:
     branches: ["probe/**"]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   probe:
@@ -49,3 +49,14 @@ jobs:
           name: tbb-probe-${{ github.event.inputs.year || '2026' }}-${{ github.event.inputs.month || '6' }}
           path: probe_output
           retention-days: 14
+      - name: Publish results to a git branch (results/probe-<run_id>) — artifact depolama bazı ağlardan erişilemiyor
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          rm -rf /tmp/pub && mkdir -p /tmp/pub && cp -r probe_output /tmp/pub/
+          cd /tmp/pub && git init -q -b results && git config user.name "bilanco-bot" && git config user.email "bilanco-bot@users.noreply.github.com"
+          git add -A && git commit -q -m "probe results run ${{ github.run_id }}"
+          git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" results:results/probe-${{ github.run_id }}
+          echo "published branch results/probe-${{ github.run_id }}"
