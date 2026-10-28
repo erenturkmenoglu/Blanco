@@ -195,21 +195,21 @@ derived:
   - {code: loan_to_deposit_ratio, name_tr: Kredi/Mevduat, formula: "loans_gross / total_deposits", unit: pct}
   - {code: liquid_assets_ratio, name_tr: Likit aktif/Aktif, formula: "(cash_and_cash_equivalents + balances_with_central_bank) / total_assets", unit: pct}
   - {code: cash_to_assets, name_tr: Nakit/Aktif, formula: "cash_and_cash_equivalents / total_assets", unit: pct}
-  - {code: assets_per_employee, formula: "total_assets / employee_count", unit: TRY}
-  - {code: profit_per_employee, formula: "net_profit / employee_count", unit: TRY}
-  - {code: deposits_per_branch, formula: "total_deposits / branch_count", unit: TRY}
-  - {code: loans_per_branch, formula: "loans_gross / branch_count", unit: TRY}
-  - {code: loan_deposit_spread_tl, formula: "loan_interest_tl - deposit_interest_tl", unit: pct, requires_same_definition: true}
-  - {code: loan_deposit_spread_usd, formula: "loan_interest_usd - deposit_interest_usd", unit: pct, requires_same_definition: true}
-  - {code: loan_deposit_spread_eur, formula: "loan_interest_eur - deposit_interest_eur", unit: pct, requires_same_definition: true}
-  - {code: assets_growth_qoq, formula: "total_assets[t] / total_assets[t-1q] - 1", unit: pct, method: stock}
-  - {code: assets_growth_yoy, formula: "total_assets[t] / total_assets[t-4q] - 1", unit: pct, method: stock}
-  - {code: loans_growth_qoq, formula: "loans_gross[t] / loans_gross[t-1q] - 1", unit: pct, method: stock}
-  - {code: loans_growth_yoy, formula: "loans_gross[t] / loans_gross[t-4q] - 1", unit: pct, method: stock}
-  - {code: deposits_growth_qoq, formula: "total_deposits[t] / total_deposits[t-1q] - 1", unit: pct, method: stock}
-  - {code: deposits_growth_yoy, formula: "total_deposits[t] / total_deposits[t-4q] - 1", unit: pct, method: stock}
-  - {code: equity_growth_yoy, formula: "total_equity[t] / total_equity[t-4q] - 1", unit: pct, method: stock}
-  - {code: profit_growth_yoy, formula: "net_profit_ytd[t] / net_profit_ytd[t-4q] - 1", unit: pct, method: flow_same_ytd_window}
+  - {code: assets_per_employee, name_tr: Çalışan başına aktif, formula: "total_assets / employee_count", unit: TRY}
+  - {code: profit_per_employee, name_tr: Çalışan başına net kâr (yıllıklandırılmış), formula: "net_profit / employee_count", unit: TRY}
+  - {code: deposits_per_branch, name_tr: Şube başına mevduat, formula: "total_deposits / branch_count", unit: TRY}
+  - {code: loans_per_branch, name_tr: Şube başına kredi, formula: "loans_gross / branch_count", unit: TRY}
+  - {code: loan_deposit_spread_tl, name_tr: TL kredi−mevduat faiz makası, formula: "loan_interest_tl - deposit_interest_tl", unit: pct, requires_same_definition: true}
+  - {code: loan_deposit_spread_usd, name_tr: USD kredi−mevduat faiz makası, formula: "loan_interest_usd - deposit_interest_usd", unit: pct, requires_same_definition: true}
+  - {code: loan_deposit_spread_eur, name_tr: EUR kredi−mevduat faiz makası, formula: "loan_interest_eur - deposit_interest_eur", unit: pct, requires_same_definition: true}
+  - {code: assets_growth_qoq, name_tr: Aktif büyümesi (çeyreklik), formula: "total_assets[t] / total_assets[t-1q] - 1", unit: pct, method: stock}
+  - {code: assets_growth_yoy, name_tr: Aktif büyümesi (yıllık), formula: "total_assets[t] / total_assets[t-4q] - 1", unit: pct, method: stock}
+  - {code: loans_growth_qoq, name_tr: Kredi büyümesi (çeyreklik), formula: "loans_gross[t] / loans_gross[t-1q] - 1", unit: pct, method: stock}
+  - {code: loans_growth_yoy, name_tr: Kredi büyümesi (yıllık), formula: "loans_gross[t] / loans_gross[t-4q] - 1", unit: pct, method: stock}
+  - {code: deposits_growth_qoq, name_tr: Mevduat büyümesi (çeyreklik), formula: "total_deposits[t] / total_deposits[t-1q] - 1", unit: pct, method: stock}
+  - {code: deposits_growth_yoy, name_tr: Mevduat büyümesi (yıllık), formula: "total_deposits[t] / total_deposits[t-4q] - 1", unit: pct, method: stock}
+  - {code: equity_growth_yoy, name_tr: Özkaynak büyümesi (yıllık), formula: "total_equity[t] / total_equity[t-4q] - 1", unit: pct, method: stock}
+  - {code: profit_growth_yoy, name_tr: Net kâr büyümesi (yıllık, YTD/YTD), formula: "net_profit_ytd[t] / net_profit_ytd[t-4q] - 1", unit: pct, method: flow_same_ytd_window}
 
 macro:
   # EVDS seri kodları TAHMİN EDİLMEZ: evds adapter 'series_catalog' çağrısıyla kodu doğrulayıp evds_series_code alanına yazar.

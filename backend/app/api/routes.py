@@ -33,6 +33,11 @@ def _scope(s: str) -> m.ReportingScope:
         raise HTTPException(400, f"geçersiz kapsam: {s}")
 
 
+def _fin_scope(s: str):
+    """Finansal gözlem kapsam filtresi: istenen kapsam + kapsamdan bağımsız sayımlar (şube/çalışan: reporting_scope='na')."""
+    return m.FinancialObservation.reporting_scope.in_([_scope(s), m.ReportingScope.na])
+
+
 # ------------------------------------------------------------------ referans
 @router.get("/sectors")
 def sectors(db: Session = Depends(get_db)):
@@ -87,7 +92,7 @@ def observations(bank: str = Query(...), metric: str = Query(...), scope: str = 
          .join(m.DataSource, m.DataSource.id == m.FinancialObservation.source_id)
          .outerjoin(m.SourceDocument, m.SourceDocument.id == m.FinancialObservation.source_document_id)
          .where(m.FinancialObservation.institution_id == inst.id, m.FinancialObservation.metric_code == metric,
-                m.FinancialObservation.reporting_scope == _scope(scope))
+                _fin_scope(scope))
          .order_by(m.FinancialObservation.period_end, m.FinancialObservation.period_start, m.FinancialObservation.currency, m.FinancialObservation.revision_no.desc()))
     seen, out = set(), []
     for o, url, src in db.execute(q):
@@ -113,7 +118,7 @@ def compare(banks: str = Query(..., description="virgülle ayrılmış banka kod
             continue
         # Toplam sütunu (currency ALL); akış kalemlerinde yıl başından kümülatif satır (en erken period_start); en güncel revizyon
         o = db.scalar(select(m.FinancialObservation).where(m.FinancialObservation.institution_id == inst.id, m.FinancialObservation.metric_code == metric,
-                                                            m.FinancialObservation.period_end == period_end, m.FinancialObservation.reporting_scope == _scope(scope),
+                                                            m.FinancialObservation.period_end == period_end, _fin_scope(scope),
                                                             (m.FinancialObservation.currency == "ALL") | (m.FinancialObservation.currency.is_(None)))
                       .order_by(m.FinancialObservation.period_start, m.FinancialObservation.revision_no.desc()))
         out.append({"bank": c, "name": inst.name, "value": o.value if o else None, "unit": o.unit if o else None,
@@ -129,14 +134,16 @@ def derived(bank: str, period_end: date, scope: str = "solo", db: Session = Depe
     inst = db.scalar(select(m.Institution).where(m.Institution.code == bank))
     if not inst:
         raise HTTPException(404, "banka bulunamadı")
-    rows = db.execute(select(m.FinancialObservation).where(m.FinancialObservation.institution_id == inst.id,
-                                                           m.FinancialObservation.reporting_scope == _scope(scope))
-                      .order_by(m.FinancialObservation.period_end, m.FinancialObservation.revision_no.desc())).scalars().all()
+    # Türetilmiş göstergeler yalnızca Toplam sütunundan (currency ALL) ve akışlarda yıl başından kümülatif satırdan (en erken period_start) hesaplanır;
+    # TP/YP sütunları ve bağımsız çeyrek satırları karıştırılmaz. Şube/çalışan sayıları (kapsam 'na') istenen kapsama dahil edilir.
+    rows = db.execute(select(m.FinancialObservation).where(m.FinancialObservation.institution_id == inst.id, _fin_scope(scope),
+                                                           (m.FinancialObservation.currency == "ALL") | (m.FinancialObservation.currency.is_(None)))
+                      .order_by(m.FinancialObservation.period_end, m.FinancialObservation.period_start, m.FinancialObservation.revision_no.desc())).scalars().all()
     latest: dict[tuple, m.FinancialObservation] = {}
     for o in rows:
         latest.setdefault((o.metric_code, o.period_end), o)
     df = pd.DataFrame([{"bank_code": inst.code, "metric_code": o.metric_code, "period_end": o.period_end, "value": o.value,
-                        "reporting_scope": o.reporting_scope.value, "cumulative_ytd": o.cumulative_ytd} for o in latest.values()],
+                        "reporting_scope": scope, "cumulative_ytd": o.cumulative_ytd} for o in latest.values()],
                       columns=["bank_code", "metric_code", "period_end", "value", "reporting_scope", "cumulative_ytd"])
     res = compute_derived(df, inst.code, period_end, scope) if len(df) else []
     return {"bank": inst.code, "period_end": period_end.isoformat(), "scope": scope, "status": "DERIVED",

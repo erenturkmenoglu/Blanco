@@ -137,6 +137,21 @@ def compute_derived(obs: pd.DataFrame, bank_code: str, pe: date, scope: str = "s
         "net_fee_commission_income", "trading_income", "other_operating_income", "operating_expenses", "provision_expenses",
         "npl_amount", "loan_loss_provisions"))
     emp, br = series("employee_count"), series("branch_count")
+    # Kaynakta toplam satırı yoksa açıkça belirtilen bileşenlerden türetilir (sessiz varsayım yok; yöntem metninde yazar)
+    opx_note = ""
+    if not opx:
+        pers, ooe = series("personnel_expenses"), series("other_operating_expenses")
+        if pers or ooe:
+            opx = {k: (pers.get(k) or 0.0) + (ooe.get(k) or 0.0) for k in set(pers) | set(ooe) if (pers.get(k) is not None and ooe.get(k) is not None)}
+            opx_note = " [operating_expenses = personel + diğer faaliyet giderleri]"
+    prov_note = ""
+    if not prov:
+        prov = series("expected_credit_loss_expense")
+        prov_note = " [provision_expenses = beklenen zarar karşılığı gideri (TFRS 9)]" if prov else ""
+    llp_note = ""
+    if not llp:
+        llp = series("npl_provisions")
+        llp_note = " [loan_loss_provisions = donuk alacak özel karşılığı (DT20 'Donuk Alacak')]" if llp else ""
 
     # kârlılık (gelir tablosu kümülatif → yıllıklandır)
     ni_a, m1 = annualize_ytd(ni.get(pe), pe)
@@ -154,17 +169,17 @@ def compute_derived(obs: pd.DataFrame, bank_code: str, pe: date, scope: str = "s
     rev = [x.get(pe) for x in (nii, nfc, trd, oth)]
     tot_rev = sum(v for v in rev if v is not None) if any(v is not None for v in rev) else None
     out.append(Derived("cost_to_income", (opx[pe] / tot_rev * 100) if (opx.get(pe) is not None and tot_rev) else None, "pct",
-                       "operating_expenses_ytd / (nii + nfc + trading + other)_ytd", {"opex": opx.get(pe), "revenue": tot_rev},
+                       "operating_expenses_ytd / (nii + nfc + trading + other)_ytd" + opx_note, {"opex": opx.get(pe), "revenue": tot_rev},
                        None if all(v is not None for v in rev) else "gelir bileşenlerinden bazıları eksik; payda eksik bileşenlerle hesaplandı" if tot_rev else "gelir yok"))
     # kredi kalitesi
     out.append(Derived("npl_ratio", (npl[pe] / lg[pe] * 100) if (npl.get(pe) is not None and lg.get(pe)) else None, "pct",
                        "npl_amount / loans_gross", {"npl": npl.get(pe), "loans_gross": lg.get(pe)}))
     out.append(Derived("npl_coverage_ratio", (llp[pe] / npl[pe] * 100) if (llp.get(pe) is not None and npl.get(pe)) else None, "pct",
-                       "loan_loss_provisions / npl_amount", {"llp": llp.get(pe), "npl": npl.get(pe)}))
+                       "loan_loss_provisions / npl_amount" + llp_note, {"llp": llp.get(pe), "npl": npl.get(pe)}))
     prov_a, m5 = annualize_ytd(prov.get(pe), pe)
     avg_lg, m6 = average_balance(lg, pe)
     out.append(Derived("cost_of_risk", (prov_a / avg_lg * 100) if (prov_a is not None and avg_lg) else None, "pct",
-                       f"provision_expenses[{m5}] / avg_loans_gross[{m6}]", {"prov_ytd": prov.get(pe), "avg_loans": avg_lg}))
+                       f"provision_expenses[{m5}] / avg_loans_gross[{m6}]" + prov_note, {"prov_ytd": prov.get(pe), "avg_loans": avg_lg}))
     # sermaye / likidite
     out.append(Derived("equity_to_assets", (te[pe] / ta[pe] * 100) if (te.get(pe) is not None and ta.get(pe)) else None, "pct",
                        "total_equity / total_assets", {"equity": te.get(pe), "assets": ta.get(pe)}))
