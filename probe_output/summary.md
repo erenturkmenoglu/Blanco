@@ -1,0 +1,998 @@
+# TBB probe 2026-06 (2026-10-28T13:48:31.187740+00:00, robots_policy=lenient)
+
+## tbb_fs_solo_excel — Akbank T.A.Ş. https://www.tbb.org.tr/sites/default/files/raporlar/54947/bankalar/Akbank%20T.A.%C5%9E..zip
+- ok=True format=zip size=304180 error=None
+- sheet `Akbank T.A.Ş.-Ek Tablolar.xlsx::Kapak` 13x4 — etiket sütunu 0, eşlenen 0, eşlenmeyen 5
+  - KONSOLİDE OLMAYAN ORTAK VERİ GÖNDERİM SETİ İLE İLGİLİ EKLER |  |  | 
+  -  |  |  | 
+  - Ortak Veri Gönderim Seti Orijinal Tablo No |  | Yapılan Değişikliği İçeren Ek Tablo No | 
+  -  |  |  | 
+  -  |  |  | 
+  -  |  |  | 
+  - 1. | Aktif1 - 2.b) T.C. Merkez Bankası hesabına ilişkin bilgiler | EK-1 | T.C. Merkez Bankası hesabına ilişkin bilgiler
+  -  |  |  | 
+- sheet `Akbank T.A.Ş.-Ek Tablolar.xlsx::EK 1` 12x3 — etiket sütunu 0, eşlenen 1, eşlenmeyen 6
+  - EK 1 |  | 
+  -  |  | 
+  - T.C. Merkez Bankası hesabına ilişkin bilgiler |  | 
+  -  |  | 
+  -  | Cari Dönem | 
+  -  | 30 Haziran 2026 | 
+  -  | TP | YP
+  - Vadesiz Serbest Hesap | 7 |                   -   
+- sheet `Akbank T.A.Ş.-Ek Tablolar.xlsx::EK 2` 14x2 — etiket sütunu 0, eşlenen 0, eşlenmeyen 9
+  - EK 2 | 
+  -  | 
+  - İtfa edilmiş maliyeti üzerinden değerlenen finansal varlıkla | 
+  -  | 
+  -  | 
+  -  | Cari Dönem
+  -  | 30 Haziran 2026
+  - Dönem Başındaki Değer  | 237899
+- sheet `Akbank T.A.Ş..xls::kapak-cover` 34x24 — etiket sütunu 3, eşlenen 0, eşlenmeyen 10
+  -  |  |  |  |  |  |  |  |  | 
+  -  |  | Bankanın Ticari Unvanı: | Akbank T.A.Ş. |  |  |  |  |  | Raporlama Dönemi:
+  -  |  | Yönetim Merkezi Adresi: | Sabancı Center 34330, 4.Levent/İSTANBUL |  |  |  |  |  | 
+  -  |  | Telefon: | (212) 385 55 55 |  |  |  |  |  | Birimi:
+  -  |  | Faks: | (212) 325 12 31 |  |  |  |  |  | 
+  -  |  | Web Sitesi Adresi: | www.akbank.com |  |  |  |  |  | 
+  -  |  | Formu Hazırlayan: | Zeynep Tanyer |  |  |  |  |  | 
+  -  |  | Tel: | (212) 285 53 89 |  |  |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::varlıklar` 57x8 — etiket sütunu 0, eşlenen 3, eşlenmeyen 48
+  - AKBANK T. A.Ş. KONSOLİDE OLMAYAN BİLANÇO (Finansal Durum Tab |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  | MİLYON TÜRK LİRASI |  |  |  |  | 
+  -  |  |  | CARİ DÖNEM  |  |  | ÖNCEKİ DÖNEM  | 
+  - VARLIKLAR | Dipnot |  | (30/06/2026) |  |  | (31/12/2025) | 
+  -  |  | TP | YP | Toplam  | TP | YP | Toplam 
+  - I. FİNANSAL VARLIKLAR (Net) |  | 650950.0 | 572320.0 | 1223270.0 | 628775.0 | 538748.0 | 1167523.0
+- sheet `Akbank T.A.Ş..xls::assets` 57x8 — etiket sütunu 0, eşlenen 0, eşlenmeyen 51
+  - AKBANK T.A.Ş. CONSOLIDATED BALANCE SHEET (Statement of Finan |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  | MILLION TURKISH LIRA |  |  |  |  | 
+  -  |  |  | CURRENT PERIOD |  |  | PRIOR PERIOD | 
+  - ASSETS | Disc. |  | (30/06/2026) |  |  | (31/12/2025) | 
+  -  |  | TC | FC | Total | TC | FC | Total
+  - I. FINANCIAL ASSETS (Net) |  | 650950.0 | 572320.0 | 1223270.0 | 628775.0 | 538748.0 | 1167523.0
+- sheet `Akbank T.A.Ş..xls::yüküm.` 56x8 — etiket sütunu 0, eşlenen 2, eşlenmeyen 48
+  - AKBANK T. A.Ş. KONSOLİDE OLMAYAN BİLANÇO (Finansal Durum Tab |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  | MİLYON TÜRK LİRASI |  |  |  |  | 
+  -  |  |  | CARİ DÖNEM  |  |  | ÖNCEKİ DÖNEM  | 
+  - YÜKÜMLÜLÜKLER | Dipnot |  | (30/06/2026) |  |  | (31/12/2025) | 
+  -  |  | TP | YP | Toplam  | TP | YP | Toplam 
+  - I. MEVDUAT   |  | 1574270.0 | 808010.0 | 2382280.0 | 1355137.0 | 716443.0 | 2071580.0
+- sheet `Akbank T.A.Ş..xls::liabilities` 56x8 — etiket sütunu 0, eşlenen 0, eşlenmeyen 50
+  - AKBANK T.A.Ş. CONSOLIDATED BALANCE SHEET (Statement of Finan |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  | MILLION TURKISH LIRA |  |  |  |  | 
+  -  |  |  | CURRENT PERIOD |  |  | PRIOR PERIOD | 
+  - EQUITY AND LIABILITIES | Disc. |  | (30/06/2026) |  |  | (31/12/2025) | 
+  -  |  | TC | FC | Total | TC | FC | Total
+  - I. DEPOSITS |  | 1574270.0 | 808010.0 | 2382280.0 | 1355137.0 | 716443.0 | 2071580.0
+- sheet `Akbank T.A.Ş..xls::nazım` 92x8 — etiket sütunu 0, eşlenen 0, eşlenmeyen 87
+  - AKBANK T. A.Ş. KONSOLİDE OLMAYAN NAZIM HESAPLAR |  |  |  |  |  |  | 
+  -  |  | MİLYON TÜRK LİRASI |  |  |  |  | 
+  -  |  |  | CARİ DÖNEM  |  |  | ÖNCEKİ DÖNEM  | 
+  -  |  |  | (30/06/2026) |  |  | (31/12/2025) | 
+  -  | Dipnot | TP | YP | Toplam  | TP | YP | Toplam 
+  - A. BİLANÇO DIŞI YÜKÜMLÜLÜKLER (I+II+III) |  | 3579763.0 | 3254651.0 | 6834414.0 | 2654147.0 | 2348340.0 | 5002487.0
+  - I. GARANTİ ve KEFALETLER |  | 442933.0 | 235703.0 | 678636.0 | 344323.0 | 201210.0 | 545533.0
+  - 1.1.Teminat Mektupları |  | 322746.0 | 159387.0 | 482133.0 | 248475.0 | 144203.0 | 392678.0
+- sheet `Akbank T.A.Ş..xls::commit.` 92x8 — etiket sütunu 0, eşlenen 0, eşlenmeyen 87
+  - AKBANK T.A.Ş. BANK ONLY OFF BALANCE SHEET COMMITMENTS  |  |  |  |  |  |  | 
+  -  |  | MILLION TURKISH LIRA |  |  |  |  | 
+  -  |  |  | CURRENT PERIOD |  |  | PRIOR PERIOD | 
+  -  | Disc. |  | (30/06/2026) |  |  | (31/12/2025) | 
+  -  |  | TC | FC | Total | TC | FC | Total
+  - A. OFF BALANCE SHEET COMMITMENTS |  | 3579763.0 | 3254651.0 | 6834414.0 | 2654147.0 | 2348340.0 | 5002487.0
+  - I. GUARANTEES AND WARRANTIES |  | 442933.0 | 235703.0 | 678636.0 | 344323.0 | 201210.0 | 545533.0
+  - 1.1.Letters of guarantee |  | 322746.0 | 159387.0 | 482133.0 | 248475.0 | 144203.0 | 392678.0
+- sheet `Akbank T.A.Ş..xls::gelir` 70x6 — etiket sütunu 0, eşlenen 0, eşlenmeyen 66
+  - AKBANK T. A.Ş. KONSOLİDE OLMAYAN KAR VEYA ZARAR TABLOSU |  |  |  |  | 
+  -  |  |  |  |  | 
+  -  |  |  |  |  | 
+  -  |  | MİLYON TÜRK LİRASI |  | MİLYON TÜRK LİRASI | 
+  - GELİR VE GİDER KALEMLERİ | Dipnot | CARİ DÖNEM | ÖNCEKİ DÖNEM | CARİ DÖNEM | ÖNCEKİ DÖNEM
+  -  |  | (01/01/2026-30/06/2026) | (01/01/2025-30/06/2025) | (01/04/2026-30/06/2026) | (01/04/2025-30/06/2025)
+  - I. FAİZ GELİRLERİ   |  | 349461.0 | 297916.0 | 186617.0 | 157714.0
+  - 1.1.Kredilerden Alınan Faizler |  | 232672.0 | 185424.0 | 121850.0 | 96612.0
+- sheet `Akbank T.A.Ş..xls::inc-exp` 994x6 — etiket sütunu 0, eşlenen 0, eşlenmeyen 66
+  - AKBANK T. A.Ş. BANK ONLY STATEMENT OF PROFIT OR LOSS |  |  |  |  | 
+  -  |  |  |  |  | 
+  -  |  |  |  |  | 
+  -  |  | MILLION TURKISH LIRA |  | MILLION TURKISH LIRA | 
+  - INCOME STATEMENT | Disc. | CURRENT PERIOD | PRIOR PERIOD | CURRENT PERIOD | PRIOR PERIOD
+  -  |  | (01/01/2026-30/06/2026) | (01/01/2025-30/06/2025) | (01/04/2026-30/06/2026) | (01/04/2025-30/06/2025)
+  - I. INTEREST INCOME |  | 349461.0 | 297916.0 | 186617.0 | 157714.0
+  - 1.1.Interest on loans |  | 232672.0 | 185424.0 | 121850.0 | 96612.0
+- sheet `Akbank T.A.Ş..xls::kaps.gel.` 22x3 — etiket sütunu 0, eşlenen 0, eşlenmeyen 17
+  - AKBANK T. A.Ş. KONSOLİDE OLMAYAN KAR VEYA ZARAR VE DİĞER KAP |  | 
+  -   |  | 
+  -  |  | 
+  -  | MİLYON TÜRK LİRASI | 
+  -  | CARİ DÖNEM | ÖNCEKİ DÖNEM
+  -  | (01/01/2026-30/06/2026) | (01/01/2025-30/06/2025)
+  - I. DÖNEM KARI/ZARARI | 34378.0 | 24851.0
+  - II. DİĞER KAPSAMLI GELİRLER | -8379.0 | 18.0
+- sheet `Akbank T.A.Ş..xls::comp.inc.` 22x3 — etiket sütunu 0, eşlenen 0, eşlenmeyen 17
+  - AKBANK T. A.Ş. STATEMENT OF PROFIT OR LOSS AND OTHER COMPREH |  | 
+  -   |  | 
+  -  |  | 
+  -  | MILLION TURKISH LIRA | 
+  -  | CURRENT PERIOD | PRIOR PERIOD
+  -  | (01/01/2026-30/06/2026) | (01/01/2025-30/06/2025)
+  - I. PROFIT (LOSS) | 34378.0 | 24851.0
+  - II. OTHER COMPREHENSIVE INCOME  | -8379.0 | 18.0
+- sheet `Akbank T.A.Ş..xls::özkaynak` 60x16 — etiket sütunu 0, eşlenen 0, eşlenmeyen 31
+  -  |  |  |  |  |  |  |  |  | 
+  - AKBANK T.A.Ş. KONSOLİDE OLMAYAN ÖZKAYNAK DEĞİŞİM TABLOSU |  |  |  |  |  |  |  |  | 
+  -  |  | MİLYON TÜRK LİRASI |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - ÖZKAYNAK KALEMLERİNDEKİ DEĞİŞİKLİKLER |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  | Kâr veya Zararda Yeniden Sınıflandırılmayacak  |  |  | Kâr veya Zararda Yeniden Sınıflandırılacak 
+  -  |  |  |  |  |  | Birikmiş Diğer Kapsamlı Gelirler ve Giderler |  |  | Birikmiş Diğer Kapsamlı Gelirler ve Giderler
+  -  | Dipnot | Ödenmiş  | Hisse Senedi  | Hisse Senedi  | Diğer Sermaye |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::SE` 59x16 — etiket sütunu 0, eşlenen 0, eşlenmeyen 29
+  -  |  |  |  |  |  |  |  |  | 
+  - AKBANK T.A.Ş. STATEMENT OF CHANGES IN SHAREHOLDERS' EQUITY |  |  |  |  |  |  |  |  | 
+  -  |  | MILLION TURKISH LIRA |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - STATEMENT OF CHANGES IN SHAREHOLDERS' EQUITY |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  | Other Accumulated Comprehensive Income  |  |  | Other Accumulated Comprehensive Income 
+  -  |  |  |  |  |  | That Will Not Be Reclassified In Profit and Loss  |  |  | That Will Be Reclassified In Profit and Loss 
+  -  | Disc. | Paid-in | Share | Share certificate | Other capital  |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::nakit akış` 66x4 — etiket sütunu 0, eşlenen 0, eşlenmeyen 47
+  -  |  | MİLYON TÜRK LİRASI | 
+  - AKBANK T.A.Ş. KONSOLİDE OLMAYAN NAKİT AKIŞ TABLOSU |  |  | 
+  -  |  | CARİ DÖNEM | ÖNCEKİ DÖNEM
+  -  | Dipnot | (30/06/2026) | (30/06/2025)
+  -  |  |  | 
+  - A. BANKACILIK FAALİYETLERİNE İLİŞKİN NAKİT AKIŞLARI |  |  | 
+  -  |  |  | 
+  - 1.1.Bankacılık Faaliyet Konusu Varlık ve Yükümlülüklerdeki D |  | 60936.0 | 23922.0
+- sheet `Akbank T.A.Ş..xls::cash-flow` 66x4 — etiket sütunu 0, eşlenen 0, eşlenmeyen 47
+  -  |  | MILLION TURKISH LIRA | 
+  - AKBANK T.A.Ş. BANK ONLY STATEMENT OF CASH FLOW |  |  | 
+  -  |  | CURRENT PERIOD | PRIOR PERIOD
+  -  | Disc. | (30/06/2026) | (30/06/2025)
+  -  |  |  | 
+  - A. CASH FLOWS FROM BANKING OPERATIONS |  |  | 
+  -  |  |  | 
+  - 1.1.Operating profit before changes in operating assets and  |  | 60936.0 | 23922.0
+- sheet `Akbank T.A.Ş..xls::kar dağ.` 66x3 — etiket sütunu 0, eşlenen 0, eşlenmeyen 50
+  - AKBANK T.A.Ş. KONSOLİDE OLMAYAN KÂR DAĞITIM TABLOSU |  | 
+  -  | MİLYON TÜRK LİRASI | 
+  -  |  | 
+  -  | CARİ DÖNEM | ÖNCEKİ DÖNEM
+  -  | (30/06/2026) | (30/06/2025)
+  -  |  | 
+  - I.DÖNEM KÂRININ DAĞITIMI |  | 
+  -  |  | 
+- sheet `Akbank T.A.Ş..xls::profit distr.` 66x3 — etiket sütunu 0, eşlenen 0, eşlenmeyen 50
+  - AKBANK T.A.Ş. BANK ONLY PROFIT DISTRIBUTION TABLE |  | 
+  -  | MILLION TURKISH LIRA | 
+  -  |  | 
+  -  | CURRENT PERIOD | PRIOR PERIOD
+  -  | (30/06/2026) | (30/06/2025)
+  -  |  | 
+  - I.DISTRIBUTION OF CURRENT YEAR INCOME |  | 
+  -  |  | 
+- sheet `Akbank T.A.Ş..xls::malibünye1` 647x21 — etiket sütunu 0, eşlenen 5, eşlenmeyen 111
+  - ÜÇÜNCÜ BÖLÜM |  |  |  |  |  |  |  |  | 
+  - Mali Bünyeye İlişkin Bilgiler (Madde 7-14) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Madde 7-Özkaynaklar |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Özkaynak Kalemlerine İlişkin Bilgiler: (3 Aylık) |  |  |  |  |  |  |  |  | 
+  -  | Tutar  | 1/1/2014 Öncesi Uygulamaya İlişkin Tutar* |  |  |  |  |  |  | 
+  - ÇEKİRDEK SERMAYE |  |  |  |  |  |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::fin.pos.1` 647x21 — etiket sütunu 0, eşlenen 2, eşlenmeyen 113
+  - SECTION 3 |  |  |  |  |  |  |  |  | 
+  - Information and diclosures related to financial position (Ar |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Article 7-Information related to capital adequacy ratio: |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Summary information about bank only shareholders' equity req |  |  |  |  |  |  |  |  | 
+  -  | Amounts | 1/1/2014 Regarding pre-Application amount * |  |  |  |  |  |  | 
+  - Common Equity Tier 1 capital | 0.0 | 0.0 |  |  |  |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::malibünye2` 362x8 — etiket sütunu 0, eşlenen 0, eşlenmeyen 42
+  - ÜÇÜNCÜ BÖLÜM |  |  |  |  |  |  | SERBEST TABLOLAR
+  - Mali Bünyeye İlişkin Bilgiler (Madde 7-14) |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  - Madde 7-Özkaynaklar |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  - Özkaynak hesaplamasına dahil edilecek borçlanma araçlarına i |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  - İhraçcı | AKBANK T.A.Ş |  |  |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::fin.pos.2` 80x7 — etiket sütunu 0, eşlenen 2, eşlenmeyen 63
+  - SECTION 3 |  |  |  |  |  | 
+  - Information and diclosures related to financial position (Ar |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+  - PROVISIONAL ARTICLE 3 |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+  -  | T | T-1 | T-2 | T-3 | T-4 | 
+  - Shareholders' Equity | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 
+  - Common equity tier 1 capital | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 
+- sheet `Akbank T.A.Ş..xls::KR5 stan.yak.` 26x13 — etiket sütunu 0, eşlenen 0, eşlenmeyen 24
+  - KR5 Standart Yaklaşım Risk sınıflarına ve risk ağırlıklarına |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  -  | Risk Ağırlığı |  |  |  |  |  |  |  | 
+  - Cari Dönem | 0.0 | 0.1 | 0.2 | 35%(*) | %50(*) | 0.5 | 0.75 | 1.0 | 1.5
+  - Risk Sınıfları |  |  |  |  |  |  |  |  | 
+  - 1. Merkezi yönetimlerden veya merkez bankalarından alacaklar | 1266147.0 |    -    | 3595.0 | - |                 -    | 1.0 |                  -    |                  -    |                 -   
+  - 2. Bölgesel yönetimlerden veya yerel yönetimlerden alacaklar |                    -    |    -    |                 -    | - |                 -    | 426.0 |                  -    |                  -    |                 -   
+  - 3. İdari birimlerden ve ticari olmayan girişimlerden alacakl |                    -    |    -    |                 -    | - |                 -    |                       -    |                  -    | 12841.0 |                 -   
+- sheet `Akbank T.A.Ş..xls::KR5 stan.app.` 23x13 — etiket sütunu 0, eşlenen 0, eşlenmeyen 21
+  - KR5- Standardised approach - Claims in accordance to risk cl |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  -  | Risk weighs |  |  |  |  |  |  |  | 
+  - Current period | 0.0 | 0.1 | 0.2 | 35%(*) | %50(*) | 0.5 | 0.75 | 1.0 | 1.5
+  - Risk classifications |  |  |  |  |  |  |  |  | 
+  - 1. Claims on sovereigns and Central Banks  | 1266147.0 |    -    | 3595.0 | - |                 -    | 1.0 |                  -    |                  -    |                 -   
+  - 2. Claims on regional governments or local authorities |                    -    |    -    |                 -    | - |                 -    | 426.0 |                  -    |                  -    |                 -   
+  - 3. Claims on administrative bodies and other non-commercial  |                    -    |    -    |                 -    | - |                 -    |                       -    |                  -    | 12841.0 |                 -   
+- sheet `Akbank T.A.Ş..xls::aktif1` 398x5 — etiket sütunu 0, eşlenen 2, eşlenmeyen 78
+  - DÖRDÜNCÜ BÖLÜM |  |  |  | 
+  - Aktif Kalemlere İlişkin Açıklamalar (Madde 16) |  |  |  | 
+  -  |  |  |  | 
+  - 2. Nakit Değerler ve T.C. Merkez Bankası Hesabı:  |  |  |  | 
+  -  |  |  |  | 
+  - 2.a) Nakit Değerler ve T.C. Merkez Bankası Hesabı: (3 Aylık) |  |  |  | 
+  -  |  |  |  | 
+  -  | Cari Dönem |  | Önceki Dönem | 
+- sheet `Akbank T.A.Ş..xls::assets1` 398x5 — etiket sütunu 0, eşlenen 0, eşlenmeyen 79
+  - SECTION 4 |  |  |  | 
+  - Information and disclosures related to assets (Article 16) |  |  |  | 
+  -  |  |  |  | 
+  - 2. Information related to cash and balances with the Central |  |  |  | 
+  -  |  |  |  | 
+  - 2.a) Cash and balances with the Central Bank: (Quarterly) |  |  |  | 
+  -  |  |  |  | 
+  -  | Current period |  | Prior period | 
+- sheet `Akbank T.A.Ş..xls::aktif2` 45x9 — etiket sütunu 0, eşlenen 1, eşlenmeyen 19
+  - 2.ğ) İştirakler hesabına ilişkin bilgiler (Net):  |  |  |  |  |  |  |  | SERBEST TABLOLAR
+  -  |  |  |  |  |  |  |  | 
+  - 2.ğ.2) Konsolide edilmeyen iştiraklere ilişkin bilgiler: (3  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - Unvanı | Adres (Şehir/ Ülke) | Bankanın Pay Oranı-Farklıysa Oy Oranı(%)  | Banka Risk Grubu Pay Oranı (%)  |  |  |  |  | 
+  - Bankalararası Kart Merkezi A.Ş.  | İstanbul/Türkiye | 4,89 | 4,89 |  |  |  |  | 
+  - Kredi Kayıt Bürosu A.Ş.  | İstanbul/Türkiye | 9,09 | 9,09 |  |  |  |  | 
+  - JCR Avrasya Derecelendirme A.Ş.  | İstanbul/Türkiye | 2,86 | 2,86 |  |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::assets2` 35x9 — etiket sütunu 0, eşlenen 0, eşlenmeyen 15
+  - 2.ğ) Information on investments in associates  (Net):  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - 2.ğ.2) Information on investments in associates that are not |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - Description | Address (City / Country) | Bank’s share percentage-If different voting percentage(%)  | Bank’s risk group share percentage (%)   |  |  |  |  | 
+  - Bankalararası Kart Merkezi A.Ş.  | İstanbul/Türkiye | 4,89 | 4,89 |  |  |  |  | 
+  - JCR Avrasya Derecelendirme A.Ş.  | İstanbul/Türkiye | 2,86 | 2,86 |  |  |  |  | 
+  - Birleşik İpotek Finansmanı A.Ş.  | İstanbul/Türkiye | 8,33 | 8,33 |  |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::pasif1` 151x10 — etiket sütunu 0, eşlenen 1, eşlenmeyen 79
+  - BEŞİNCİ BÖLÜM |  |  |  |  |  |  |  |  | 
+  - Pasif Kalemlere İlişkin Açıklama ve Dipnotlar (Madde 17) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - 2.a.1.i) Mevduatın vade yapısına ilişkin bilgiler: (3 Aylık) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Cari Dönem | Vadesiz | 7 Gün İhbarlı | 1 Aya Kadar | 1-3 Ay  | 3-6 Ay | 6 Ay-1 Yıl | 1 Yıl ve Üstü | Birikimli Mevduat | Toplam
+  - Tasarruf Mevduatı | 118357.0 |  | 172460.0 | 448718.0 | 54796.0 | 18021.0 | 44955.0 | 5.0 | 857312.0
+  - Döviz Tevdiat Hesabı | 267500.0 | 0.0 | 76786.0 | 52343.0 | 2558.0 | 2716.0 | 6420.0 | 0.0 | 408323.0
+- sheet `Akbank T.A.Ş..xls::liab1` 151x10 — etiket sütunu 0, eşlenen 0, eşlenmeyen 80
+  - SECTION 5 |  |  |  |  |  |  |  |  | 
+  - Information and disclosures related to liabilities (Article  |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - 2.a.1.i) Information of maturity structure of deposits : (Qu |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Current Period | Demand | With 7 days maturity | Up to 1 month | 1-3 Month | 3-6 Month | 6 Month-1 Year | 1 Year and over | Cumulative deposit | Total
+  - Saving deposits | 118357.0 | 0.0 | 172460.0 | 448718.0 | 54796.0 | 18021.0 | 44955.0 | 5.0 | 857312.0
+  - Foreign currency deposits | 267500.0 | 0.0 | 76786.0 | 52343.0 | 2558.0 | 2716.0 | 6420.0 | 0.0 | 408323.0
+- sheet `Akbank T.A.Ş..xls::pasif2` 18x8 — etiket sütunu 0, eşlenen 0, eşlenmeyen 8
+  -  |  |  |  |  |  |  | SERBEST TABLOLAR
+  - 2.ı.2) Ödenmiş sermaye tutarı, bankada kayıtlı sermaye siste |  |  |  |  |  |  | 
+  - bu sistem uygulanıyor ise kayıtlı sermaye tavanı: (3 Aylık) |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  - Sermaye Sistemi | Ödenmiş Sermaye | Tavan |  |  |  |  | 
+  - Kayıtlı Sermaye | 5200.0 | 30000.0 |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::liab2` 18x5 — etiket sütunu 0, eşlenen 0, eşlenmeyen 8
+  - 2.ı.2) Paid-in capital amount, explanation as to whether the |  |  |  | 
+  - ceiling applicable at bank if so amount of registered share  |  |  |  | 
+  -  |  |  |  | 
+  - Capital System | Paid-in capital | Ceiling |  | 
+  - Kayıtlı Sermaye | 5200.0 | 30000.0 |  | 
+  - 0.0 | 0.0 | 0.0 |  | 
+  -  |  |  |  | 
+  - 2.ı.3) Information on capital increases and their sources; o |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::nzm` 51x9 — etiket sütunu 0, eşlenen 0, eşlenmeyen 38
+  - ALTINCI BÖLÜM |  |  |  |  |  |  |  | 
+  - Nazım Hesaplara İlişkin Açıklama ve Dipnotlar (Madde 18) |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - 2.a) Nazım hesaplarda yer alan yükümlülüklere ilişkin açıkla |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - 2.a.3.i) Gayrinakdi kredilerin toplam tutarı: (3 Aylık) |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  -  | Cari Dönem | Önceki Dönem |  |  |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::off-bs` 51x9 — etiket sütunu 0, eşlenen 0, eşlenmeyen 38
+  - SECTION 6 |  |  |  |  |  |  |  | 
+  - Information and disclosures related to off-balance sheet ite |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - 2.a) Information related to off balance sheet commitments: |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - 2.a.3.i) Non-cash loans: (Quarterly) |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  -  | Current period | Prior period |  |  |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::gelir1` 159x9 — etiket sütunu 0, eşlenen 3, eşlenmeyen 91
+  - YEDİNCİ BÖLÜM |  |  |  |  |  |  |  | 
+  - Gelir Tablosuna İlişkin Açıklama ve Dipnotlar (Madde 19) |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - 2.a.1) Kredilerden Alınan Faiz Gelirlerine İlişkin Bilgiler* |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  -  | Cari Dönem |  | Önceki Dönem |  |  |  |  | 
+  -  | TP | YP | TP | YP |  |  |  | 
+  - Kredilerden Alınan Faizler* | 216535.0 | 16137.0 | 171860.0 | 13564.0 |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::income1` 159x9 — etiket sütunu 0, eşlenen 0, eşlenmeyen 93
+  - SECTION 7 |  |  |  |  |  |  |  | 
+  - Information and disclosures related to income statement (Art |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - 2.a.1) Information about interest income received from loans |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  -  | Current period |  | Prior period |  |  |  |  | 
+  -  | TC | FC | TC | FC |  |  |  | 
+  -  Interest on loans* | 216535.0 | 16137.0 | 171860.0 | 13564.0 |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::risk grubu` 48x7 — etiket sütunu 0, eşlenen 2, eşlenmeyen 19
+  - SEKİZİNCİ BÖLÜM |  |  |  |  |  | 
+  - Bankanın Dahil Olduğu Risk Grubuna İlişkin Açıklamalar (Madd |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+  - 1. Bankanın dahil olduğu risk grubuna ilişkin işlemlerin hac |  |  |  |  |  | 
+  - mevduat işlemleri ile döneme ilişkin gelir ve giderler (3 Ay |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+  - 1. a) Cari Dönem:  |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::risk group` 48x7 — etiket sütunu 0, eşlenen 0, eşlenmeyen 21
+  - SECTION 8 |  |  |  |  |  | 
+  - Information and disclosures related to bank’s risk group (Ar |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+  - 1. Information on the volume of transaction relating to the  |  |  |  |  |  | 
+  - and period’s profit and loss (Quarterly) |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+  - 1. a) Current Period |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::yi-ydşb.tems.` 20x9 — etiket sütunu 3, eşlenen 0, eşlenmeyen 4
+  - YEDİNCİ BÖLÜM |  |  |  |  |  |  |  | SERBEST TABLOLAR
+  - Bankanın Yurt İçi, Yurt Dışı, Kıyı Bankacılığı Bölgelerindek |  |  |  |  |  |  |  | 
+  - Yurt Dışı Temsilciliklerine İlişkin Bilgiler (Madde 23) |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - Bankanın yurtiçi ve yurtdışı şube ve temsilciliklerine ilişk |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  -  | Sayı | Çalışan Sayısı |  |  |  |  |  | 
+- sheet `Akbank T.A.Ş..xls::branches` 20x6 — etiket sütunu 3, eşlenen 0, eşlenmeyen 4
+  - SECTION 7 |  |  |  |  | 
+  - Information relating to the domestic, foreign offshore branc |  |  |  |  | 
+  - foreign representations of the Bank (Article 23) |  |  |  |  | 
+  -  |  |  |  |  | 
+  - Information relating to the domestic, foreign offshore branc |  |  |  |  | 
+  -  |  |  |  |  | 
+  -  |  |  |  |  | 
+  -  | Number | Number of employees |  |  | 
+## tbb_fs_solo_excel — Türkiye Cumhuriyeti Ziraat Bankası A.Ş. https://www.tbb.org.tr/sites/default/files/raporlar/54947/bankalar/T%C3%BCrkiye%20Cumhuriyeti%20Ziraat%20Bankas%C4%B1%20A.%C5%9E..zip
+- ok=True format=zip size=280905 error=None
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::kapak-cover` 34x24 — etiket sütunu 3, eşlenen 0, eşlenmeyen 11
+  -  |  |  |  |  |  |  |  |  | 
+  -  |  | Bankanın Ticari Unvanı: | T.C. ZİRAAT BANKASI A.Ş. |  |  |  |  |  | Raporlama Dönemi:
+  -  |  | Yönetim Merkezi Adresi: | Finanskent Mahallesi Finans Caddesi No:44/A Ümraniye/İSTANBU |  |  |  |  |  | 
+  -  |  | Telefon: | (216) 590 20 00 |  |  |  |  |  | Birimi:
+  -  |  | Faks: | (216) 590 89 01 |  |  |  |  |  | 
+  -  |  | Web Sitesi Adresi: | www.ziraatbank.com.tr  |  |  |  |  |  | 
+  -  |  | Formu Hazırlayan: | Finansal Koordinasyon ve Raporlama  Bölüm Başkanlığı |  |  |  |  |  | 
+  -  |  | Tel: | 0216 590 59 24 |  |  |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::varlıklar` 57x8 — etiket sütunu 0, eşlenen 3, eşlenmeyen 48
+  - T.C.ZİRAAT BANKASI A.Ş. KONSOLİDE OLMAYAN BİLANÇO (Finansal  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  | MİLYON TÜRK LİRASI |  |  |  |  | 
+  -  |  |  | CARİ DÖNEM  |  |  | ÖNCEKİ DÖNEM  | 
+  - VARLIKLAR | Dipnot |  | (30/06/2026) |  |  | (31/12/2025) | 
+  -  |  | TP | YP | Toplam  | TP | YP | Toplam 
+  - I. FİNANSAL VARLIKLAR (Net) |  | 1453667.0 | 1775965.0 | 3229632.0 | 1612818.0 | 1818698.0 | 3431516.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::assets` 57x8 — etiket sütunu 0, eşlenen 0, eşlenmeyen 51
+  - T.C.ZİRAAT BANKASI A.Ş. CONSOLIDATED BALANCE SHEET (Statemen |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  | MILLION TURKISH LIRA |  |  |  |  | 
+  -  |  |  | CURRENT PERIOD |  |  | PRIOR PERIOD | 
+  - ASSETS | Disc. |  | (30/06/2026) |  |  | (31/12/2025) | 
+  -  |  | TC | FC | Total | TC | FC | Total
+  - I. FINANCIAL ASSETS (Net) |  | 1453667.0 | 1775965.0 | 3229632.0 | 1612818.0 | 1818698.0 | 3431516.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::yüküm.` 56x8 — etiket sütunu 0, eşlenen 2, eşlenmeyen 48
+  - T.C.ZİRAAT BANKASI A.Ş. KONSOLİDE OLMAYAN BİLANÇO (Finansal  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  | MİLYON TÜRK LİRASI |  |  |  |  | 
+  -  |  |  | CARİ DÖNEM  |  |  | ÖNCEKİ DÖNEM  | 
+  - YÜKÜMLÜLÜKLER | Dipnot |  | (30/06/2026) |  |  | (31/12/2025) | 
+  -  |  | TP | YP | Toplam  | TP | YP | Toplam 
+  - I. MEVDUAT   |  | 3606634.0 | 2174182.0 | 5780816.0 | 3321298.0 | 2084097.0 | 5405395.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::liabilities` 56x8 — etiket sütunu 0, eşlenen 0, eşlenmeyen 50
+  - T.C.ZİRAAT BANKASI A.Ş. CONSOLIDATED BALANCE SHEET (Statemen |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  | MILLION TURKISH LIRA |  |  |  |  | 
+  -  |  |  | CURRENT PERIOD |  |  | PRIOR PERIOD | 
+  - EQUITY AND LIABILITIES | Disc. |  | (30/06/2026) |  |  | (31/12/2025) | 
+  -  |  | TC | FC | Total | TC | FC | Total
+  - I. DEPOSITS |  | 3606634.0 | 2174182.0 | 5780816.0 | 3321298.0 | 2084097.0 | 5405395.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::nazım` 92x8 — etiket sütunu 0, eşlenen 0, eşlenmeyen 87
+  - T.C.ZİRAAT BANKASI A.Ş. KONSOLİDE OLMAYAN NAZIM HESAPLAR |  |  |  |  |  |  | 
+  -  |  | MİLYON TÜRK LİRASI |  |  |  |  | 
+  -  |  |  | CARİ DÖNEM  |  |  | ÖNCEKİ DÖNEM  | 
+  -  |  |  | (30/06/2026) |  |  | (31/12/2025) | 
+  -  | Dipnot | TP | YP | Toplam  | TP | YP | Toplam 
+  - A. BİLANÇO DIŞI YÜKÜMLÜLÜKLER (I+II+III) |  | 3658799.0 | 3194288.0 | 6853087.0 | 3246315.0 | 2731423.0 | 5977738.0
+  - I. GARANTİ ve KEFALETLER |  | 805876.0 | 1223707.0 | 2029583.0 | 619459.0 | 1025430.0 | 1644889.0
+  - 1.1.Teminat Mektupları |  | 804173.0 | 936288.0 | 1740461.0 | 619133.0 | 797289.0 | 1416422.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::commit.` 92x8 — etiket sütunu 0, eşlenen 0, eşlenmeyen 87
+  - T.C.ZİRAAT BANKASI A.Ş. BANK ONLY OFF BALANCE SHEET COMMITME |  |  |  |  |  |  | 
+  -  |  | MILLION TURKISH LIRA |  |  |  |  | 
+  -  |  |  | CURRENT PERIOD |  |  | PRIOR PERIOD | 
+  -  | Disc. |  | (30/06/2026) |  |  | (31/12/2025) | 
+  -  |  | TC | FC | Total | TC | FC | Total
+  - A. OFF BALANCE SHEET COMMITMENTS |  | 3658799.0 | 3194288.0 | 6853087.0 | 3246315.0 | 2731423.0 | 5977738.0
+  - I. GUARANTEES AND WARRANTIES |  | 805876.0 | 1223707.0 | 2029583.0 | 619459.0 | 1025430.0 | 1644889.0
+  - 1.1.Letters of guarantee |  | 804173.0 | 936288.0 | 1740461.0 | 619133.0 | 797289.0 | 1416422.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::gelir` 70x6 — etiket sütunu 0, eşlenen 0, eşlenmeyen 66
+  - T.C.ZİRAAT BANKASI  A.Ş. KONSOLİDE OLMAYAN KAR VEYA ZARAR TA |  |  |  |  | 
+  -  |  |  |  |  | 
+  -  |  |  |  |  | 
+  -  |  | MİLYON TÜRK LİRASI |  | MİLYON TÜRK LİRASI | 
+  - GELİR VE GİDER KALEMLERİ | Dipnot | CARİ DÖNEM | ÖNCEKİ DÖNEM | CARİ DÖNEM | ÖNCEKİ DÖNEM
+  -  |  | (01/01/2026-30/06/2026) | (01/01/2025-30/06/2025) | (01/04/2026-30/06/2026) | (01/04/2025-30/06/2025)
+  - I. FAİZ GELİRLERİ   |  | 858788.0 | 652675.0 | 449137.0 | 338393.0
+  - 1.1.Kredilerden Alınan Faizler |  | 573169.0 | 414511.0 | 299295.0 | 220634.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::inc-exp` 994x6 — etiket sütunu 0, eşlenen 0, eşlenmeyen 66
+  - T.C.ZİRAAT BANKASI  A.Ş. BANK ONLY STATEMENT OF PROFIT OR LO |  |  |  |  | 
+  -  |  |  |  |  | 
+  -  |  |  |  |  | 
+  -  |  | MILLION TURKISH LIRA |  | MILLION TURKISH LIRA | 
+  - INCOME STATEMENT | Disc. | CURRENT PERIOD | PRIOR PERIOD | CURRENT PERIOD | PRIOR PERIOD
+  -  |  | (01/01/2026-30/06/2026) | (01/01/2025-30/06/2025) | (01/04/2026-30/06/2026) | (01/04/2025-30/06/2025)
+  - I. INTEREST INCOME |  | 858788.0 | 652675.0 | 449137.0 | 338393.0
+  - 1.1.Interest on loans |  | 573169.0 | 414511.0 | 299295.0 | 220634.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::kaps.gel.` 22x3 — etiket sütunu 0, eşlenen 0, eşlenmeyen 17
+  - T.C.ZİRAAT BANKASI  A.Ş. KONSOLİDE OLMAYAN KAR VEYA ZARAR VE |  | 
+  -   |  | 
+  -  |  | 
+  -  | MİLYON TÜRK LİRASI | 
+  -  | CARİ DÖNEM | ÖNCEKİ DÖNEM
+  -  | (01/01/2026-30/06/2026) | (01/01/2025-30/06/2025)
+  - I. DÖNEM KARI/ZARARI | 74179.0 | 64010.0
+  - II. DİĞER KAPSAMLI GELİRLER | -32685.0 | 40044.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::comp.inc.` 22x3 — etiket sütunu 0, eşlenen 0, eşlenmeyen 17
+  - T.C.ZİRAAT BANKASI A.Ş. STATEMENT OF PROFIT OR LOSS AND OTHE |  | 
+  -   |  | 
+  -  |  | 
+  -  | MILLION TURKISH LIRA | 
+  -  | CURRENT PERIOD | PRIOR PERIOD
+  -  | (01/01/2026-30/06/2026) | (01/01/2025-30/06/2025)
+  - I. PROFIT (LOSS) | 74179.0 | 64010.0
+  - II. OTHER COMPREHENSIVE INCOME  | -32685.0 | 40044.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::özkaynak` 60x16 — etiket sütunu 0, eşlenen 0, eşlenmeyen 31
+  -  |  |  |  |  |  |  |  |  | 
+  - T.C.ZİRAAT BANKASI A.Ş. KONSOLİDE OLMAYAN ÖZKAYNAK DEĞİŞİM T |  |  |  |  |  |  |  |  | 
+  -  |  | MİLYON TÜRK LİRASI |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - ÖZKAYNAK KALEMLERİNDEKİ DEĞİŞİKLİKLER |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  | Kâr veya Zararda Yeniden Sınıflandırılmayacak  |  |  | Kâr veya Zararda Yeniden Sınıflandırılacak 
+  -  |  |  |  |  |  | Birikmiş Diğer Kapsamlı Gelirler ve Giderler |  |  | Birikmiş Diğer Kapsamlı Gelirler ve Giderler
+  -  | Dipnot | Ödenmiş  | Hisse Senedi  | Hisse Senedi  | Diğer Sermaye |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::SE` 59x16 — etiket sütunu 0, eşlenen 0, eşlenmeyen 29
+  -  |  |  |  |  |  |  |  |  | 
+  - T.C.ZİRAAT BANKASI A.Ş. STATEMENT OF CHANGES IN SHAREHOLDERS |  |  |  |  |  |  |  |  | 
+  -  |  | MILLION TURKISH LIRA |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - STATEMENT OF CHANGES IN SHAREHOLDERS' EQUITY |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  | Other Accumulated Comprehensive Income  |  |  | Other Accumulated Comprehensive Income 
+  -  |  |  |  |  |  | That Will Not Be Reclassified In Profit and Loss  |  |  | That Will Be Reclassified In Profit and Loss 
+  -  | Disc. | Paid-in | Share | Share certificate | Other capital  |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::nakit akış` 66x4 — etiket sütunu 0, eşlenen 0, eşlenmeyen 47
+  -  |  | MİLYON TÜRK LİRASI | 
+  - T.C.ZİRAAT BANKASI A.Ş. KONSOLİDE OLMAYAN NAKİT AKIŞ TABLOSU |  |  | 
+  -  |  | CARİ DÖNEM | ÖNCEKİ DÖNEM
+  -  | Dipnot | (30/06/2026) | (30/06/2025)
+  -  |  |  | 
+  - A. BANKACILIK FAALİYETLERİNE İLİŞKİN NAKİT AKIŞLARI |  |  | 
+  -  |  |  | 
+  - 1.1.Bankacılık Faaliyet Konusu Varlık ve Yükümlülüklerdeki D |  | 19771.0 | 16352.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::cash-flow` 66x4 — etiket sütunu 0, eşlenen 0, eşlenmeyen 47
+  -  |  | MILLION TURKISH LIRA | 
+  - T.C.ZİRAAT BANKASI A.Ş. BANK ONLY STATEMENT OF CASH FLOW |  |  | 
+  -  |  | CURRENT PERIOD | PRIOR PERIOD
+  -  | Disc. | (30/06/2026) | (30/06/2025)
+  -  |  |  | 
+  - A. CASH FLOWS FROM BANKING OPERATIONS |  |  | 
+  -  |  |  | 
+  - 1.1.Operating profit before changes in operating assets and  |  | 19771.0 | 16352.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::kar dağ.` 66x3 — etiket sütunu 0, eşlenen 0, eşlenmeyen 50
+  - T.C.ZİRAAT BANKASI A.Ş. KONSOLİDE OLMAYAN KÂR DAĞITIM TABLOS |  | 
+  -  | MİLYON TÜRK LİRASI | 
+  -  |  | 
+  -  | CARİ DÖNEM | ÖNCEKİ DÖNEM
+  -  | (30/06/2026) | (30/06/2025)
+  -  |  | 
+  - I.DÖNEM KÂRININ DAĞITIMI |  | 
+  -  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::profit distr.` 66x3 — etiket sütunu 0, eşlenen 0, eşlenmeyen 50
+  - T.C.ZİRAAT BANKASI A.Ş. BANK ONLY PROFIT DISTRIBUTION TABLE |  | 
+  -  | MILLION TURKISH LIRA | 
+  -  |  | 
+  -  | CURRENT PERIOD | PRIOR PERIOD
+  -  | (30/06/2026) | (30/06/2025)
+  -  |  | 
+  - I.DISTRIBUTION OF CURRENT YEAR INCOME |  | 
+  -  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::malibünye1` 647x21 — etiket sütunu 0, eşlenen 5, eşlenmeyen 111
+  - ÜÇÜNCÜ BÖLÜM |  |  |  |  |  |  |  |  | 
+  - Mali Bünyeye İlişkin Bilgiler (Madde 7-14) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Madde 7-Özkaynaklar |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Özkaynak Kalemlerine İlişkin Bilgiler: (3 Aylık) |  |  |  |  |  |  |  |  | 
+  -  | Tutar  | 1/1/2014 Öncesi Uygulamaya İlişkin Tutar* |  |  |  |  |  |  | 
+  - ÇEKİRDEK SERMAYE |  |  |  |  |  |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::fin.pos.1` 647x21 — etiket sütunu 0, eşlenen 2, eşlenmeyen 113
+  - SECTION 3 |  |  |  |  |  |  |  |  | 
+  - Information and diclosures related to financial position (Ar |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Article 7-Information related to capital adequacy ratio: |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Summary information about bank only shareholders' equity req |  |  |  |  |  |  |  |  | 
+  -  | Amounts | 1/1/2014 Regarding pre-Application amount * |  |  |  |  |  |  | 
+  - Common Equity Tier 1 capital | 0.0 | 0.0 |  |  |  |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::malibünye2` 123x10 — etiket sütunu 0, eşlenen 4, eşlenmeyen 101
+  - ÜÇÜNCÜ BÖLÜM |  |  |  |  |  |  |  |  | SERBEST TABLOLAR
+  - Mali Bünyeye İlişkin Bilgiler (Madde 7-14) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Madde 7-Özkaynaklar |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Özkaynak hesaplamasına dahil edilecek borçlanma araçlarına i |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - İhraçcı | T.C Ziraat Bankası A.Ş. | T.C Ziraat Bankası A.Ş. | TVF Piyasa İstikrar ve Denge Alt Fonu | T.C Ziraat Bankası A.Ş. | T.C Ziraat Bankası A.Ş. |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::fin.pos.2` 80x7 — etiket sütunu 0, eşlenen 2, eşlenmeyen 63
+  - SECTION 3 |  |  |  |  |  | 
+  - Information and diclosures related to financial position (Ar |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+  - PROVISIONAL ARTICLE 3 |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+  -  | T | T-1 | T-2 | T-3 | T-4 | 
+  - Shareholders' Equity | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 
+  - Common equity tier 1 capital | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::KR5 stan.yak.` 26x13 — etiket sütunu 0, eşlenen 0, eşlenmeyen 24
+  - KR5 Standart Yaklaşım Risk sınıflarına ve risk ağırlıklarına |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  -  | Risk Ağırlığı |  |  |  |  |  |  |  | 
+  - Cari Dönem | 0.0 | 0.1 | 0.2 | 35%(*) | %50(*) | 0.5 | 0.75 | 1.0 | 1.5
+  - Risk Sınıfları |  |  |  |  |  |  |  |  | 
+  - 1. Merkezi yönetimlerden veya merkez bankalarından alacaklar | 3626267.0 | 0.0 | 4533.0 | 0.0 | 0.0 | 0.0 | 0.0 | 49547.0 | 0.0
+  - 2. Bölgesel yönetimlerden veya yerel yönetimlerden alacaklar | 799.0 | 0.0 | 0.0 | 0.0 | 0.0 | 10082.0 | 0.0 | 0.0 | 0.0
+  - 3. İdari birimlerden ve ticari olmayan girişimlerden alacakl | 62.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 138724.0 | 0.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::KR5 stan.app.` 23x13 — etiket sütunu 0, eşlenen 0, eşlenmeyen 21
+  - KR5- Standardised approach - Claims in accordance to risk cl |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  -  | Risk weighs |  |  |  |  |  |  |  | 
+  - Current period | 0.0 | 0.1 | 0.2 | 35%(*) | %50(*) | 0.5 | 0.75 | 1.0 | 1.5
+  - Risk classifications |  |  |  |  |  |  |  |  | 
+  - 1. Claims on sovereigns and Central Banks  | 3626267.0 | 0.0 | 4533.0 | 0.0 | 0.0 | 0.0 | 0.0 | 49547.0 | 0.0
+  - 2. Claims on regional governments or local authorities | 799.0 | 0.0 | 0.0 | 0.0 | 0.0 | 10082.0 | 0.0 | 0.0 | 0.0
+  - 3. Claims on administrative bodies and other non-commercial  | 62.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 138724.0 | 0.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::aktif1` 398x5 — etiket sütunu 0, eşlenen 2, eşlenmeyen 78
+  - DÖRDÜNCÜ BÖLÜM |  |  |  | 
+  - Aktif Kalemlere İlişkin Açıklamalar (Madde 16) |  |  |  | 
+  -  |  |  |  | 
+  - 2. Nakit Değerler ve T.C. Merkez Bankası Hesabı:  |  |  |  | 
+  -  |  |  |  | 
+  - 2.a) Nakit Değerler ve T.C. Merkez Bankası Hesabı: (3 Aylık) |  |  |  | 
+  -  |  |  |  | 
+  -  | Cari Dönem |  | Önceki Dönem | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::assets1` 398x5 — etiket sütunu 0, eşlenen 0, eşlenmeyen 79
+  - SECTION 4 |  |  |  | 
+  - Information and disclosures related to assets (Article 16) |  |  |  | 
+  -  |  |  |  | 
+  - 2. Information related to cash and balances with the Central |  |  |  | 
+  -  |  |  |  | 
+  - 2.a) Cash and balances with the Central Bank: (Quarterly) |  |  |  | 
+  -  |  |  |  | 
+  -  | Current period |  | Prior period | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::aktif2` 65x9 — etiket sütunu 0, eşlenen 1, eşlenmeyen 30
+  - 2.ğ) İştirakler hesabına ilişkin bilgiler (Net):  |  |  |  |  |  |  |  | SERBEST TABLOLAR
+  -  |  |  |  |  |  |  |  | 
+  - 2.ğ.2) Konsolide edilmeyen iştiraklere ilişkin bilgiler: (3  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - Unvanı | Adres (Şehir/ Ülke) | Bankanın Pay Oranı-Farklıysa Oy Oranı(%)  | Banka Risk Grubu Pay Oranı (%)  |  |  |  |  | 
+  - Arap Türk Bankası A.Ş. | İstanbul/Türkiye | 15.43189765909091 | 15.43189765909091 |  |  |  |  | 
+  - Birleşim Varlık Yönetimi A.Ş. | İstanbul/Türkiye | 16.0 | 16.0 |  |  |  |  | 
+  - Bileşim Finansal Teknolojiler ve Ödeme Sistemleri A.Ş. | İstanbul/Türkiye | 33.34 | 33.34 |  |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::assets2` 65x9 — etiket sütunu 0, eşlenen 0, eşlenmeyen 31
+  - 2.ğ) Information on investments in associates  (Net):  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - 2.ğ.2) Information on investments in associates that are not |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - Description | Address (City / Country) | Bank’s share percentage-If different voting percentage(%)  | Bank’s risk group share percentage (%)   |  |  |  |  | 
+  - Arap Türk Bankası A.Ş. | İstanbul/Türkiye | 15.43189765909091 | 15.43189765909091 |  |  |  |  | 
+  - Birleşim Varlık Yönetimi A.Ş. | İstanbul/Türkiye | 16.0 | 16.0 |  |  |  |  | 
+  - Bileşim Finansal Teknolojiler ve Ödeme Sistemleri A.Ş. | İstanbul/Türkiye | 33.34 | 33.34 |  |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::pasif1` 151x10 — etiket sütunu 0, eşlenen 1, eşlenmeyen 79
+  - BEŞİNCİ BÖLÜM |  |  |  |  |  |  |  |  | 
+  - Pasif Kalemlere İlişkin Açıklama ve Dipnotlar (Madde 17) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - 2.a.1.i) Mevduatın vade yapısına ilişkin bilgiler: (3 Aylık) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Cari Dönem | Vadesiz | 7 Gün İhbarlı | 1 Aya Kadar | 1-3 Ay  | 3-6 Ay | 6 Ay-1 Yıl | 1 Yıl ve Üstü | Birikimli Mevduat | Toplam
+  - Tasarruf Mevduatı | 390149.0 | 0.0 | 111062.0 | 1097986.0 | 181181.0 | 16817.0 | 27903.0 | 118.0 | 1825216.0
+  - Döviz Tevdiat Hesabı | 767578.0 | 0.0 | 170755.0 | 311800.0 | 66361.0 | 31700.0 | 116710.0 | 5.0 | 1464909.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::liab1` 151x10 — etiket sütunu 0, eşlenen 0, eşlenmeyen 80
+  - SECTION 5 |  |  |  |  |  |  |  |  | 
+  - Information and disclosures related to liabilities (Article  |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - 2.a.1.i) Information of maturity structure of deposits : (Qu |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Current Period | Demand | With 7 days maturity | Up to 1 month | 1-3 Month | 3-6 Month | 6 Month-1 Year | 1 Year and over | Cumulative deposit | Total
+  - Saving deposits | 390149.0 | 0.0 | 111062.0 | 1097986.0 | 181181.0 | 16817.0 | 27903.0 | 118.0 | 1825216.0
+  - Foreign currency deposits | 767578.0 | 0.0 | 170755.0 | 311800.0 | 66361.0 | 31700.0 | 116710.0 | 5.0 | 1464909.0
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::pasif2` 18x8 — etiket sütunu 0, eşlenen 0, eşlenmeyen 7
+  -  |  |  |  |  |  |  | SERBEST TABLOLAR
+  - 2.ı.2) Ödenmiş sermaye tutarı, bankada kayıtlı sermaye siste |  |  |  |  |  |  | 
+  - bu sistem uygulanıyor ise kayıtlı sermaye tavanı: (3 Aylık) |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  - Sermaye Sistemi | Ödenmiş Sermaye | Tavan |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::liab2` 18x5 — etiket sütunu 0, eşlenen 0, eşlenmeyen 7
+  - 2.ı.2) Paid-in capital amount, explanation as to whether the |  |  |  | 
+  - ceiling applicable at bank if so amount of registered share  |  |  |  | 
+  -  |  |  |  | 
+  - Capital System | Paid-in capital | Ceiling |  | 
+  - 0.0 | 0.0 | 0.0 |  | 
+  - 0.0 | 0.0 | 0.0 |  | 
+  -  |  |  |  | 
+  - 2.ı.3) Information on capital increases and their sources; o |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::nzm` 51x9 — etiket sütunu 0, eşlenen 0, eşlenmeyen 38
+  - ALTINCI BÖLÜM |  |  |  |  |  |  |  | 
+  - Nazım Hesaplara İlişkin Açıklama ve Dipnotlar (Madde 18) |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - 2.a) Nazım hesaplarda yer alan yükümlülüklere ilişkin açıkla |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - 2.a.3.i) Gayrinakdi kredilerin toplam tutarı: (3 Aylık) |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  -  | Cari Dönem | Önceki Dönem |  |  |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::off-bs` 51x9 — etiket sütunu 0, eşlenen 0, eşlenmeyen 38
+  - SECTION 6 |  |  |  |  |  |  |  | 
+  - Information and disclosures related to off-balance sheet ite |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - 2.a) Information related to off balance sheet commitments: |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - 2.a.3.i) Non-cash loans: (Quarterly) |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  -  | Current period | Prior period |  |  |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::gelir1` 159x9 — etiket sütunu 0, eşlenen 3, eşlenmeyen 91
+  - YEDİNCİ BÖLÜM |  |  |  |  |  |  |  | 
+  - Gelir Tablosuna İlişkin Açıklama ve Dipnotlar (Madde 19) |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - 2.a.1) Kredilerden Alınan Faiz Gelirlerine İlişkin Bilgiler* |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  -  | Cari Dönem |  | Önceki Dönem |  |  |  |  | 
+  -  | TP | YP | TP | YP |  |  |  | 
+  - Kredilerden Alınan Faizler* | 516406.0 | 56763.0 | 369986.0 | 44525.0 |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::income1` 159x9 — etiket sütunu 0, eşlenen 0, eşlenmeyen 93
+  - SECTION 7 |  |  |  |  |  |  |  | 
+  - Information and disclosures related to income statement (Art |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - 2.a.1) Information about interest income received from loans |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  -  | Current period |  | Prior period |  |  |  |  | 
+  -  | TC | FC | TC | FC |  |  |  | 
+  -  Interest on loans* | 516406.0 | 56763.0 | 369986.0 | 44525.0 |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::risk grubu` 48x7 — etiket sütunu 0, eşlenen 2, eşlenmeyen 19
+  - SEKİZİNCİ BÖLÜM |  |  |  |  |  | 
+  - Bankanın Dahil Olduğu Risk Grubuna İlişkin Açıklamalar (Madd |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+  - 1. Bankanın dahil olduğu risk grubuna ilişkin işlemlerin hac |  |  |  |  |  | 
+  - mevduat işlemleri ile döneme ilişkin gelir ve giderler (3 Ay |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+  - 1. a) Cari Dönem:  |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::risk group` 48x7 — etiket sütunu 0, eşlenen 0, eşlenmeyen 21
+  - SECTION 8 |  |  |  |  |  | 
+  - Information and disclosures related to bank’s risk group (Ar |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+  - 1. Information on the volume of transaction relating to the  |  |  |  |  |  | 
+  - and period’s profit and loss (Quarterly) |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+  - 1. a) Current Period |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::yi-ydşb.tems.` 20x9 — etiket sütunu 3, eşlenen 0, eşlenmeyen 4
+  - YEDİNCİ BÖLÜM |  |  |  |  |  |  |  | SERBEST TABLOLAR
+  - Bankanın Yurt İçi, Yurt Dışı, Kıyı Bankacılığı Bölgelerindek |  |  |  |  |  |  |  | 
+  - Yurt Dışı Temsilciliklerine İlişkin Bilgiler (Madde 23) |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - Bankanın yurtiçi ve yurtdışı şube ve temsilciliklerine ilişk |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  -  | Sayı | Çalışan Sayısı |  |  |  |  |  | 
+- sheet `Türkiye Cumhuriyeti Ziraat Bankası A.Ş..xls::branches` 20x6 — etiket sütunu 3, eşlenen 0, eşlenmeyen 4
+  - SECTION 7 |  |  |  |  | 
+  - Information relating to the domestic, foreign offshore branc |  |  |  |  | 
+  - foreign representations of the Bank (Article 23) |  |  |  |  | 
+  -  |  |  |  |  | 
+  - Information relating to the domestic, foreign offshore branc |  |  |  |  | 
+  -  |  |  |  |  | 
+  -  |  |  |  |  | 
+  -  | Number | Number of employees |  |  | 
+## tbb_asset_ranking —  https://www.tbb.org.tr/download/node/54929/field_raporlar_ekler/310010
+- ok=True format=xls size=48128 error=None
+- sheet `türkçe` 66x12 — etiket sütunu 1, eşlenen 0, eşlenmeyen 60
+  - Tablo 1  30.06.2026 İtibarıyla Aktif Büyüklüklerine Göre Ban |  |  |  |  |  |  |  |  | 
+  - (Milyon TL) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  -  | Banka | Kuruluş  Yılı | Toplam Aktifler | Toplam Krediler* | Toplam Mevduat     | Toplam Özkaynaklar  | Ödenmiş Sermaye  | Net Dönem Kar/Zararı  | Bilanço Dışı Hesaplar 
+  -  |  |  |  |  |  |  |  |  | 
+  - 1.0 | Türkiye Cumhuriyeti Ziraat Bankası A.Ş. | 1863.0 | 9076507.0 | 4929033.0 | 5780816.0 | 772558.0 | 84600.0 | 74179.0 | 26702813.0
+  - 2.0 | Türkiye Vakıflar Bankası T.A.O. | 1954.0 | 5810756.0 | 3400109.0 | 3566974.0 | 353008.0 | 9916.0 | 30108.0 | 117235884.0
+  - 3.0 | Türkiye İş Bankası A.Ş. | 1924.0 | 5091171.0 | 2708243.0 | 3397986.0 | 453172.0 | 25000.0 | 30013.0 | 13264391.0
+## tbb_dt20_selected_solo —  https://www.tbb.org.tr/download/node/54932/field_raporlar_ekler/310643
+- ok=True format=xls size=142336 error=None
+- sheet `Sermaye Std. Oranı` 72x4 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  -  |  |  | 
+  - Sermaye Standart Rasyosu İlişkin Bilgiler |  |  | 
+  - (Haziran 2026) |  |  | 
+  -  |  |  | 
+  -  | Toplam Risk Ağırlıklı Tutarlar | Özkaynak | Sermaye Yeterliliği Oranı
+  - Banka | (Milyon TL) | (Milyon TL) | (%)
+  -  |  |  | 
+  - Sektör  | 33037568.505675 | 5459163.391 | 16.52410766870527
+- sheet `Kur Riski` 72x17 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  -  |  |  |  |  |  |  |  |  | 
+  - Kur Riskine İlişkin Bilgiler, Milyon TL |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Banka | Varlıklar |  |  |  | Yükümlülükler |  |  |  | Net Bilanço Pozisyonu
+  -  | Euro | USD | Diğer YP | Toplam Varlıklar | Euro | USD | Diğer YP | Toplam Yükümlülükler | Euro
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 7157992.184 | 7979636.362 | 1909628.031 | 17047256.577 | 5764787.138 | 9499533.056 | 4206110.0 | 19470430.194 | 1393205.046
+- sheet `Faiz Riski` 72x50 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  -  |  |  |  |  |  |  |  |  | 
+  - Varlıkların, Yükümlülüklerin ve Nazım Hesaplar Kalemlerinin  |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Banka | Varlıklar |  |  |  |  |  |  | Yükümlülükler | 
+  -  | 1 Aya Kadar | 1-3 ay | 3-12 ay | 1-5 yıl | 5 yıl ve üzeri | Faizsiz | Toplam Varlıklar | 1 Aya Kadar | 1-3 ay
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 16013121.897717202 | 3921098.9647704 | 8648768.235363899 | 6950002.302 | 3286521.0 | 8925024.1731485 | 47744536.573 | 18139123.855123397 | 6042637.0
+- sheet `Ort.Faiz Oranı` 75x7 — etiket sütunu 0, eşlenen 0, eşlenmeyen 70
+  -  |  |  |  |  |  | 
+  - Verilen Kredilere ve Diğer Mevduata Uygulanan Ortalama Faiz  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  | 
+  -  |  |  |  |  |  | 
+  - Banka | TL |  | USD |  | EURO | 
+  -  | Verilen Krediler | Mevduat** | Verilen Krediler | Mevduat** | Verilen Krediler | Mevduat**
+  -  |  |  |  |  |  | 
+  - Sektör Toplamı | 43.1175891699973 | 37.615922993130894 | 7.443016930979532 | 1.459021580222664 | 6.4187382511355935 | 0.8076440635449683
+- sheet `Likidite Riski` 72x25 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  -  |  |  |  |  |  |  |  |  | 
+  - Aktif ve Pasif Kalemlerin Kalan Vadelerine Göre Gösterimi, M |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Banka | Varlıklar |  |  |  |  |  |  |  | Yükümlülükler
+  -  | Vadesiz | 1 ay | 1-3 ay | 3-12 ay | 1-5 yıl | 5 yıl ve üzeri | Dağıtıla-mayan | Toplam Varlıklar | Vadesiz
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 4957767.737777799 | 9997017.256717201 | 3566009.9297704 | 9377266.654363899 | 12602653.0 | 4101221.0 | 3174697.4603707 | 47776633.039 | 11090084.104
+- sheet `Net İstik.Fon.Oranı` 72x4 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  -  |  |  | 
+  - Net İstikrarlı Fonlama Oranına İlişkin Bilgiler |  |  | 
+  - (Haziran 2026) |  |  | 
+  -  |  |  | 
+  -  | Mevcut İstikrarlı Fon | Gerekli İstikrarlı Fon | Net İstikrarlı Fonlama Oranı
+  - Banka | (Milyon TL) | (Milyon TL) | (%)
+  -  |  |  | 
+  - Sektör  | 30167386.842463303 | 24542311.565600004 | 122.91990818317109
+## tbb_dt20_selected_solo —  https://www.tbb.org.tr/download/node/54932/field_raporlar_ekler/310157
+- ok=True format=xls size=209920 error=None
+- sheet `Varlıklar` 72x30 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  -  |  |  |  |  |  |  |  |  | 
+  - Varlıklar, Milyon TL |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  | Finansal Varlıklar (net)                     |  |  |  |  |  |  |  | İtfa Edilmiş Maliyeti ile Ölçülen FV (Net)
+  -  | Likit Aktifler  |  |  |  | Gerçeğe Uygun Değer Farkı K/Z Yansıtulan FV | Gerçeğe Uygun Değer Farkı Diğer Kaps. Gelire Yansı. FV | Türev Finansal Varlıklar | Toplam | Krediler
+  - Banka | Nakit Değerler ve TCMB | Bankalar  | Para Piyasalarından Alacaklar | Beklenen Zarar Karşılıkları (-) (TFRS 9 uygulayan b.) |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 7296264.0 | 1335265.0 | 320886.0 | -2371.0 | 619425.0 | 4602026.0 | 292381.0 | 14463876.0 | 26602965.0
+- sheet `Std.Nit.-Yakın İzl.Kred.` 72x42 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  - Standart Nitelikli ve Yakın izlemedeki Krediler ile Yeniden  |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  | Standart Nitelikli Krediler |  |  |  |  |  |  |  | 
+  -  | İhtisas Dışı Krediler |  |  |  |  |  |  | İhtisas Kredileri | Diğer Alacaklar
+  - Banka | İşletme Kredileri | İhracat Kredileri | İthalat Kredileri | Mali Kesime Verilen Krediler | Tüketici Kredileri | Kredi Kartları | Diğer  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 6178770.0 | 3443131.0 | 7268.0 | 690222.0 | 2909358.0 | 3613821.0 | 4588457.505 | 1695782.0 | 2132.0
+- sheet `Tüketici` 72x46 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  -  |  |  |  |  |  |  |  |  | 
+  - Tüketici Kredileri ve Bireysel Kredi Kartları, Personel Kred |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Banka | Tüketici Kredileri - TP |  |  |  |  | Tüketici Kredileri - Dövize Endeksli |  |  | 
+  -  | Konut Kredisi | Taşıt Kredisi | İhtiyaç Kredisi | Diğer | Toplam | Konut Kredisi | Taşıt Kredisi | İhtiyaç Kredisi | Diğer
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 734873.0 | 34501.0 | 1645274.0 | 4.0 | 2414652.0 | 86.0 | 0.0 | 1.0 | 0.0
+- sheet `Ticari` 72x25 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  -  |  |  |  |  |  |  |  |  | 
+  - Taksitli Ticari Krediler ve Kurumsal Kredi Kartlarına İlişki |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Banka | Taksitli Ticari Krediler - TP |  |  |  |  | Taksitli Ticari Krediler - Dövize Endeksli |  |  | 
+  -  | İşyeri Kredileri | Taşıt Kredileri | İhtiyaç Kredileri | Diğer | Toplam | İşyeri Kredileri | Taşıt Kredileri | İhtiyaç Kredileri | Diğer
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 24167.0 | 249729.048 | 2322576.641 | 28986.0 | 2625458.689 | 0.0 | 0.0 | 9445.0 | 0.0
+- sheet `Kredi` 72x8 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  -  |  |  |  |  |  |  | 
+  - Kredilere İlişkin Dağılımlar, Milyon TL |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  | 
+  - Banka | Bağlı Ortaklık ve İştiraklere Verilen |  |  | Ayrılan Özel Karşılıklar veya Temerrüt (üçüncü aşama) Karşıl |  |  | 
+  -  | Doğrudan | Dolaylı |  | Tahsil İmkanı Sınırlı Krediler İçin Ayrılanlar | Tahsili Şüpheli Krediler İçin Ayrılanlar | Zarar Niteliğindeki Krediler İçin Ayrılanlar | Toplam
+  -  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 182363.0 | 0.0 |  | 85518.0 | 164568.0 | 286801.0 | 536887.0
+- sheet `Donuk Alacak` 73x57 — etiket sütunu 0, eşlenen 0, eşlenmeyen 67
+  -  |  |  |  |  |  |  |  |  | 
+  - Toplam Donuk Alacak Hareketlerine İlişkin Bilgiler, Milyon T |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  | III. Grup - Tahsil İmkanı Sınırlı Krediler  |  |  |  |  |  |  |  | 
+  -  | Önceki Dönem Sonu Bakiyesi | Dönem İçinde İntikal (+) | Diğer Donuk Alacak Hesaplarından Giriş (+) | Diğer Donuk Alacak Hesaplarına Çıkış (-) | Dönem İçinde Tahsilat (-) | Kayıttan düşülen (-) | Satılan (-) |  | 
+  - Banka |  |  |  |  |  |  | Kurumsal ve Ticari Krediler | Bireysel Krediler | Kredi Kartları
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 158054.0 | 305898.0 | 38.0 | 245520.0 | 45904.0 | 248.0 | 20.0 | 9.0 | 100.0
+- sheet `Donuk Brüt-Net` 73x37 — etiket sütunu 0, eşlenen 0, eşlenmeyen 67
+  -  |  |  |  |  |  |  |  |  | 
+  - Donuk Alacakların Kullanıcı Gruplarına Göre Brüt ve Net Tuta |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  | III. Grup - Tahsil İmkanı Sınırlı Krediler  |  |  |  |  |  |  |  | 
+  -  | Gerçek ve Tüzel Kişilere Kullandırılan Krediler (Brüt) | Karşılık Tutarı (-) | Gerçek ve Tüzel Kişilere Kullandırılan Krediler (Net) | Bankalar (Brüt) | Karşılık Tutarı (-) | Bankalar (Net) | Diğer Kredi ve Alacaklar (Brüt) | Karşılık Tutarı (-) | Diğer Kredi ve Alacaklar (Net)
+  - Banka |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 172188.0 | 85507.0 | 86681.0 | 11.0 | 11.0 | 0.0 | 0.0 | 0.0 | 0.0
+## tbb_dt20_selected_solo —  https://www.tbb.org.tr/download/node/54932/field_raporlar_ekler/310158
+- ok=True format=xls size=117760 error=None
+- sheet `Yükümlülükler` 72x25 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  - Yükümlülükler, Milyon TL |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  -  |  | Mevduat Dışı Kaynaklar |  |  |  |  | Diğer Pasifler |  | 
+  -  |  |  |  |  |  |  | Gerçeğe Uygun Değer Farkı K/Z Yansıtılan FY | Türev Finansal Yükümlü-lükler | Karşılıklar
+  - Banka | Mevduat | Alınan Krediler | Para Piyasalarına Borçlar | İhraç Edilen Menkul Kıymetler (net) | Fonlar | Toplam |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 28410347.0 | 5242003.0 | 2708520.0 | 2055117.0 | 653085.0 | 10658725.0 | 149840.0 | 336393.0 | 235919.0
+- sheet `Mevd.Vade` 52x61 — etiket sütunu 0, eşlenen 0, eşlenmeyen 47
+  - Mevduatın Vade Yapısına İlişkin Bilgiler, Milyon TL |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Banka | Tasarruf Mevduatı |  |  |  |  | Döviz Tevdiat Hesabı |  |  | 
+  -  |  |  |  |  |  | Yurtiçinde Yerleşik Kişiler |  |  | 
+  -  | Vadesiz + 7 Gün İhbarlı Mevduat | 1 Aya Kadar | 1-3 Ay | 3 Ay + | Toplam | Vadesiz + 7 Gün İhbarlı Mevduat | 1 Aya Kadar | 1-3 Ay | 3 Ay ve Üstü
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 1405713.0 | 1098367.0 | 5496791.0 | 1007902.0 | 9008773.0 | 3120273.0 | 727133.0 | 1159476.0 | 235946.0
+- sheet `Sig. Kaps.` 50x11 — etiket sütunu 0, eşlenen 0, eşlenmeyen 46
+  - Mevduat Bankaları İçin Sigorta Kapsamında Bulunan ve Sigorta |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  -  | Tasarruf Mevduatı |  | Tasarruf Mevduatı Niteliğini Haiz DTH |  | Tasarruf Mevduatı Niteliğini Haiz Diğ. H. |  | Yurtdışı Şubelerde Bulunan Yabancı Mercilerin Sigortasına Ta |  | Kıyı Bnk.Blg. Şubelerde Bulunan Yabancı Mercilerin Sigortası
+  - Banka | Sigorta Kapsamında Bulunan | Sigorta Limitini Aşan | Sigorta Kapsamında Bulunan | Sigorta Limitini Aşan | Sigorta Kapsamında Bulunan | Sigorta Limitini Aşan | Sigorta Kapsamında Bulunan | Sigorta Limitini Aşan | Sigorta Kapsamında Bulunan
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 4022861.104 | 5177136.0 | 1833999.0 | 2729919.0 | 916386.0 | 1159571.0 | 53126.0 | 53086.0 | 0.0
+- sheet `Alın.Kred.` 72x6 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  -  |  |  |  |  | 
+  - Alınan Kredilere İlişkin Bilgiler, Milyon TL |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  | 
+  -  |  |  |  |  | 
+  -  | Kısa Vadeli |  | Orta ve Uzun Vadeli |  | Toplam
+  - Banka | TP | YP | TP | YP | 
+  -  |  |  |  |  | 
+  - Sektör Toplamı | 780279.0 | 465998.0 | 182937.0 | 3802999.954 | 5232213.954
+- sheet `Ödenecek Vergi` 72x9 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  - Ödenecek Vergilere İlişkin Bilgiler, Milyon TL |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  | 
+  - Banka | Ödenecek Kurumlar Vergisi | Menkul Sermeye İradı Vergisi | Gayrimen-kul Sermaye İradı Vergisi | BSMV | Kambiyo Muamele Vergisi | Ödenecek Katma Değer Vergisi | Diğer | Toplam
+  -  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 82643.717 | 106158.0 | 300.0 | 54930.251 | 840.0 | 2544.366 | 12034.582 | 259450.916
+## tbb_dt20_selected_solo —  https://www.tbb.org.tr/download/node/54932/field_raporlar_ekler/310159
+- ok=True format=xls size=108544 error=None
+- sheet `Gelir-Gider` 72x36 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  -  |  |  |  |  |  |  |  |  | 
+  - Gelir Gider Tablosuna İlişkin Bilgiler, Milyon TL |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  - Banka | Faaliyet Gelir-Giderleri |  |  |  |  |  |  |  | 
+  -  | Faiz Gelirleri |  |  |  |  | Faiz Giderleri |  |  | 
+  -  | Kredilerden Alınan Faiz | Bankalardan Alınan Faiz | Menkul Değerlerden Alınan Faiz | Diğer Faiz Gelirleri | Toplam | Mevduata Verilen Faiz | Kullanılan Kredilere Verilen Faiz | Diğer Faiz Gider. | Toplam
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 3026798.0 | 141467.0 | 878792.0 | 436761.0 | 4483818.0 | 2642160.0 | 197817.0 | 487126.0 | 3327103.0
+- sheet `Karşılıklar` 72x16 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  -  |  |  |  |  |  |  |  |  | 
+  - Bankalarca Ayrılan Karşılıklar, Milyon TL |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  | TFRS 9’a göre beklenen kredi zararı karşılığı ayıran bankala |  |  |  |  |  |  | TFRS 9’a göre beklenen kredi zararı karşılığı ayırmayan bank | 
+  -  | Beklenen Kredi Zararı Karşılıkları |  |  | Menkul Değerler Değer Düşüş Karşılıkları | İştirakler, Bağ.Ort. ve Birlikte Kontrol Edilen Ort. Değ. Dü | Diğer | Toplam | Özel Karşılıklar | 
+  - Banka | 12 Aylık Beklenen Zarar Karşılığı (Birinci Aşama) | Kredi Riskinde Önemli Artış (İkinci Aşama) | Temerrüt (Üçüncü Aşama) |  |  |  |  | Tahsil İmkânı Sınırlı Krediler İçin Ayrılanlar | Tahsili Şüpheli Krediler İçin Ayrılanlar
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 47453.0 | 60583.0 | 232476.0 | 862.0 | 0.0 | 5461.0 | 346835.0 | 30.0 | 745.0
+- sheet `Diğer Faal.Gid.` 72x19 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  -  |  |  |  |  |  |  |  |  | 
+  - Diğer Faaliyet Giderlerine İlişkin Bilgiler, Milyon TL |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  -  | Kıdem Tazminatı Karşılığı | Banka Sosyal Yardım Sandığı Varlık Açıkları Karşılığı | Maddi Duran Varlık Değer Düşüş Giderleri | Maddi Duran Varlık Amortis. Giderleri | Maddi Olmayan Duran Varlık Değer Düşüş Giderleri | Şerefiye Değer Düşüş Gideri | Maddi Olmayan Duran Varlık Amortis. Giderleri | Özkaynak Yöntemi Uygulanan Ortaklık Payları Değ. Düş. Gideri | Elden Çıkarılacak Kıymetler Değer Düşüş Giderleri
+  - Banka |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 8790.166 | 916.0 | 73.0 | 22543.943 | 104.0 | 70.0 | 12619.842 | 6.0 | 15.0
+- sheet `Ticari Kar-Zarar` 72x10 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  -  |  |  |  |  |  |  |  |  | 
+  - Ticari Kar/Zarara İlişkin Bilgiler, Milyon TL |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  -  | Kar |  |  |  | Zarar (-) |  |  |  | Net Ticari Kar/Zarar
+  - Banka | Sermaye Piyasası İşlemleri Karı | Türev Finansal İşlemlerden Kar | Kambiyo İşlemlerinden Kar | Toplam | Sermaye Piyasası İşlemleri Zararı | Türev Finansal İşlemlerden Zarar | Kambiyo İşlemlerinden Zarar | Toplam | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 63452.0 | 952118.0 | 10731109.776 | 11746679.776 | 31646.0 | 1277480.0 | 10660305.979 | 11969431.979 | -222752.203
+## tbb_dt20_selected_solo —  https://www.tbb.org.tr/download/node/54932/field_raporlar_ekler/310160
+- ok=True format=xls size=52736 error=None
+- sheet `Nazım` 72x24 — etiket sütunu 0, eşlenen 0, eşlenmeyen 68
+  - Bilanço Dışı Hesaplar, Milyon TL |  |  |  |  |  |  |  |  | 
+  - (Haziran 2026) |  |  |  |  |  |  |  |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  -  | Garanti ve Kefaletler |  |  |  |  |  | Taahütler |  | 
+  -  |  |  |  |  |  |  |  |  | 
+  - Banka | Teminat Mektupları | Banka Kredileri | Akreditifler | Garanti Verilen Prefinansmanlar | Diğer | Toplam | Cayılamaz Taahütler | Cayılabilir Taahütler | Toplam
+  -  |  |  |  |  |  |  |  |  | 
+  - Sektör Toplamı | 7370247.0 | 249220.0 | 1227891.0 | 37.0 | 978826.0 | 9826221.0 | 19704303.0 | 1076162.0 | 20780465.0
+## tbb_dt20_selected_solo —  https://www.tbb.org.tr/download/node/54932/field_raporlar_ekler/310161
+- ok=True format=xls size=87552 error=None
+- sheet `kapak` 46x1 — etiket sütunu 0, eşlenen 0, eşlenmeyen 2
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+- sheet `açıklamalar` 9x1 — etiket sütunu 0, eşlenen 0, eşlenmeyen 6
+  - Açıklamalar
+  - 
+  - 
+  - 1. Bu rapor, Bankacılık Kanunu kapsamında Türkiye'de faaliye
+  - 2. Mali tablolar ile dipnot tabloları arasında aynı adlı kal
+  - 3. Türkiye  Bankalar  Birliği  bu raporda yer alan bilgileri
+  - 
+  - *Raporun yayınlanma dönemleri: 
+## tbb_maturity_remaining —  https://www.tbb.org.tr/download/node/54933/field_raporlar_ekler/310162
+- ok=True format=xls size=42496 error=None
+- sheet `türkçe` 27x9 — etiket sütunu 0, eşlenen 6, eşlenmeyen 17
+  - Tablo 3   30.06.2026 İtibarıyla Aktif ve Pasif Kalemlerin Ka |  |  |  |  |  |  |  | 
+  - (Milyon TL) |  |  |  |  |  |  |  | 
+  -  | Vadesiz | 1 Aya Kadar | 1-3- Ay | 3-12 Ay | 1-5 Yıl | 5 Yıl ve Üzeri | Dağıtılamayan | Toplam
+  -  |  |  |  |  |  |  |  | 
+  - Varlıklar |  |  |  |  |  |  |  | 
+  - Nakit Değerler (Kasa, Efektif Deposu, Yoldaki Paralar, Satın | 3439757.0247778003 | 3432988.912 | 423355.0 | 0.0 | 0.0 | 0.0 | -117.0 | 7295983.936777799
+  - Bankalar  | 652619.713 | 604297.0 | 65055.0 | 11554.0 | 893.0 | 0.0 | 589.0 | 1335007.713
+  - Gerçeğe Uygun Değer Farkı Kâr veya Zarara Yansıtılan  Menkul | 70458.0 | 62359.0 | 22780.0 | 109856.0 | 288525.0 | 66646.0 | 73745.0 | 694369.0
+## tbb_dt13_bank_branch_employee —  https://www.tbb.org.tr/download/node/54910/field_raporlar_ekler/309903
+- ok=True format=pdf size=439147 error=None
+## tbb_dt13_bank_branch_employee —  https://www.tbb.org.tr/download/node/54910/field_raporlar_ekler/309904
+- ok=True format=zip size=118658 error=None
