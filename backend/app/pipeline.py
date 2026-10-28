@@ -16,6 +16,7 @@ from app.acquisition.sources import SourceAdapter
 from app.acquisition.sources.bddk import BDDKAdapter
 from app.acquisition.sources.evds import EVDSAdapter
 from app.acquisition.sources.tbb import TBBAdapter
+from app.config import settings
 from app.db import models as m
 from app.dictionary import metric_index
 from app.normalization.bank_names import SEED_BANKS, BankRegistry

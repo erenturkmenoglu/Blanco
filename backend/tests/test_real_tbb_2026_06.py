@@ -77,3 +77,19 @@ def test_ranking_real_file_generic_mapper_and_api():
     der = c.get("/api/derived", params={"bank": "akbank", "period_end": "2026-06-30"}).json()
     met = {d["metric"]: d for d in der["metrics"]}
     assert met["npl_ratio"]["value"] is not None and met["loan_to_deposit_ratio"]["value"] is not None
+
+
+def test_second_run_skips_recently_verified_files_and_force_rechecks():
+    """Günlük zamanlayıcı: 7 gün içinde doğrulanmış dosya yeniden indirilmez (kaynağa nazik); force=True ile yeniden kontrol edilir ve aynı sha → revizyon yok."""
+    with get_session() as db:
+        dl = ReplayDownloader()
+        job = ingest(db, "TBB", "tbb_asset_ranking", 2026, 6, downloader=dl, trigger="test-rerun")
+        summary = next(l for l in job.log if l.get("step") == "summary")
+        assert job.status.value == "success" and summary["skipped_recent"] == 1 and summary["documents"] == 0, job.log
+        assert not any(u.endswith("/310010") for u in dl.calls)          # dosya indirilmedi
+        dl2 = ReplayDownloader()
+        job2 = ingest(db, "TBB", "tbb_asset_ranking", 2026, 6, downloader=dl2, trigger="test-force", force=True)
+        s2 = next(l for l in job2.log if l.get("step") == "summary")
+        assert job2.status.value == "success" and s2["documents"] == 1 and s2["new_observations"] == 0 and s2["confirmed_existing"] > 50, job2.log
+        assert any(u.endswith("/310010") for u in dl2.calls)
+        assert not any(l.get("step") == "revision" for l in job2.log)      # aynı sha256 → kaynak revizyonu açılmaz
