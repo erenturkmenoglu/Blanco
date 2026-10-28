@@ -1,0 +1,458 @@
+{
+ "run_at": "2026-10-28T13:44:51.784420+00:00",
+ "year": 2026,
+ "month": 6,
+ "robots_policy": "lenient",
+ "steps": [
+  {
+   "status": 200,
+   "first_lines": [
+    "#",
+    "# robots.txt",
+    "#",
+    "# This file is to prevent the crawling and indexing of certain parts",
+    "# of your site by web crawlers and spiders run by sites like Yahoo!",
+    "# and Google. By telling these \"robots\" where not to go on your site,",
+    "# you save bandwidth and server resources.",
+    "#",
+    "# This file will be ignored unless it is at the root of your host:",
+    "# Used:    http://example.com/robots.txt",
+    "# Ignored: http://example.com/site/robots.txt",
+    "#",
+    "# For more information about the robots.txt standard, see:",
+    "# http://www.robotstxt.org/robotstxt.html",
+    "",
+    "User-agent: *",
+    "# CSS, JS, Images",
+    "Allow: /core/*.css$",
+    "Allow: /core/*.css?",
+    "Allow: /core/*.js$",
+    "Allow: /core/*.js?",
+    "Allow: /core/*.gif",
+    "Allow: /core/*.jpg",
+    "Allow: /core/*.jpeg",
+    "Allow: /core/*.png",
+    "Allow: /core/*.svg",
+    "Allow: /profiles/*.css$",
+    "Allow: /profiles/*.css?",
+    "Allow: /profiles/*.js$",
+    "Allow: /profiles/*.js?",
+    "Allow: /profiles/*.gif",
+    "Allow: /profiles/*.jpg",
+    "Allow: /profiles/*.jpeg",
+    "Allow: /profiles/*.png",
+    "Allow: /profiles/*.svg",
+    "# Directories",
+    "Disallow: /core/",
+    "Disallow: /profiles/",
+    "# Files",
+    "Disallow: /README.md"
+   ],
+   "step": "robots"
+  },
+  {
+   "url": "https://www.tbb.org.tr/istatistiki-raporlar/11232",
+   "sections": {},
+   "step": "category"
+  },
+  {
+   "url": "https://www.tbb.org.tr/istatistiki-raporlar/11236",
+   "sections": {},
+   "step": "category"
+  },
+  {
+   "url": "https://www.tbb.org.tr/istatistiki-raporlar/11237",
+   "sections": {},
+   "step": "category"
+  },
+  {
+   "dataset": "tbb_fs_solo_excel",
+   "found": [],
+   "step": "discover"
+  },
+  {
+   "dataset": "tbb_asset_ranking",
+   "found": [
+    {
+     "url": "https://www.tbb.org.tr/download/node/54929/field_raporlar_ekler/310010",
+     "title": "Aktif Büyüklüğüne Göre Banka Sıralaması.xls (2026 Haziran)",
+     "strategy": null,
+     "bank": null
+    }
+   ],
+   "step": "discover"
+  },
+  {
+   "dataset": "tbb_asset_ranking",
+   "url": "https://www.tbb.org.tr/download/node/54929/field_raporlar_ekler/310010",
+   "ok": true,
+   "format": "xls",
+   "size": 48128,
+   "error": null,
+   "sheets": [
+    "türkçe"
+   ],
+   "step": "download"
+  },
+  {
+   "dataset": "tbb_dt20_selected_solo",
+   "found": [],
+   "step": "discover"
+  },
+  {
+   "dataset": "tbb_maturity_remaining",
+   "found": [],
+   "step": "discover"
+  },
+  {
+   "dataset": "tbb_dt13_bank_branch_employee",
+   "found": [
+    {
+     "url": "https://www.tbb.org.tr/download/node/54910/field_raporlar_ekler/309903",
+     "title": "Banka, Çalışan ve Şube Sayıları Haziran 2026 (DT13)",
+     "strategy": null,
+     "bank": null
+    }
+   ],
+   "step": "discover"
+  },
+  {
+   "dataset": "tbb_dt13_bank_branch_employee",
+   "url": "https://www.tbb.org.tr/download/node/54910/field_raporlar_ekler/309903",
+   "ok": true,
+   "format": "pdf",
+   "size": 439147,
+   "error": null,
+   "sheets": [],
+   "step": "download"
+  }
+ ],
+ "files": [
+  {
+   "dataset": "tbb_asset_ranking",
+   "url": "https://www.tbb.org.tr/download/node/54929/field_raporlar_ekler/310010",
+   "bank": null,
+   "strategy": null,
+   "ok": true,
+   "format": "xls",
+   "content_type": "application/vnd.ms-excel",
+   "file_name": "utf-8''Aktif%20B%C3%BCy%C3%BCkl%C3%BC%C4%9F%C3%BCne%20G%C3%B6re%20Banka%20S%C4%B1ralamas%C4%B1.xls",
+   "sha256": "892df21e2563060b045f357e080a403c58d6e3b545f62ebff7d0a2261c70e636",
+   "size": 48128,
+   "local_path": "../probe_output/files/tbb_asset_ranking/892df21e2563__utf-8''Aktif%20B%C3%BCy%C3%BCkl%C3%BC%C4%9F%C3%BCne%20G%C3%B6re%20Banka%20S%C4%B1ralamas%C4%B1.xls",
+   "error": null,
+   "attempts": [
+    {
+     "method": "httpx",
+     "url": "https://www.tbb.org.tr/download/node/54929/field_raporlar_ekler/310010",
+     "ok": true,
+     "status": 200,
+     "reason": null,
+     "elapsed_ms": 1338
+    }
+   ],
+   "inventory": {
+    "format": "xls",
+    "notes": [],
+    "sheets": {
+     "türkçe": {
+      "rows": 66,
+      "cols": 12,
+      "head": [
+       [
+        "Tablo 1  30.06.2026 İtibarıyla Aktif Büyüklüklerine Göre Ban",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+       ],
+       [
+        "(Milyon TL)",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+       ],
+       [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+       ],
+       [
+        "",
+        "Banka",
+        "Kuruluş  Yılı",
+        "Toplam Aktifler",
+        "Toplam Krediler*",
+        "Toplam Mevduat    ",
+        "Toplam Özkaynaklar ",
+        "Ödenmiş Sermaye ",
+        "Net Dönem Kar/Zararı ",
+        "Bilanço Dışı Hesaplar ",
+        "Şube Sayısı\n(Adet)",
+        "Çalışan Sayısı\n(Adet)"
+       ],
+       [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+       ],
+       [
+        "1.0",
+        "Türkiye Cumhuriyeti Ziraat Bankası A.Ş.",
+        "1863.0",
+        "9076507.0",
+        "4929033.0",
+        "5780816.0",
+        "772558.0",
+        "84600.0",
+        "74179.0",
+        "26702813.0",
+        "1771.0",
+        "25460.0"
+       ],
+       [
+        "2.0",
+        "Türkiye Vakıflar Bankası T.A.O.",
+        "1954.0",
+        "5810756.0",
+        "3400109.0",
+        "3566974.0",
+        "353008.0",
+        "9916.0",
+        "30108.0",
+        "117235884.0",
+        "967.0",
+        "19040.0"
+       ],
+       [
+        "3.0",
+        "Türkiye İş Bankası A.Ş.",
+        "1924.0",
+        "5091171.0",
+        "2708243.0",
+        "3397986.0",
+        "453172.0",
+        "25000.0",
+        "30013.0",
+        "13264391.0",
+        "1021.0",
+        "20719.0"
+       ],
+       [
+        "4.0",
+        "Türkiye Halk Bankası A.Ş.",
+        "1938.0",
+        "4721843.0",
+        "2389865.0",
+        "3655676.0",
+        "234602.0",
+        "7185.0",
+        "17729.0",
+        "25941139.0",
+        "1117.0",
+        "22551.0"
+       ],
+       [
+        "5.0",
+        "Türkiye Garanti Bankası A.Ş.",
+        "1946.0",
+        "4412331.0",
+        "2624664.0",
+        "3020069.0",
+        "487168.0",
+        "4200.0",
+        "63704.0",
+        "26394037.0",
+        "795.0",
+        "20367.0"
+       ],
+       [
+        "6.0",
+        "Akbank T.A.Ş.",
+        "1984.0",
+        "3727680.0",
+        "2061098.0",
+        "2382280.0",
+        "324746.0",
+        "5200.0",
+        "34378.0",
+        "16540005.0",
+        "625.0",
+        "12223.0"
+       ],
+       [
+        "7.0",
+        "Yapı ve Kredi Bankası A.Ş.",
+        "1944.0",
+        "3572390.0",
+        "2038378.0",
+        "1985905.0",
+        "286488.0",
+        "8447.0",
+        "31010.0",
+        "12006559.0",
+        "734.0",
+        "14645.0"
+       ],
+       [
+        "8.0",
+        "QNB Bank A.Ş.",
+        "1987.0",
+        "2136275.0",
+        "1327219.0",
+        "1120256.0",
+        "200452.0",
+        "5500.0",
+        "29299.0",
+        "14576745.0",
+        "417.0",
+        "10369.0"
+       ],
+       [
+        "9.0",
+        "Denizbank A.Ş.",
+        "1997.0",
+        "2064464.0",
+        "1231405.0",
+        "1220507.0",
+        "247652.0",
+        "19639.0",
+        "34567.0",
+        "13816130.0",
+        "583.0",
+        "11752.0"
+       ]
+      ],
+      "label_col": 1,
+      "labels": [
+       "Banka",
+       "Türkiye Cumhuriyeti Ziraat Bankası A.Ş.",
+       "Türkiye Vakıflar Bankası T.A.O.",
+       "Türkiye İş Bankası A.Ş.",
+       "Türkiye Halk Bankası A.Ş.",
+       "Türkiye Garanti Bankası A.Ş.",
+       "Akbank T.A.Ş.",
+       "Yapı ve Kredi Bankası A.Ş.",
+       "QNB Bank A.Ş.",
+       "Denizbank A.Ş.",
+       "Türk Eximbank",
+       "Türk Ekonomi Bankası A.Ş.",
+       "İstanbul Takas ve Saklama Bankası A.Ş.",
+       "İller Bankası A.Ş.",
+       "Türkiye Sınai Kalkınma Bankası A.Ş.",
+       "HSBC Bank A.Ş.",
+       "Enpara Bank A.Ş.",
+       "Şekerbank T.A.Ş.",
+       "ING Bank A.Ş.",
+       "Fibabanka A.Ş.",
+       "Anadolubank A.Ş.",
+       "Türkiye Kalkınma ve Yatırım Bankası A.Ş.",
+       "Burgan Bank A.Ş.",
+       "Odea Bank A.Ş.",
+       "Citibank A.Ş.",
+       "Aktif Yatırım Bankası A.Ş.",
+       "Alternatifbank A.Ş.",
+       "Nurol Yatırım Bankası A.Ş.",
+       "ICBC Turkey Bank A.Ş.",
+       "MUFG Bank Turkey A.Ş.",
+       "Türk Ticaret Bankası A.Ş.",
+       "Tera Yatırım Bankası A.Ş.",
+       "Deutsche Bank A.Ş.",
+       "Destek Yatırım Bankası A.Ş.",
+       "Arap Türk Bankası A.Ş.",
+       "JPMorgan Chase Bank N.A.",
+       "Golden Global Yatırım Bankası A.Ş.",
+       "Misyon Yatırım Bankası A.Ş.",
+       "Turkland Bank A.Ş.",
+       "Birleşik Fon Bankası A.Ş.",
+       "Pasha Yatırım Bankası A.Ş.",
+       "Hedef Yatırım Bankası A.Ş.",
+       "Intesa Sanpaolo S.p.A.",
+       "D Yatırım Bankası A.Ş.",
+       "Q Yatırım Bankası A.Ş.",
+       "Turkish Bank A.Ş.",
+       "Bank of America Yatırım Bank A.Ş.",
+       "Aytemiz Yatırım Bankası A.Ş.",
+       "Bank of China Turkey A.Ş.",
+       "Ziraat Dinamik Banka A.Ş.",
+       "Colendi Bank A.Ş.",
+       "GSD Yatırım Bankası A.Ş.",
+       "Rabobank A.Ş.",
+       "Bank Mellat",
+       "BankPozitif Kredi ve Kalkınma Bankası A.Ş.",
+       "Standard Chartered Yatırım Bankası Türk A.Ş.",
+       "Diler Yatırım Bankası A.Ş.",
+       "Société Générale (SA)",
+       "FUPS Bank A.Ş.**",
+       "Toplam"
+      ],
+      "mapped_labels": {},
+      "unmapped_count": 60
+     }
+    }
+   }
+  },
+  {
+   "dataset": "tbb_dt13_bank_branch_employee",
+   "url": "https://www.tbb.org.tr/download/node/54910/field_raporlar_ekler/309903",
+   "bank": null,
+   "strategy": null,
+   "ok": true,
+   "format": "pdf",
+   "content_type": "application/pdf",
+   "file_name": "utf-8''Banka%20%C3%87al%C4%B1%C5%9Fan%20ve%20%C5%9Eube%20Say%C4%B1lar%C4%B1-Haziran%202026.pdf",
+   "sha256": "b02751f6aea75cd17470d00f0feb7490843edd6fadaf5e399a073b3e3bc41b80",
+   "size": 439147,
+   "local_path": "../probe_output/files/tbb_dt13_bank_branch_employee/b02751f6aea7__utf-8''Banka%20%C3%87al%C4%B1%C5%9Fan%20ve%20%C5%9Eube%20Say%C4%B1lar%C4%B1-Haziran%202026.pdf",
+   "error": null,
+   "attempts": [
+    {
+     "method": "httpx",
+     "url": "https://www.tbb.org.tr/download/node/54910/field_raporlar_ekler/309903",
+     "ok": true,
+     "status": 200,
+     "reason": null,
+     "elapsed_ms": 1102
+    }
+   ],
+   "inventory": {
+    "format": "pdf",
+    "note": "PDF — tablo çıkarımı ayrı aşama; xls sürümü aranmalı"
+   }
+  }
+ ],
+ "selector": null
+}
