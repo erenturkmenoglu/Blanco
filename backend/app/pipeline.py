@@ -22,6 +22,8 @@ from app.normalization.bank_names import SEED_BANKS, BankRegistry
 from app.normalization.mapping import map_table
 from app.normalization.periods import quarter_period, ytd_period
 from app.normalization.special_tables import map_interest_table, map_maturity_table
+from app.normalization.tbb_bank_workbook import extract_workbook
+from app.normalization.tbb_dt20 import extract_dt20_tables
 from app.validation.checks import apply_checks, run_checks
 from app.verification_findings import FINDINGS
 
@@ -195,6 +197,19 @@ def ingest(db: Session, source_code: str, dataset_code: str, year: int, month: i
 
 def _candidates(parsed, reg, mi, dataset_code, scope, per, source_code, bank_hint: str | None = None) -> dict:
     out = {"obs": [], "unmapped": [], "unmatched": [], "orientation": None, "scale": None}
+    # Gerçek düzeni doğrulanmış TBB setleri için özel çıkarıcılar
+    if dataset_code in ("tbb_dt20_selected_solo", "tbb_dt21_selected_cons") and per:
+        ex = extract_dt20_tables(parsed.tables, reg, per.end, scope, source_code)
+        out["obs"] = ex.observations
+        out["unmapped"], out["unmatched"], out["orientation"] = ex.unmapped_columns, ex.unmatched_banks, "dt20_wide"
+        out["scale"] = 1e6
+        return out
+    if dataset_code in ("tbb_fs_solo_excel", "tbb_fs_cons_excel") and bank_hint:
+        ex = extract_workbook(parsed.tables, bank_hint, reg, scope, source_code)
+        out["obs"] = ex.observations
+        out["unmapped"], out["orientation"], out["scale"] = ex.unmapped_labels, "bank_workbook", 1e6
+        out["unmatched"] = [n for n in ex.notes if n.startswith("banka eşlenemedi")]
+        return out
     for name, df in parsed.tables.items():
         pe, ps = (per.end, per.start) if per else (None, None)
         # özel tablolar (bulunursa genel eşleyici bu sayfaya uygulanmaz)
@@ -267,8 +282,8 @@ def _write(db: Session, obs: list[dict], source_id: int, doc_id: int, pid: int |
                        reporting_scope=common["reporting_scope"], source_id=source_id)
             n += _upsert(db, m.MaturityObservation, key, dict(**common, item=o["item"], basis=o["basis"], bucket=o["bucket"], bucket_label_raw=o.get("bucket_label_raw")))
         else:
-            key = dict(institution_id=iid, metric_code=o["metric_code"], period_end=o["period_end"], reporting_scope=common["reporting_scope"],
-                       currency=o.get("currency"), source_id=source_id)
+            key = dict(institution_id=iid, metric_code=o["metric_code"], period_start=o.get("period_start"), period_end=o["period_end"],
+                       reporting_scope=common["reporting_scope"], currency=o.get("currency"), source_id=source_id)
             n += _upsert(db, m.FinancialObservation, key, dict(**common, metric_code=o["metric_code"], period_id=pid, cumulative_ytd=bool(o.get("cumulative_ytd"))))
     db.flush()
     return n

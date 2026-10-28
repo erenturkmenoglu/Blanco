@@ -64,8 +64,8 @@ metrics:
   - {code: npl_amount, section: credit_quality, name_tr: Takipteki krediler, kind: stock, unit: TRY}
   - {code: loan_loss_provisions, section: credit_quality, name_tr: Kredi zarar karşılıkları, kind: stock, unit: TRY}
   - {code: restructured_loans, section: credit_quality, name_tr: Yeniden yapılandırılan krediler, kind: stock, unit: TRY}
-  - {code: stage_2_loans, section: credit_quality, name_tr: İkinci aşama krediler, kind: stock, unit: TRY}
-  - {code: stage_3_loans, section: credit_quality, name_tr: Üçüncü aşama krediler, kind: stock, unit: TRY}
+  - {code: stage_2_loans, section: credit_quality, name_tr: İkinci aşama krediler, kind: stock, unit: TRY, note: "DERIVED = stage_2_loans_not_restructured + stage_2_restructured_modified + stage_2_restructured_refinanced (DT20)"}
+  - {code: stage_3_loans, section: credit_quality, name_tr: Üçüncü aşama krediler, kind: stock, unit: TRY, note: "= npl_amount (DT20 'Toplam donuk alacak / Dönem Sonu Bakiyesi')"}
   # 7.7 Sermaye
   - {code: capital_adequacy_ratio, section: capital, name_tr: Sermaye yeterliliği oranı, kind: ratio, unit: pct}
   - {code: tier_1_ratio, section: capital, name_tr: Ana sermaye yeterlilik oranı, kind: ratio, unit: pct}
@@ -85,13 +85,90 @@ metrics:
   - {code: loan_interest_eur, section: interest, name_tr: EUR kredi ortalama faiz oranı, kind: rate, unit: pct, currency: EUR, rate_definition: stock_avg_applied_rate}
   - {code: deposit_interest_eur, section: interest, name_tr: EUR mevduat ortalama faiz oranı, kind: rate, unit: pct, currency: EUR, rate_definition: stock_avg_applied_rate}
 
+  # ---- Gerçek TBB dosyalarından (Haziran 2026) doğrulanan ek ham alanlar — DT20 sayfaları ve banka bazlı çalışma kitabı
+  - {code: cash_and_central_bank, section: balance_sheet_assets, name_tr: Nakit Değerler ve TCMB, kind: stock, unit: TRY, source: "DT20 Varlıklar; banka kitabı 1.1.1"}
+  - {code: due_from_banks, section: balance_sheet_assets, name_tr: Bankalar (alacak), kind: stock, unit: TRY}
+  - {code: money_market_receivables, section: balance_sheet_assets, name_tr: Para piyasalarından alacaklar, kind: stock, unit: TRY}
+  - {code: ecl_allowance_liquid_assets, section: balance_sheet_assets, name_tr: Beklenen zarar karşılığı (likit aktifler), kind: stock, unit: TRY}
+  - {code: securities_fvtpl, section: balance_sheet_assets, name_tr: GUD farkı K/Z'a yansıtılan FV, kind: stock, unit: TRY}
+  - {code: securities_fvoci, section: balance_sheet_assets, name_tr: GUD farkı diğer kapsamlı gelire yansıtılan FV, kind: stock, unit: TRY}
+  - {code: derivative_assets, section: balance_sheet_assets, name_tr: Türev finansal varlıklar, kind: stock, unit: TRY}
+  - {code: amortized_cost_assets_total, section: balance_sheet_assets, name_tr: İtfa edilmiş maliyetle ölçülen FV (net) toplam, kind: stock, unit: TRY}
+  - {code: lease_receivables, section: balance_sheet_assets, name_tr: Kiralama alacakları, kind: stock, unit: TRY}
+  - {code: factoring_receivables, section: balance_sheet_assets, name_tr: Faktoring alacakları, kind: stock, unit: TRY}
+  - {code: securities_amortized_government, section: balance_sheet_assets, name_tr: İtfa edilmiş maliyetle DİBS, kind: stock, unit: TRY}
+  - {code: securities_amortized_other, section: balance_sheet_assets, name_tr: İtfa edilmiş maliyetle diğer FV, kind: stock, unit: TRY}
+  - {code: securities_amortized_total, section: balance_sheet_assets, name_tr: İtfa edilmiş maliyetle diğer FV toplam, kind: stock, unit: TRY}
+  - {code: ecl_allowance_loans, section: balance_sheet_assets, name_tr: Beklenen zarar karşılığı (krediler), kind: stock, unit: TRY}
+  - {code: equity_investments, section: balance_sheet_assets, name_tr: Ortaklık yatırımları, kind: stock, unit: TRY}
+  - {code: intangible_assets, section: balance_sheet_assets, name_tr: Maddi olmayan duran varlıklar, kind: stock, unit: TRY}
+  - {code: investment_property, section: balance_sheet_assets, name_tr: Yatırım amaçlı gayrimenkuller, kind: stock, unit: TRY}
+  - {code: non_current_assets_total, section: balance_sheet_assets, name_tr: Duran varlıklar toplamı, kind: stock, unit: TRY}
+  - {code: money_market_funds, section: balance_sheet_liabilities, name_tr: Para piyasalarına borçlar, kind: stock, unit: TRY}
+  - {code: funds, section: balance_sheet_liabilities, name_tr: Fonlar, kind: stock, unit: TRY}
+  - {code: non_deposit_funding, section: balance_sheet_liabilities, name_tr: Mevduat dışı kaynaklar toplamı, kind: stock, unit: TRY}
+  - {code: fvtpl_liabilities, section: balance_sheet_liabilities, name_tr: GUD farkı K/Z'a yansıtılan FY, kind: stock, unit: TRY}
+  - {code: derivative_liabilities, section: balance_sheet_liabilities, name_tr: Türev finansal yükümlülükler, kind: stock, unit: TRY}
+  - {code: provisions, section: balance_sheet_liabilities, name_tr: Karşılıklar, kind: stock, unit: TRY}
+  - {code: tax_liabilities, section: balance_sheet_liabilities, name_tr: Cari ve ertelenmiş vergi borcu, kind: stock, unit: TRY}
+  - {code: current_tax_liability, section: balance_sheet_liabilities, name_tr: Cari vergi borcu, kind: stock, unit: TRY}
+  - {code: deferred_tax_liability, section: balance_sheet_liabilities, name_tr: Ertelenmiş vergi borcu, kind: stock, unit: TRY}
+  - {code: subordinated_debt, section: balance_sheet_liabilities, name_tr: Sermaye benzeri borçlanma araçları, kind: stock, unit: TRY}
+  - {code: other_unclassified_liabilities, section: balance_sheet_liabilities, name_tr: Sınıflandırılmayan pasifler, kind: stock, unit: TRY}
+  - {code: capital_reserves, section: balance_sheet_liabilities, name_tr: Sermaye yedekleri, kind: stock, unit: TRY}
+  - {code: profit_reserves, section: balance_sheet_liabilities, name_tr: Kâr yedekleri, kind: stock, unit: TRY}
+  - {code: profit_loss_total, section: balance_sheet_liabilities, name_tr: Kâr/zarar toplamı (bilanço), kind: stock, unit: TRY}
+  - {code: net_profit_bs, section: balance_sheet_liabilities, name_tr: Dönem net kârı (bilanço), kind: stock, unit: TRY}
+  - {code: interest_on_loans, section: income_statement, name_tr: Kredilerden alınan faizler, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: interest_on_reserves, section: income_statement, name_tr: Zorunlu karşılıklardan alınan faizler, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: interest_from_banks, section: income_statement, name_tr: Bankalardan alınan faizler, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: interest_from_money_market, section: income_statement, name_tr: Para piyasası işlemlerinden alınan faizler, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: interest_on_securities, section: income_statement, name_tr: Menkul değerlerden alınan faizler, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: other_interest_income, section: income_statement, name_tr: Diğer faiz gelirleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: interest_on_deposits, section: income_statement, name_tr: Mevduata verilen faizler, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: interest_on_funds_borrowed, section: income_statement, name_tr: Kullanılan kredilere verilen faizler, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: interest_on_money_market, section: income_statement, name_tr: Para piyasası işlemlerine verilen faizler, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: interest_on_securities_issued, section: income_statement, name_tr: İhraç edilen menkul kıymetlere verilen faizler, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: other_interest_expense, section: income_statement, name_tr: Diğer faiz giderleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: dividend_income, section: income_statement, name_tr: Temettü gelirleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: gross_operating_profit, section: income_statement, name_tr: Faaliyet brüt kârı, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: expected_credit_loss_expense, section: income_statement, name_tr: Beklenen zarar karşılıkları giderleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: other_provision_expense, section: income_statement, name_tr: Diğer karşılık giderleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: loan_provision_expense_non_tfrs9, section: income_statement, name_tr: Kredi karşılıkları (TFRS 9 uygulamayan), kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: other_operating_expenses, section: income_statement, name_tr: Diğer faaliyet giderleri, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: net_operating_profit, section: income_statement, name_tr: Net faaliyet kârı, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: tax_provision, section: income_statement, name_tr: Vergi karşılığı, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: net_profit_continuing, section: income_statement, name_tr: Sürdürülen faaliyetler dönem net kârı, kind: flow, unit: TRY, cumulative_ytd: true}
+  - {code: npl_provisions, section: credit_quality, name_tr: Donuk alacak karşılığı (DT20), kind: stock, unit: TRY}
+  - {code: npl_net, section: credit_quality, name_tr: Donuk alacak net, kind: stock, unit: TRY}
+  - {code: npl_amount_prior_year_end, section: credit_quality, name_tr: Donuk alacak önceki dönem sonu, kind: stock, unit: TRY}
+  - {code: stage_1_loans, section: credit_quality, name_tr: Standart nitelikli krediler (1. aşama), kind: stock, unit: TRY}
+  - {code: stage_2_loans_not_restructured, section: credit_quality, name_tr: Yakın izleme (yapılandırılmamış), kind: stock, unit: TRY}
+  - {code: stage_2_restructured_modified, section: credit_quality, name_tr: Yakın izleme — sözleşme koşulları değiştirilen, kind: stock, unit: TRY}
+  - {code: stage_2_restructured_refinanced, section: credit_quality, name_tr: Yakın izleme — yeniden finansman, kind: stock, unit: TRY}
+  - {code: loans_stage1_stage2_total, section: credit_quality, name_tr: Standart + yakın izleme toplam, kind: stock, unit: TRY}
+  - {code: ecl_stage1, section: credit_quality, name_tr: 1. aşama beklenen zarar karşılığı, kind: stock, unit: TRY}
+  - {code: ecl_stage2, section: credit_quality, name_tr: 2. aşama beklenen zarar karşılığı, kind: stock, unit: TRY}
+  - {code: ecl_stage3, section: credit_quality, name_tr: 3. aşama beklenen zarar karşılığı, kind: stock, unit: TRY}
+  - {code: ecl_total_tfrs9, section: credit_quality, name_tr: Toplam beklenen kredi zararı karşılığı, kind: stock, unit: TRY}
+  - {code: regulatory_equity, section: capital, name_tr: Özkaynak (SYR hesabı), kind: stock, unit: TRY}
+  - {code: nsfr, section: liquidity, name_tr: Net istikrarlı fonlama oranı, kind: ratio, unit: pct}
+  - {code: available_stable_funding, section: liquidity, name_tr: Mevcut istikrarlı fon, kind: stock, unit: TRY}
+  - {code: required_stable_funding, section: liquidity, name_tr: Gerekli istikrarlı fon, kind: stock, unit: TRY}
+  - {code: loan_interest_jpy, section: interest, name_tr: JPY kredi ortalama faiz oranı, kind: rate, unit: pct, currency: JPY, rate_definition: stock_avg_applied_rate}
+  - {code: deposit_interest_jpy, section: interest, name_tr: JPY mevduat ortalama faiz oranı, kind: rate, unit: pct, currency: JPY, rate_definition: stock_avg_applied_rate}
+
 # 7.10 Vade — kaynağın gerçek kovaları korunur; 3-12 ay yapay bölünmez.
 maturity:
   buckets_target: [demand, 0_1m, 1_3m, 3_6m, 6_12m]
   # TBB DT20/DT21 "Aktif ve Pasif Kalemlerin Kalan Vadelerine Göre Gösterimi" gerçek kovaları (Haziran 2023 dosyasından doğrulandı):
-  buckets_tbb_remaining_maturity: [demand, 0_1m, 1_3m, 3_12m, 1_5y, over_5y, unallocated]
-  # Finansal tablo dipnotu "Mevduatın vade yapısı" standart kovaları (17 Sayılı Tebliğ formatı; dosya üzerinden HENÜZ doğrulanmadı):
-  buckets_deposit_footnote: [demand, notice_7d, 0_1m, 1_3m, 3_6m, 6m_1y, over_1y, accumulating]
+  buckets_tbb_remaining_maturity: [demand, 0_1m, 1_3m, 3_12m, 1_5y, over_5y, unallocated, total]
+  # DT20 'Mevd.Vade' (Haziran 2026, doğrulandı): mevduat türü × [demand_7d (Vadesiz + 7 Gün İhbarlı), 0_1m, 1_3m, over_3m (3 Ay ve Üstü), total]
+  buckets_dt20_deposit_type: [demand_7d, 0_1m, 1_3m, over_3m, total]
+  # Banka kitabı dipnotu 'pasif1 / 2.a.1.i Mevduatın vade yapısı' (Haziran 2026, doğrulandı): 3-6 ay ve 6 ay-1 yıl AYRI
+  buckets_deposit_footnote: [demand, notice_7d, 0_1m, 1_3m, 3_6m, 6_12m, over_1y, accumulating, total]
+  # Banka kitabı dipnotu 'malibünye1 / Aktif ve Pasif Kalemlerin Kalan Vadelerine Göre Gösterimi' (doğrulandı): Verilen Krediler ve Diğer Mevduat satırları
+  buckets_bank_workbook_remaining: [demand, 0_1m, 1_3m, 3_12m, 1_5y, over_5y, unallocated, total]
   items:
     - {code: total_assets, name_tr: Toplam aktifler (kalan vade), basis: remaining}
     - {code: total_liabilities, name_tr: Toplam pasifler (kalan vade), basis: remaining}

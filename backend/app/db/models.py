@@ -239,7 +239,7 @@ class FinancialObservation(_ObservationMixin, Base):
     source_id: Mapped[int] = mapped_column(ForeignKey("data_sources.id"))
     source_document_id: Mapped[int | None] = mapped_column(ForeignKey("source_documents.id"))
     __table_args__ = (
-        UniqueConstraint("institution_id", "metric_code", "period_end", "reporting_scope", "currency", "source_id", "revision_no",
+        UniqueConstraint("institution_id", "metric_code", "period_start", "period_end", "reporting_scope", "currency", "source_id", "revision_no",
                          name="uq_fin_obs"),
         Index("ix_fin_obs_lookup", "metric_code", "period_end", "reporting_scope"),
     )

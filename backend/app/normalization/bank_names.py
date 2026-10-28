@@ -45,7 +45,7 @@ SEED_BANKS: dict[str, tuple[str, str, str, list[str]]] = {
     "teb": ("Türk Ekonomi Bankası A.Ş.", "deposit", "private", ["TEB", "Türk Ekonomi Bankası"]),
     "isbank": ("Türkiye İş Bankası A.Ş.", "deposit", "private", ["İş Bankası", "İşbank", "Türkiye İş Bankası"]),
     "yapikredi": ("Yapı ve Kredi Bankası A.Ş.", "deposit", "private", ["Yapı Kredi", "Yapı ve Kredi Bankası"]),
-    "alternatifbank": ("Alternatifbank A.Ş.", "deposit", "foreign", ["Alternatifbank", "Alternatif Bank"]),
+    "alternatifbank": ("Alternatifbank A.Ş.", "deposit", "foreign", ["Alternatifbank", "Alternatif Bank", "Alternatif Bank A.Ş."]),
     "arapturk": ("Arap Türk Bankası A.Ş.", "deposit", "foreign", ["Arap Türk Bankası", "Arap Türk"]),
     "bankofchina": ("Bank of China Turkey A.Ş.", "deposit", "foreign", ["Bank of China Turkey", "Bank of China"]),
     "burgan": ("Burgan Bank A.Ş.", "deposit", "foreign", ["Burgan Bank", "Burgan"]),
@@ -92,6 +92,9 @@ SEED_BANKS: dict[str, tuple[str, str, str, list[str]]] = {
     "misyonyatirim": ("Misyon Yatırım Bankası A.Ş.", "development_investment", "private", ["Misyon Yatırım Bankası"]),
     "turkticaret": ("Türk Ticaret Bankası A.Ş.", "deposit", "private", ["Türk Ticaret Bankası"]),
     "ziraatdinamik": ("Ziraat Dinamik Banka A.Ş.", "deposit", "public", ["Ziraat Dinamik Banka A.Ş. (dijital banka)", "Ziraat Dinamik Banka", "Ziraat Dinamik"]),
+    # DT20 Haziran 2026 dosyasında görülen (28.10.2026):
+    "fups": ("FUPS Bank A.Ş.", "deposit", "private", ["FUPS Bank A.Ş. (dijital banka)", "FUPS Bank", "FUPS"]),
+    "aytemizyatirim": ("Aytemiz Yatırım Bankası A.Ş.", "development_investment", "private", ["Aytemiz Yatırım Bankası"]),
 }
 
 # TBB'nin 2025 Eylül solo Excel veri seti sayfasındaki resmî 'Banka Seçiniz' listesi (57 banka) — tohum listesini doğrulamak için.

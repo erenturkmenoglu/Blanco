@@ -43,7 +43,7 @@ def maturity_table_rows():
 def balance_sheet_rows():
     # (A) düzeni: satırlar kalemler, sütunlar bankalar — "Bin TL" ölçeği başlıkta
     return [
-        ["Bilanço (Solo), Haziran 2026, Bin TL", None, None, None],
+        ["Bilanço (Solo), Eylül 2025, Bin TL", None, None, None],
         ["Kalemler", "T.C. Ziraat Bankası A.Ş.", "Akbank T.A.Ş.", "Türkiye İş Bankası A.Ş."],
         ["Nakit Değerler ve Merkez Bankası", "100.000", "60.000", "70.000"],
         ["Krediler", "700.000", "400.000", "500.000"],
@@ -57,7 +57,7 @@ def balance_sheet_rows():
 
 def income_rows():
     return [
-        ["Gelir Tablosu (Solo), Haziran 2026 (1 Ocak - 30 Haziran), Bin TL", None, None],
+        ["Gelir Tablosu (Solo), Eylül 2025 (1 Ocak - 30 Eylül), Bin TL", None, None],
         ["Kalemler", "T.C. Ziraat Bankası A.Ş.", "Akbank T.A.Ş."],
         ["Faiz Gelirleri", "120.000", "80.000"],
         ["Faiz Giderleri", "90.000", "50.000"],
@@ -93,8 +93,8 @@ CATEGORY_HTML = """<html><body>
 </body></html>"""
 
 LIST_HTML = """<html><body><ul>
-<li><a href="/istatistiki-raporlar/2026-haziran-finansal-tablolar-konsolide-olmayan-solo-banka-excel-formatinda">2026 Haziran - Finansal Tablolar - Konsolide Olmayan (Solo Banka, Excel formatında ortak veri seti)</a></li>
-<li><a href="/istatistiki-raporlar/2026-mart-finansal-tablolar-konsolide-olmayan-solo-banka-excel-formatinda">2026 Mart - ...</a></li>
+<li><a href="/istatistiki-raporlar/2025-eylul-finansal-tablolar-konsolide-olmayan-solo-banka-excel-formatinda">2025 Eylül - Finansal Tablolar - Konsolide Olmayan (Solo Banka, Excel formatında ortak veri seti)</a></li>
+<li><a href="/istatistiki-raporlar/2025-haziran-finansal-tablolar-konsolide-olmayan-solo-banka-excel-formatinda">2025 Haziran - ...</a></li>
 </ul></body></html>"""
 
 REPORT_HTML = """<html><body>

@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   ingest:
@@ -42,3 +42,16 @@ jobs:
             backend/bilanco.db
           if-no-files-found: ignore
           retention-days: 30
+      - name: Publish SQLite DB + raw files to 'data' branch (tek commit, force) — artifact depolama bazı ağlardan erişilemiyor
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          rm -rf /tmp/pub && mkdir -p /tmp/pub
+          [ -f backend/bilanco.db ] && cp backend/bilanco.db /tmp/pub/ || true
+          [ -d backend/data/raw ] && cp -r backend/data/raw /tmp/pub/raw || true
+          cd /tmp/pub && git init -q -b data && git config user.name "bilanco-bot" && git config user.email "bilanco-bot@users.noreply.github.com"
+          git add -A && git commit -q -m "ingest run ${{ github.run_id }} $(date -u +%FT%TZ)" || { echo "yayınlanacak dosya yok"; exit 0; }
+          git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" data:data
+          echo "published branch data"

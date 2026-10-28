@@ -14,7 +14,7 @@ def test_parse_period_options_reads_year_ids_not_guesses():
 
 def test_parse_report_links_and_attachments():
     links = TBBAdapter.parse_report_links(LIST_HTML)
-    assert links[0]["type"] == "report_page" and links[0]["url"].endswith("2026-haziran-finansal-tablolar-konsolide-olmayan-solo-banka-excel-formatinda")
+    assert links[0]["type"] == "report_page" and links[0]["url"].endswith("2025-eylul-finansal-tablolar-konsolide-olmayan-solo-banka-excel-formatinda")
     atts = TBBAdapter.parse_attachments(REPORT_HTML)
     assert atts[0]["url"] == "https://www.tbb.org.tr/download/node/55001/field_raporlar_ekler/310500" and atts[0]["format_hint"] == "xlsx"
     assert all("/docs/" not in a["url"] for a in atts)       # takvim PDF'i (site geneli) rapor eki sayılmaz
@@ -30,7 +30,8 @@ class FakeDownloader:
         self.calls.append(url)
         pages = {
             "https://www.tbb.org.tr/istatistiki-raporlar/11232": CATEGORY_HTML,
-            LIST_URL.format(list_id=11241, period_id="11411", month=6): LIST_HTML,
+            LIST_URL.format(list_id=11241, period_id="11405", month=9): LIST_HTML,
+            "https://www.tbb.org.tr/istatistiki-raporlar/2025-eylul-finansal-tablolar-konsolide-olmayan-solo-banka-excel-formatinda": REPORT_HTML,
             "https://www.tbb.org.tr/istatistiki-raporlar/2026-haziran-finansal-tablolar-konsolide-olmayan-solo-banka-excel-formatinda": REPORT_HTML,
         }
         if url in pages:
@@ -41,9 +42,11 @@ class FakeDownloader:
 
 def test_discover_chain_offline():
     ad = TBBAdapter(FakeDownloader())
-    files = ad.discover("tbb_fs_solo_excel", 2026, 6)
+    files = ad.discover("tbb_fs_solo_excel", 2026, 6)          # en güncel yıl → ay-yil doğrudan rapor sayfası
     assert [f.url for f in files] == ["https://www.tbb.org.tr/download/node/55001/field_raporlar_ekler/310500"]
     assert files[0].period_end == date(2026, 6, 30) and files[0].format_hint == "xlsx"
+    files = ad.discover("tbb_fs_solo_excel", 2025, 9)          # eski yıl → liste sayfası → rapor sayfası
+    assert [f.url for f in files] == ["https://www.tbb.org.tr/download/node/55001/field_raporlar_ekler/310500"]
     # Aralık 2025 için period id yok → bağlantı bulunamaz, hata fırlatmaz
     assert ad.discover("tbb_fs_solo_excel", 2019, 12) == []
 

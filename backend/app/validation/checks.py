@@ -14,7 +14,7 @@ from app.dictionary import metric_index
 
 STATUSES = {"VERIFIED", "DERIVED", "UNVERIFIED", "UNAVAILABLE", "ERROR"}
 RATE_DEFINITIONS = {"stock_avg_applied_rate", "new_business_flow_rate", "accounting_yield", "accounting_cost"}
-MATURITY_BUCKETS = {"demand", "notice_7d", "0_1m", "1_3m", "3_6m", "6m_1y", "6_12m", "3_12m", "1_5y", "over_5y", "over_1y", "unallocated", "accumulating", "total"}
+MATURITY_BUCKETS = {"demand", "demand_7d", "notice_7d", "0_1m", "1_3m", "3_6m", "6m_1y", "6_12m", "3_12m", "over_3m", "1_5y", "over_5y", "over_1y", "unallocated", "accumulating", "total"}
 FREQS = {"daily", "weekly", "monthly", "quarterly", "annual"}
 
 
@@ -65,7 +65,7 @@ def run_checks(observations: list[dict], *, raw_bytes: bytes | None = None, expe
             continue
         # DQ03 para birimi
         cur = o.get("currency")
-        if cur not in (None, "TRY", "USD", "EUR", "FX", "ALL", "OTHER"):
+        if cur not in (None, "TRY", "USD", "EUR", "JPY", "GBP", "CHF", "FX", "ALL", "OTHER"):
             res.append(CheckResult("DQ03_currency", False, "error", f"tanımsız para birimi {cur}", bank, metric, pe))
         # DQ04 birim/ölçek
         unit = o.get("unit")
@@ -80,7 +80,7 @@ def run_checks(observations: list[dict], *, raw_bytes: bytes | None = None, expe
         if sc not in ("solo", "consolidated", "sector", "na"):
             res.append(CheckResult("DQ05_scope", False, "error", f"raporlama kapsamı belirsiz: {sc}", bank, metric, pe))
         # DQ07 yinelenen
-        key = (bank, metric, pe, sc, cur, o.get("source_code"), o.get("rate_definition"), o.get("bucket"))
+        key = (bank, metric, o.get("period_start"), pe, sc, cur, o.get("source_code"), o.get("rate_definition"), o.get("bucket"), o.get("item"))
         if key in seen:
             res.append(CheckResult("DQ07_duplicate", False, "error", "aynı dosyada yinelenen gözlem", bank, metric, pe))
         seen.add(key)
@@ -111,7 +111,7 @@ def run_checks(observations: list[dict], *, raw_bytes: bytes | None = None, expe
         if metric in mi and mi[metric].get("cumulative_ytd") and o.get("cumulative_ytd") is None:
             res.append(CheckResult("DQ13_frequency", False, "error", "gelir tablosu kaleminde kümülatif/çeyrek bilgisi yok", bank, metric, pe))
         # bilanço tutarlılığı için biriktir
-        if o.get("value") is not None and sc in ("solo", "consolidated"):
+        if o.get("value") is not None and sc in ("solo", "consolidated") and cur in (None, "ALL") and o.get("period_start") in (None, pe):
             by_bank_period.setdefault((bank, pe, sc), {})[metric] = o["value"]
 
     # DQ06 bilanço tutarlılığı: aktif ≈ pasif(+özkaynak) ; TL+YP ≈ toplam
@@ -155,8 +155,8 @@ def apply_checks(observations: list[dict], results: list[CheckResult]) -> tuple[
             continue
         if (o["bank_code"], o.get("metric_code"), o.get("period_end")) in bad_triplet:
             continue
-        key = (o["bank_code"], o.get("metric_code"), o.get("period_end"), o.get("reporting_scope"), o.get("currency"), o.get("source_code"),
-               o.get("rate_definition"), o.get("bucket"))
+        key = (o["bank_code"], o.get("metric_code"), o.get("period_start"), o.get("period_end"), o.get("reporting_scope"), o.get("currency"),
+               o.get("source_code"), o.get("rate_definition"), o.get("bucket"), o.get("item"))
         if key in seen:
             continue
         seen.add(key)

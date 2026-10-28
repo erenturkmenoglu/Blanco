@@ -12,13 +12,13 @@ yalnızca `banks` modülü etkindir.
 | Veri keşfi (TBB/BDDK/EVDS kaynak yapısı, gerçek URL kalıpları, dönem id'leri, yayın takvimi) | **Yapıldı** — resmî sayfalar/dosyalar okunarak; bulgular `docs/verification_table.md` |
 | TBB DT20 Haziran 2023: banka bazında TL/USD/EUR kredi & mevduat ortalama faizleri ve kalan vade tablosu | **VERIFIED** (dosya açıldı, sütunlar görüldü) |
 | TBB DT13 Haziran 2026: banka bazında şube ve çalışan sayıları | **VERIFIED** |
-| Haziran 2026 banka bazında bilanço/kredi/mevduat Excel dosyaları | **UNVERIFIED** — kaynak ve dönem bulundu; Excel veri seti **banka bazında ayrı dosyalar** halinde ('Banka Seçiniz', 57 banka); dosya **bu ortamdan indirilemedi** (sandbox ağ engeli) → GitHub Actions probe ile açılacak |
-| Veri toplama motoru (fallback zincirli indirme, robots.txt saygısı, içerik imzası, xls/xlsx/csv/html/zip/json/xml ayrıştırma, banka adı standardizasyonu, etiket→metrik eşleme, DT20 faiz & vade tablosu eşleyicileri, 14 DQ kontrolü, revizyon yönetimi) | **Yazıldı ve test edildi** (21 pytest; gerçek TBB dosyası yerine *doğrulanmış düzenin sentetik replikası*) |
+| Haziran 2026 banka bazında bilanço/kredi/mevduat/faiz/vade — gerçek TBB dosyaları | **VERIFIED** — GitHub Actions runner ile indirildi ve açıldı: DT20 Excel seti (1.Mali bünye … 5.Nazım; 58 banka), banka bazlı zip'ler (Akbank, Ziraat; TP/YP, çeyrek P&L, mevduat vade yapısı 3-6/6-12, kredi kalan vade, ortalama faizler), sıralama xls; dosyalar `backend/tests/data/tbb_2026_06/` |
+| Veri toplama motoru (fallback zincirli indirme, robots.txt, içerik imzası, xls/xlsx/csv/html/zip ayrıştırma, banka adı standardizasyonu (58 TBB üyesi), DT20 ve banka kitabı çıkarıcıları, 14 DQ kontrolü, revizyon yönetimi) | **Yazıldı ve GERÇEK dosyalarla test edildi** (26 pytest; `tests/test_real_tbb_2026_06.py` uçtan uca: keşif → indirme (replay) → ayrıştırma → DB → API; Aktif=Pasif özdeşlikleri tüm bankalarda) |
 | PostgreSQL şeması (16 tablo) + SQLAlchemy modelleri | **Yazıldı**; SQLite ile çalıştırıldı, PostgreSQL docker-compose ile |
 | Hesaplama motoru (ROA/ROE/NIM/CIR, NPL, büyüme, YTD→çeyrek, yıllıklandırma, vade payları, faiz makası tanım kontrolü) | **Yazıldı ve test edildi** |
 | Analytics API (FastAPI, 14 uç nokta) | **Çalıştırıldı** (uvicorn smoke test + TestClient) |
 | Bankalar arayüzü (Next.js: Genel Bakış, Bankalar, Karşılaştırmalar, Veri Kaynakları, Veri Güncelleme Durumu) | **Derlendi** (`next build` başarılı); canlı veriyle görsel test yapılmadı |
-| Zamanlayıcı (APScheduler; yayın takvimine göre +45/+75 gün kontrol) | **Yazıldı**, üretimde **kurulmadı/çalışmıyor** |
+| Zamanlayıcı | GitHub Actions `ingest.yml`: her gün 06:30 (İstanbul) vadesi gelen çeyrekleri indirir, SQLite DB + ham dosyaları `data` dalına yayımlar (ilk koşu: bu oturumda tetiklendi) |
 | EVDS makro katmanı | Adaptör yazıldı; **API anahtarı yok → seri kodları doğrulanmadı** |
 
 Gerçekleştirilmeyen hiçbir şey yapılmış gibi gösterilmemiştir: indirilemeyen dosya `ERROR`, açılmayan dosyanın alanları `UNVERIFIED`,

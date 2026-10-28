@@ -55,7 +55,7 @@ LABEL_PATTERNS: list[tuple[str, str]] = [
     (r"^personel giderleri$", "personnel_expenses"),
     (r"^karşılık giderleri$|^beklenen zarar karşılıkları giderleri$|^kredi ve diğer alacaklar (değer düşüş|karşılık)", "provision_expenses"),
     (r"^vergi öncesi kâr( zarar)?$|^sürdürülen faaliyetler vergi öncesi k z$|^vergi öncesi kar", "profit_before_tax"),
-    (r"^(net )?dönem (net )?kâr(ı| zararı| veya zararı)?$|^net kâr( zarar)?$|^dönem net kârı zararı$|^net kar", "net_profit"),
+    (r"^(net )?dönem (net )?k[aâ]r(ı| zararı| veya zararı| zarar)?$|^net k[aâ]r( zarar)?$|^dönem net k[aâ]rı zararı$|^net dönem k[aâ]r", "net_profit"),
     (r"^takipteki (krediler|alacaklar)( brüt)?$|^donuk alacaklar$|^takipteki krediler brüt$", "npl_amount"),
     (r"^(özel|beklenen zarar) karşılıklar(ı)?( )?$|^kredi zarar karşılıkları$|^takipteki krediler karşılığı$", "loan_loss_provisions"),
     (r"^sermaye yeterliliği (standart )?(oranı|rasyosu)$|^sermaye yeterlilik (standart )?(oranı|rasyosu)$", "capital_adequacy_ratio"),

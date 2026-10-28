@@ -132,7 +132,7 @@ class TBBAdapter(SourceAdapter):
         return [
             DatasetSpec("tbb_fs_solo_excel", "Finansal Tablolar – Konsolide Olmayan (Solo Banka, Excel ortak veri seti)", "TBB",
                         "quarterly", "solo", True, CATEGORY_FS, LIST_URL.replace("{list_id}", "11241"), "xls,xlsx,zip", 45,
-                        "UNVERIFIED", "Dönem listesi 2002–2026 Haziran doğrulandı; Excel eki açılamadı (sunucu hatası / sandbox ağ engeli). " + lag45),
+                        "VERIFIED", "Haziran 2026: banka bazında zip (/sites/default/files/raporlar/54947/bankalar/<Banka>.zip) → <Banka>.xls 42 sayfa (bilanço TP/YP, gelir YTD+çeyrek, dipnotlar: mevduat vade yapısı 3-6/6-12, kalan vade, ortalama faiz). " + lag45),
             DatasetSpec("tbb_fs_cons_excel", "Finansal Tablolar – Konsolide (Excel ortak veri seti)", "TBB",
                         "quarterly", "consolidated", True, CATEGORY_FS, None, "xls,xlsx,zip", 75, "UNVERIFIED",
                         "Kategori sayfasında bölüm doğrulandı; list_id ve ek dosya açılmadı."),
@@ -140,7 +140,7 @@ class TBBAdapter(SourceAdapter):
                         "quarterly", "solo", True, CATEGORY_ANALYSIS, None, "pdf,xls", 45, "VERIFIED",
                         "Haziran 2023 PDF açıldı: 'Verilen Kredilere ve Diğer Mevduata Uygulanan Ortalama Faiz Oranları' (TL/USD/EUR × kredi/mevduat) ve "
                         "'Aktif ve Pasif Kalemlerin Kalan Vadelerine Göre Gösterimi' (toplam aktif/pasif; kova: vadesiz,1 ay,1-3,3-12 ay,1-5 yıl,5+,dağıtılamayan). "
-                        "2026 Haziran sürümü AÇILMADI."),
+                        "Haziran 2026 Excel seti açıldı: 1.Mali bünye (Ort.Faiz Oranı, Likidite Riski, Sermaye Std. Oranı, NİFO), 2.Aktifler, 3.Pasifler (Mevd.Vade), 4.Gelir-Gider, 5.Nazım."),
             DatasetSpec("tbb_dt21_selected_cons", "Banka Bilgileri – Seçilmiş Tablolar, Konsolide (DT21)", "TBB",
                         "quarterly", "consolidated", True, CATEGORY_ANALYSIS, None, "pdf,xls", 75, "VERIFIED",
                         "Aralık 2019, Mart 2021, Haziran 2022 PDF'leri açıldı; tablo yapısı DT20 ile aynı."),
@@ -148,15 +148,14 @@ class TBBAdapter(SourceAdapter):
                         "quarterly", "solo", True, CATEGORY_ANALYSIS, None, "xls,pdf", 75, "UNVERIFIED",
                         "Bölüm ve 2025 Haziran sayfası var; ek açılamadı."),
             DatasetSpec("tbb_maturity_remaining", "Aktif ve Pasiflerin Kalan Vadelerine Göre Gösterimi", "TBB",
-                        "quarterly", "solo", True, CATEGORY_SELECTED, None, "xls,pdf", 45, "UNVERIFIED",
-                        "Seçilmiş İstatistikler sayfasında 2002–2026 (Mart/Haziran) dönem listesi doğrulandı; dosya açılmadı. "
-                        "DT20'deki aynı adlı tablo TOPLAM aktif/pasif verir, kredi/mevduat ayrı DEĞİL."),
+                        "quarterly", "solo", True, CATEGORY_SELECTED, None, "xls,pdf", 45, "VERIFIED",
+                        "Haziran 2026 xls açıldı: SEKTÖR toplamı kalem bazında (Verilen Krediler, Diğer Mevduat … × Vadesiz/1 Aya Kadar/1-3/3-12 Ay/1-5 Yıl/5+/Dağıtılamayan). Banka bazında değil."),
             DatasetSpec("tbb_dt13_bank_branch_employee", "Banka, Çalışan ve Şube Sayıları (DT13)", "TBB",
                         "quarterly", "na", True, CATEGORY_SELECTED, None, "pdf,xls", 15, "VERIFIED",
                         "Haziran 2026 dosyası açıldı: Tablo 1 banka bazında Şube ve Çalışan Sayısı."),
             DatasetSpec("tbb_asset_ranking", "Aktif Büyüklüklerine Göre Banka Sıralaması", "TBB",
-                        "quarterly", "solo", True, CATEGORY_SELECTED, LIST_URL.replace("{list_id}", "11254"), "xls", 45, "UNVERIFIED",
-                        "2026 Haziran rapor sayfası ve .xls eki bağlantısı doğrulandı; dosya içeriği açılamadı."),
+                        "quarterly", "solo", True, CATEGORY_SELECTED, LIST_URL.replace("{list_id}", "11254"), "xls", 45, "VERIFIED",
+                        "Haziran 2026 xls açıldı: Banka | Kuruluş Yılı | Toplam Aktifler | Toplam Krediler* | Toplam Mevduat | Toplam Özkaynaklar | Ödenmiş Sermaye | Net Dönem Kar/Zararı | Bilanço Dışı Hesaplar (Milyon TL)."),
         ]
 
     # ---------------------------------------------------------------- HTML çözümleme (saf fonksiyonlar → test edilebilir)
