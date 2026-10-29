@@ -1,13 +1,8 @@
 .env
-*.db
-data/raw/
 __pycache__/
 *.pyc
-.pytest_cache/
+*.pkl
 node_modules/
 .next/
-dist/
-.DS_Store
-frontend/public/data/
-web-data.tar.gz
 frontend/out/
+.DS_Store
