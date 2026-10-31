@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const ITEMS = [["/", "Genel Bakış"], ["/bilanco", "Bilanço"], ["/gelir-tablosu", "Gelir Tablosu"], ["/nazim", "Nazım & Türev"], ["/oranlar", "Oranlar"], ["/dipnot", "Dipnotlar"], ["/tablolar", "Tablolar"], ["/veri", "Veri & Kalite"]];
+const ITEMS = [["/", "Rapor"], ["/panel", "Panel"], ["/bilanco", "Bilanço"], ["/gelir-tablosu", "Gelir Tablosu"], ["/nazim", "Nazım & Türev"], ["/oranlar", "Oranlar"], ["/dipnot", "Dipnotlar"], ["/tablolar", "Tablolar"], ["/veri", "Veri & Kalite"]];
 
 export default function Nav() {
   const p = usePathname();

@@ -1,27 +1,15 @@
+import "@fontsource-variable/archivo/wdth.css";
+import "@fontsource-variable/source-serif-4/opsz.css";
 import "./globals.css";
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
-import { CcyProvider, CcyToggle } from "@/components/Ccy";
-import { D } from "@/lib/data";
+import { CcyProvider } from "@/components/Ccy";
 
-export const metadata: Metadata = { title: "DBTR — Deutsche Bank A.Ş. finansallar", description: "KAP bildirimleri + TBB dipnotlarından kurulan Deutsche Bank A.Ş. (solo) finansal veri tabanı ve analiz paneli" };
+export const metadata: Metadata = { title: "Bilanço ve gölgesi — Deutsche Bank A.Ş. solo finansallar", description: "KAP bildirimleri ve TBB dipnotlarından kurulan Deutsche Bank A.Ş. (konsolide olmayan) finansal veri tabanı: tek sayfalık rapor ve analiz paneli" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="tr">
-      <body>
-        <CcyProvider>
-          <header>
-            <span className="brand">DBTR</span>
-            <span className="sub">Deutsche Bank A.Ş. · solo · {D.periods[0].slice(0, 4)}–{D.periods[D.periods.length - 1]}</span>
-            <Nav />
-            <span className="spacer" />
-            <CcyToggle />
-          </header>
-          <main>{children}</main>
-          <footer className="note">Kaynak: KAP bildirimleri (ana tablolar), TBB Ortak Veri Seti banka kitapları (dipnotlar), TCMB kurları. Nominal TL; TMS 29 uygulanmamış. Üretim: {D.meta.generated}.</footer>
-        </CcyProvider>
-      </body>
+      <body><CcyProvider>{children}</CcyProvider></body>
     </html>
   );
 }

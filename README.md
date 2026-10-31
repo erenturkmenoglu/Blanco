@@ -19,8 +19,11 @@ python export_json.py                       # → frontend/public/data/dbtr.json
 Excel'deki formüller LibreOffice ile yeniden hesaplanır; JSON hesaplanmış değerlerden üretilir, böylece Excel ve web aynı sayıları gösterir.
 
 ## Web (`frontend/`, Next.js 14, statik export)
-Sekmeler: Genel Bakış · Bilanço · Gelir Tablosu · Nazım & Türev · Oranlar · Dipnotlar · Tablolar · Veri & Kalite. Sağ üstte TL/USD/EUR seçimi
-(stok: dönem sonu kuru; çeyrek akım: dönem ortalama kuru). Vercel: Root Directory `frontend`, ortam değişkeni gerekmez.
+- `/` **Rapor** — tek sayfalık editoryal rapor ("Bilanço ve gölgesi"): 8 bölüm, elle çizilmiş SVG grafikler (`components/report/svg.tsx`),
+  sol sütunda bölüm izleyici, TL/USD/EUR seçimi, "PDF olarak kaydet" (A4 baskı stili). Tipografi: Archivo (başlık/sayı) + Source Serif 4 (metin), fontsource ile paketli.
+  İlke: kelimeler siyah, miktarlar mavi, zarar kırmızı; TL koyu mavi, yabancı para açık mavi.
+- `/panel` ve alt sekmeler — ayrıntılı panel: Bilanço, Gelir Tablosu, Nazım & Türev, Oranlar, Dipnotlar, Tablolar, Veri & Kalite.
+Vercel: Root Directory `frontend`, ortam değişkeni gerekmez.
 
 ## İlkeler
 Eksik veri uydurulmaz (boş hücre / UNAVAILABLE); her kalemde VERIFIED / DERIVED / UNAVAILABLE durumu ve kaynak; tüm tutarlar nominal (TMS 29 uygulanmamış).
